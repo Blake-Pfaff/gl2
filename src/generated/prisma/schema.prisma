@@ -1,0 +1,79 @@
+generator client {
+  provider = "prisma-client-js"
+  output   = "../src/generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id        String   @id @default(cuid())
+  email     String   @unique
+  name      String?
+  bio       String?
+  createdAt DateTime @default(now())
+
+  // One-to-one optional location
+  location UserLocation?
+
+  // Likes: from this user
+  likesFrom Like[] @relation("likes_from")
+
+  // Likes: to this user
+  likesTo Like[] @relation("likes_to")
+
+  // Matches where this user is the “A” side
+  matchesA Match[] @relation("A")
+
+  // Matches where this user is the “B” side
+  matchesB Match[] @relation("B")
+}
+
+model UserLocation {
+  userId String                               @id
+  geom   Unsupported("geography(Point,4326)")
+
+  user User @relation(fields: [userId], references: [id])
+}
+
+model Like {
+  fromId    String
+  toId      String
+  createdAt DateTime @default(now())
+
+  from User @relation("likes_from", fields: [fromId], references: [id])
+  to   User @relation("likes_to", fields: [toId], references: [id])
+
+  @@id([fromId, toId])
+}
+
+model Match {
+  id        String   @id @default(cuid())
+  aId       String
+  bId       String
+  createdAt DateTime @default(now())
+
+  // Link to User A
+  A User @relation("A", fields: [aId], references: [id])
+
+  // Link to User B
+  B User @relation("B", fields: [bId], references: [id])
+
+  // Back-reference for messages in this match
+  messages Message[] @relation("MatchMessages")
+
+  @@unique([aId, bId])
+}
+
+model Message {
+  id        String   @id @default(cuid())
+  matchId   String
+  senderId  String
+  body      String
+  createdAt DateTime @default(now())
+
+  // Which match this belongs to
+  match Match @relation("MatchMessages", fields: [matchId], references: [id])
+}
