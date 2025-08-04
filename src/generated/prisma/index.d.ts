@@ -1333,6 +1333,7 @@ export namespace Prisma {
     email: string | null
     name: string | null
     bio: string | null
+    hashedPassword: string | null
     createdAt: Date | null
   }
 
@@ -1341,6 +1342,7 @@ export namespace Prisma {
     email: string | null
     name: string | null
     bio: string | null
+    hashedPassword: string | null
     createdAt: Date | null
   }
 
@@ -1349,6 +1351,7 @@ export namespace Prisma {
     email: number
     name: number
     bio: number
+    hashedPassword: number
     createdAt: number
     _all: number
   }
@@ -1359,6 +1362,7 @@ export namespace Prisma {
     email?: true
     name?: true
     bio?: true
+    hashedPassword?: true
     createdAt?: true
   }
 
@@ -1367,6 +1371,7 @@ export namespace Prisma {
     email?: true
     name?: true
     bio?: true
+    hashedPassword?: true
     createdAt?: true
   }
 
@@ -1375,6 +1380,7 @@ export namespace Prisma {
     email?: true
     name?: true
     bio?: true
+    hashedPassword?: true
     createdAt?: true
     _all?: true
   }
@@ -1456,6 +1462,7 @@ export namespace Prisma {
     email: string
     name: string | null
     bio: string | null
+    hashedPassword: string | null
     createdAt: Date
     _count: UserCountAggregateOutputType | null
     _min: UserMinAggregateOutputType | null
@@ -1481,6 +1488,7 @@ export namespace Prisma {
     email?: boolean
     name?: boolean
     bio?: boolean
+    hashedPassword?: boolean
     createdAt?: boolean
     location?: boolean | User$locationArgs<ExtArgs>
     likesFrom?: boolean | User$likesFromArgs<ExtArgs>
@@ -1495,6 +1503,7 @@ export namespace Prisma {
     email?: boolean
     name?: boolean
     bio?: boolean
+    hashedPassword?: boolean
     createdAt?: boolean
   }, ExtArgs["result"]["user"]>
 
@@ -1503,6 +1512,7 @@ export namespace Prisma {
     email?: boolean
     name?: boolean
     bio?: boolean
+    hashedPassword?: boolean
     createdAt?: boolean
   }, ExtArgs["result"]["user"]>
 
@@ -1511,10 +1521,11 @@ export namespace Prisma {
     email?: boolean
     name?: boolean
     bio?: boolean
+    hashedPassword?: boolean
     createdAt?: boolean
   }
 
-  export type UserOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "email" | "name" | "bio" | "createdAt", ExtArgs["result"]["user"]>
+  export type UserOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "email" | "name" | "bio" | "hashedPassword" | "createdAt", ExtArgs["result"]["user"]>
   export type UserInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     location?: boolean | User$locationArgs<ExtArgs>
     likesFrom?: boolean | User$likesFromArgs<ExtArgs>
@@ -1540,6 +1551,7 @@ export namespace Prisma {
       email: string
       name: string | null
       bio: string | null
+      hashedPassword: string | null
       createdAt: Date
     }, ExtArgs["result"]["user"]>
     composites: {}
@@ -1973,6 +1985,7 @@ export namespace Prisma {
     readonly email: FieldRef<"User", 'String'>
     readonly name: FieldRef<"User", 'String'>
     readonly bio: FieldRef<"User", 'String'>
+    readonly hashedPassword: FieldRef<"User", 'String'>
     readonly createdAt: FieldRef<"User", 'DateTime'>
   }
     
@@ -6537,6 +6550,7 @@ export namespace Prisma {
     email: 'email',
     name: 'name',
     bio: 'bio',
+    hashedPassword: 'hashedPassword',
     createdAt: 'createdAt'
   };
 
@@ -6662,6 +6676,7 @@ export namespace Prisma {
     email?: StringFilter<"User"> | string
     name?: StringNullableFilter<"User"> | string | null
     bio?: StringNullableFilter<"User"> | string | null
+    hashedPassword?: StringNullableFilter<"User"> | string | null
     createdAt?: DateTimeFilter<"User"> | Date | string
     location?: XOR<UserLocationNullableScalarRelationFilter, UserLocationWhereInput> | null
     likesFrom?: LikeListRelationFilter
@@ -6675,6 +6690,7 @@ export namespace Prisma {
     email?: SortOrder
     name?: SortOrderInput | SortOrder
     bio?: SortOrderInput | SortOrder
+    hashedPassword?: SortOrderInput | SortOrder
     createdAt?: SortOrder
     location?: UserLocationOrderByWithRelationInput
     likesFrom?: LikeOrderByRelationAggregateInput
@@ -6691,6 +6707,7 @@ export namespace Prisma {
     NOT?: UserWhereInput | UserWhereInput[]
     name?: StringNullableFilter<"User"> | string | null
     bio?: StringNullableFilter<"User"> | string | null
+    hashedPassword?: StringNullableFilter<"User"> | string | null
     createdAt?: DateTimeFilter<"User"> | Date | string
     location?: XOR<UserLocationNullableScalarRelationFilter, UserLocationWhereInput> | null
     likesFrom?: LikeListRelationFilter
@@ -6704,6 +6721,7 @@ export namespace Prisma {
     email?: SortOrder
     name?: SortOrderInput | SortOrder
     bio?: SortOrderInput | SortOrder
+    hashedPassword?: SortOrderInput | SortOrder
     createdAt?: SortOrder
     _count?: UserCountOrderByAggregateInput
     _max?: UserMaxOrderByAggregateInput
@@ -6718,6 +6736,7 @@ export namespace Prisma {
     email?: StringWithAggregatesFilter<"User"> | string
     name?: StringNullableWithAggregatesFilter<"User"> | string | null
     bio?: StringNullableWithAggregatesFilter<"User"> | string | null
+    hashedPassword?: StringNullableWithAggregatesFilter<"User"> | string | null
     createdAt?: DateTimeWithAggregatesFilter<"User"> | Date | string
   }
 
@@ -6922,6 +6941,7 @@ export namespace Prisma {
     email: string
     name?: string | null
     bio?: string | null
+    hashedPassword?: string | null
     createdAt?: Date | string
     location?: UserLocationCreateNestedOneWithoutUserInput
     likesFrom?: LikeCreateNestedManyWithoutFromInput
@@ -6935,6 +6955,7 @@ export namespace Prisma {
     email: string
     name?: string | null
     bio?: string | null
+    hashedPassword?: string | null
     createdAt?: Date | string
     location?: UserLocationUncheckedCreateNestedOneWithoutUserInput
     likesFrom?: LikeUncheckedCreateNestedManyWithoutFromInput
@@ -6948,6 +6969,7 @@ export namespace Prisma {
     email?: StringFieldUpdateOperationsInput | string
     name?: NullableStringFieldUpdateOperationsInput | string | null
     bio?: NullableStringFieldUpdateOperationsInput | string | null
+    hashedPassword?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     location?: UserLocationUpdateOneWithoutUserNestedInput
     likesFrom?: LikeUpdateManyWithoutFromNestedInput
@@ -6961,6 +6983,7 @@ export namespace Prisma {
     email?: StringFieldUpdateOperationsInput | string
     name?: NullableStringFieldUpdateOperationsInput | string | null
     bio?: NullableStringFieldUpdateOperationsInput | string | null
+    hashedPassword?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     location?: UserLocationUncheckedUpdateOneWithoutUserNestedInput
     likesFrom?: LikeUncheckedUpdateManyWithoutFromNestedInput
@@ -6974,6 +6997,7 @@ export namespace Prisma {
     email: string
     name?: string | null
     bio?: string | null
+    hashedPassword?: string | null
     createdAt?: Date | string
   }
 
@@ -6982,6 +7006,7 @@ export namespace Prisma {
     email?: StringFieldUpdateOperationsInput | string
     name?: NullableStringFieldUpdateOperationsInput | string | null
     bio?: NullableStringFieldUpdateOperationsInput | string | null
+    hashedPassword?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
@@ -6990,6 +7015,7 @@ export namespace Prisma {
     email?: StringFieldUpdateOperationsInput | string
     name?: NullableStringFieldUpdateOperationsInput | string | null
     bio?: NullableStringFieldUpdateOperationsInput | string | null
+    hashedPassword?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
@@ -7231,6 +7257,7 @@ export namespace Prisma {
     email?: SortOrder
     name?: SortOrder
     bio?: SortOrder
+    hashedPassword?: SortOrder
     createdAt?: SortOrder
   }
 
@@ -7239,6 +7266,7 @@ export namespace Prisma {
     email?: SortOrder
     name?: SortOrder
     bio?: SortOrder
+    hashedPassword?: SortOrder
     createdAt?: SortOrder
   }
 
@@ -7247,6 +7275,7 @@ export namespace Prisma {
     email?: SortOrder
     name?: SortOrder
     bio?: SortOrder
+    hashedPassword?: SortOrder
     createdAt?: SortOrder
   }
 
@@ -8025,6 +8054,7 @@ export namespace Prisma {
     email: string
     name?: string | null
     bio?: string | null
+    hashedPassword?: string | null
     createdAt?: Date | string
     likesFrom?: LikeCreateNestedManyWithoutFromInput
     likesTo?: LikeCreateNestedManyWithoutToInput
@@ -8037,6 +8067,7 @@ export namespace Prisma {
     email: string
     name?: string | null
     bio?: string | null
+    hashedPassword?: string | null
     createdAt?: Date | string
     likesFrom?: LikeUncheckedCreateNestedManyWithoutFromInput
     likesTo?: LikeUncheckedCreateNestedManyWithoutToInput
@@ -8065,6 +8096,7 @@ export namespace Prisma {
     email?: StringFieldUpdateOperationsInput | string
     name?: NullableStringFieldUpdateOperationsInput | string | null
     bio?: NullableStringFieldUpdateOperationsInput | string | null
+    hashedPassword?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     likesFrom?: LikeUpdateManyWithoutFromNestedInput
     likesTo?: LikeUpdateManyWithoutToNestedInput
@@ -8077,6 +8109,7 @@ export namespace Prisma {
     email?: StringFieldUpdateOperationsInput | string
     name?: NullableStringFieldUpdateOperationsInput | string | null
     bio?: NullableStringFieldUpdateOperationsInput | string | null
+    hashedPassword?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     likesFrom?: LikeUncheckedUpdateManyWithoutFromNestedInput
     likesTo?: LikeUncheckedUpdateManyWithoutToNestedInput
@@ -8089,6 +8122,7 @@ export namespace Prisma {
     email: string
     name?: string | null
     bio?: string | null
+    hashedPassword?: string | null
     createdAt?: Date | string
     location?: UserLocationCreateNestedOneWithoutUserInput
     likesTo?: LikeCreateNestedManyWithoutToInput
@@ -8101,6 +8135,7 @@ export namespace Prisma {
     email: string
     name?: string | null
     bio?: string | null
+    hashedPassword?: string | null
     createdAt?: Date | string
     location?: UserLocationUncheckedCreateNestedOneWithoutUserInput
     likesTo?: LikeUncheckedCreateNestedManyWithoutToInput
@@ -8118,6 +8153,7 @@ export namespace Prisma {
     email: string
     name?: string | null
     bio?: string | null
+    hashedPassword?: string | null
     createdAt?: Date | string
     location?: UserLocationCreateNestedOneWithoutUserInput
     likesFrom?: LikeCreateNestedManyWithoutFromInput
@@ -8130,6 +8166,7 @@ export namespace Prisma {
     email: string
     name?: string | null
     bio?: string | null
+    hashedPassword?: string | null
     createdAt?: Date | string
     location?: UserLocationUncheckedCreateNestedOneWithoutUserInput
     likesFrom?: LikeUncheckedCreateNestedManyWithoutFromInput
@@ -8158,6 +8195,7 @@ export namespace Prisma {
     email?: StringFieldUpdateOperationsInput | string
     name?: NullableStringFieldUpdateOperationsInput | string | null
     bio?: NullableStringFieldUpdateOperationsInput | string | null
+    hashedPassword?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     location?: UserLocationUpdateOneWithoutUserNestedInput
     likesTo?: LikeUpdateManyWithoutToNestedInput
@@ -8170,6 +8208,7 @@ export namespace Prisma {
     email?: StringFieldUpdateOperationsInput | string
     name?: NullableStringFieldUpdateOperationsInput | string | null
     bio?: NullableStringFieldUpdateOperationsInput | string | null
+    hashedPassword?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     location?: UserLocationUncheckedUpdateOneWithoutUserNestedInput
     likesTo?: LikeUncheckedUpdateManyWithoutToNestedInput
@@ -8193,6 +8232,7 @@ export namespace Prisma {
     email?: StringFieldUpdateOperationsInput | string
     name?: NullableStringFieldUpdateOperationsInput | string | null
     bio?: NullableStringFieldUpdateOperationsInput | string | null
+    hashedPassword?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     location?: UserLocationUpdateOneWithoutUserNestedInput
     likesFrom?: LikeUpdateManyWithoutFromNestedInput
@@ -8205,6 +8245,7 @@ export namespace Prisma {
     email?: StringFieldUpdateOperationsInput | string
     name?: NullableStringFieldUpdateOperationsInput | string | null
     bio?: NullableStringFieldUpdateOperationsInput | string | null
+    hashedPassword?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     location?: UserLocationUncheckedUpdateOneWithoutUserNestedInput
     likesFrom?: LikeUncheckedUpdateManyWithoutFromNestedInput
@@ -8217,6 +8258,7 @@ export namespace Prisma {
     email: string
     name?: string | null
     bio?: string | null
+    hashedPassword?: string | null
     createdAt?: Date | string
     location?: UserLocationCreateNestedOneWithoutUserInput
     likesFrom?: LikeCreateNestedManyWithoutFromInput
@@ -8229,6 +8271,7 @@ export namespace Prisma {
     email: string
     name?: string | null
     bio?: string | null
+    hashedPassword?: string | null
     createdAt?: Date | string
     location?: UserLocationUncheckedCreateNestedOneWithoutUserInput
     likesFrom?: LikeUncheckedCreateNestedManyWithoutFromInput
@@ -8246,6 +8289,7 @@ export namespace Prisma {
     email: string
     name?: string | null
     bio?: string | null
+    hashedPassword?: string | null
     createdAt?: Date | string
     location?: UserLocationCreateNestedOneWithoutUserInput
     likesFrom?: LikeCreateNestedManyWithoutFromInput
@@ -8258,6 +8302,7 @@ export namespace Prisma {
     email: string
     name?: string | null
     bio?: string | null
+    hashedPassword?: string | null
     createdAt?: Date | string
     location?: UserLocationUncheckedCreateNestedOneWithoutUserInput
     likesFrom?: LikeUncheckedCreateNestedManyWithoutFromInput
@@ -8310,6 +8355,7 @@ export namespace Prisma {
     email?: StringFieldUpdateOperationsInput | string
     name?: NullableStringFieldUpdateOperationsInput | string | null
     bio?: NullableStringFieldUpdateOperationsInput | string | null
+    hashedPassword?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     location?: UserLocationUpdateOneWithoutUserNestedInput
     likesFrom?: LikeUpdateManyWithoutFromNestedInput
@@ -8322,6 +8368,7 @@ export namespace Prisma {
     email?: StringFieldUpdateOperationsInput | string
     name?: NullableStringFieldUpdateOperationsInput | string | null
     bio?: NullableStringFieldUpdateOperationsInput | string | null
+    hashedPassword?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     location?: UserLocationUncheckedUpdateOneWithoutUserNestedInput
     likesFrom?: LikeUncheckedUpdateManyWithoutFromNestedInput
@@ -8345,6 +8392,7 @@ export namespace Prisma {
     email?: StringFieldUpdateOperationsInput | string
     name?: NullableStringFieldUpdateOperationsInput | string | null
     bio?: NullableStringFieldUpdateOperationsInput | string | null
+    hashedPassword?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     location?: UserLocationUpdateOneWithoutUserNestedInput
     likesFrom?: LikeUpdateManyWithoutFromNestedInput
@@ -8357,6 +8405,7 @@ export namespace Prisma {
     email?: StringFieldUpdateOperationsInput | string
     name?: NullableStringFieldUpdateOperationsInput | string | null
     bio?: NullableStringFieldUpdateOperationsInput | string | null
+    hashedPassword?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     location?: UserLocationUncheckedUpdateOneWithoutUserNestedInput
     likesFrom?: LikeUncheckedUpdateManyWithoutFromNestedInput
