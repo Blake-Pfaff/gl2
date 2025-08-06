@@ -1,3 +1,4 @@
+// src/app/login/page.tsx
 "use client";
 
 import { useState } from "react";
@@ -6,10 +7,7 @@ import { signIn } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import { FormInput } from "../components/FormInput";
 
-type FormValues = {
-  email: string;
-  password: string;
-};
+type FormValues = { email: string; password: string };
 
 export default function LoginPage() {
   const {
@@ -23,18 +21,22 @@ export default function LoginPage() {
   const onSubmit: SubmitHandler<FormValues> = async (data) => {
     setAuthError(null);
 
-    // replaces console.log
-    const res = await signIn("credentials", {
-      redirect: false, // we’ll handle navigation manually
-      email: data.email,
-      password: data.password,
-      callbackUrl: "/", // where to go on success
-    });
+    try {
+      const res = await signIn("credentials", {
+        redirect: false,
+        email: data.email,
+        password: data.password,
+        callbackUrl: "/",
+      });
 
-    if (res?.error) {
-      setAuthError("Invalid email or password");
-    } else {
+      if (res?.error) {
+        setAuthError("Invalid email or password");
+        return;
+      }
+
       router.push(res?.url || "/");
+    } catch (e) {
+      setAuthError("Invalid email or password");
     }
   };
 
@@ -47,9 +49,7 @@ export default function LoginPage() {
           type="email"
           {...register("email", { required: "Email is required" })}
         />
-        {errors.email && (
-          <p className="text-red-500 mb-2">{errors.email.message}</p>
-        )}
+        {errors.email && <p className="text-red-500">{errors.email.message}</p>}
 
         <FormInput
           label="Password"
@@ -57,10 +57,14 @@ export default function LoginPage() {
           {...register("password", { required: "Password is required" })}
         />
         {errors.password && (
-          <p className="text-red-500 mb-2">{errors.password.message}</p>
+          <p className="text-red-500">{errors.password.message}</p>
         )}
 
-        {authError && <p className="text-red-500 mb-4">{authError}</p>}
+        {authError && (
+          <p data-cy="auth-error" className="text-red-500 mb-4">
+            {authError}
+          </p>
+        )}
 
         <button
           type="submit"
