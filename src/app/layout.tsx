@@ -1,8 +1,11 @@
 // app/layout.tsx
 import "./globals.css";
-import { QueryProvider } from "./providers";
+import { Providers } from "./providers";
 
-export const metadata = { title: "GL2", description: "..." };
+export const metadata = {
+  title: "MyApp",
+  description: "…",
+};
 
 export default function RootLayout({
   children,
@@ -12,7 +15,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body>
-        <QueryProvider>{children}</QueryProvider>
+        <Providers>{children}</Providers>
       </body>
     </html>
   );

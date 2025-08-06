@@ -1,7 +1,9 @@
-// src/app/login/page.tsx
 "use client";
 
+import { useState } from "react";
 import { useForm, SubmitHandler } from "react-hook-form";
+import { signIn } from "next-auth/react";
+import { useRouter } from "next/navigation";
 import { FormInput } from "../components/FormInput";
 
 type FormValues = {
@@ -10,12 +12,30 @@ type FormValues = {
 };
 
 export default function LoginPage() {
-  const { register, handleSubmit, formState } = useForm<FormValues>();
-  const { errors, isSubmitting } = formState;
+  const {
+    register,
+    handleSubmit,
+    formState: { errors, isSubmitting },
+  } = useForm<FormValues>();
+  const router = useRouter();
+  const [authError, setAuthError] = useState<string | null>(null);
 
   const onSubmit: SubmitHandler<FormValues> = async (data) => {
-    // TODO: call your /api/auth endpoint
-    console.log("login:", data);
+    setAuthError(null);
+
+    // replaces console.log
+    const res = await signIn("credentials", {
+      redirect: false, // we’ll handle navigation manually
+      email: data.email,
+      password: data.password,
+      callbackUrl: "/", // where to go on success
+    });
+
+    if (res?.error) {
+      setAuthError("Invalid email or password");
+    } else {
+      router.push(res?.url || "/");
+    }
   };
 
   return (
@@ -25,23 +45,27 @@ export default function LoginPage() {
         <FormInput
           label="Email"
           type="email"
-          {...register("email", { required: "Required" })}
+          {...register("email", { required: "Email is required" })}
         />
-        {errors.email && <p className="text-red-500">{errors.email.message}</p>}
+        {errors.email && (
+          <p className="text-red-500 mb-2">{errors.email.message}</p>
+        )}
 
         <FormInput
           label="Password"
           type="password"
-          {...register("password", { required: "Required" })}
+          {...register("password", { required: "Password is required" })}
         />
         {errors.password && (
-          <p className="text-red-500">{errors.password.message}</p>
+          <p className="text-red-500 mb-2">{errors.password.message}</p>
         )}
+
+        {authError && <p className="text-red-500 mb-4">{authError}</p>}
 
         <button
           type="submit"
           disabled={isSubmitting}
-          className="mt-4 w-full bg-blue-600 text-white py-2 rounded"
+          className="mt-4 w-full py-2 bg-blue-600 text-white rounded disabled:opacity-50"
         >
           {isSubmitting ? "Logging in…" : "Log In"}
         </button>

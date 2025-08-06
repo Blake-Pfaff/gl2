@@ -1,28 +1,38 @@
 // prisma/seed.js
 const bcrypt = require("bcrypt");
-const { PrismaClient } = require("../src/generated/prisma"); // or '@prisma/client' if you removed the custom output
+const { PrismaClient } = require("../src/generated/prisma");
 const prisma = new PrismaClient();
 
 async function main() {
-  // 1. Hash the default password once
-  const defaultPassword = "password123";
+  const defaultPassword = "test";
   const hashed = await bcrypt.hash(defaultPassword, 10);
 
-  // 2. Build 20 users with email, name, bio, AND hashedPassword
-  const users = Array.from({ length: 20 }, (_, i) => ({
-    email: `user${i + 1}@example.com`,
-    name: `User ${i + 1}`,
-    bio: `This is user ${i + 1}`,
-    hashedPassword: hashed,
-  }));
+  // Build an array that starts with your test user…
+  const users = [
+    {
+      email: "test@gmail.com",
+      name: "Test User",
+      bio: "Seeded test user",
+      hashedPassword: hashed,
+    },
+    // …then 20 random users
+    ...Array.from({ length: 20 }, (_, i) => ({
+      email: `user${i + 1}@example.com`,
+      name: `User ${i + 1}`,
+      bio: `This is user ${i + 1}`,
+      hashedPassword: hashed,
+    })),
+  ];
 
-  // 3. Bulk-insert, skipping duplicates
   await prisma.user.createMany({
     data: users,
     skipDuplicates: true,
   });
 
-  console.log("✅ Seeded 20 users with default password:", defaultPassword);
+  console.log(
+    "✅ Seeded test user and 20 random users with password:",
+    defaultPassword
+  );
 }
 
 main()
