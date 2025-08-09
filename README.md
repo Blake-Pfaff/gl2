@@ -1,36 +1,237 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# GL2 - Dating App
 
-## Getting Started
+A modern, full-stack dating application built with Next.js, featuring user authentication, profile management, photo sharing, and matching functionality.
 
-First, run the development server:
+## 🚀 Features
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+- **User Authentication** - Secure registration and login system with NextAuth.js
+- **Profile Management** - Comprehensive user profiles with photos, bio, job title, and location
+- **Photo Gallery** - Multi-photo profile support with main photo selection
+- **Matching System** - Like, dislike, and super-like interactions with mutual matching
+- **User Discovery** - Browse and interact with other users
+- **Blocking System** - User safety features with blocking capability
+- **Responsive Design** - Mobile-first design with beautiful UI
+- **Real-time Updates** - Optimistic updates with React Query
+- **Type Safety** - Full TypeScript implementation
+
+## 🛠️ Tech Stack
+
+### Frontend
+
+- **Next.js 15** - React framework with App Router
+- **TypeScript** - Type-safe development
+- **Tailwind CSS** - Utility-first styling
+- **React Query** - Server state management and caching
+- **React Hook Form** - Form handling and validation
+
+### Backend
+
+- **Next.js API Routes** - Server-side API endpoints
+- **NextAuth.js** - Authentication and session management
+- **Prisma** - Database ORM and migrations
+- **SQLite** - Development database (easily switchable to PostgreSQL)
+- **bcrypt** - Password hashing
+- **Nodemailer** - Email functionality
+
+### Testing & Development
+
+- **Cypress** - End-to-end testing
+- **ESLint** - Code linting
+- **Faker.js** - Test data generation
+
+## 🏗️ Database Schema
+
+The application uses a comprehensive database schema supporting:
+
+- **Users** - Profile information, preferences, and authentication
+- **Photos** - Multiple photos per user with ordering and main photo selection
+- **Interactions** - Like/dislike/superlike system between users
+- **Matches** - Mutual connections between users
+- **Messages** - Chat functionality between matched users
+- **Blocks** - User safety and blocking system
+- **Locations** - Geographic data for location-based features
+
+## 🚀 Getting Started
+
+### Prerequisites
+
+- Node.js 18+
+- npm, yarn, or pnpm
+
+### Installation
+
+1. **Clone the repository**
+
+   ```bash
+   git clone https://github.com/Blake-Pfaff/gl2.git
+   cd gl2
+   ```
+
+2. **Install dependencies**
+
+   ```bash
+   npm install
+   ```
+
+3. **Set up environment variables**
+
+   ```bash
+   cp .env.example .env.local
+   ```
+
+   Configure the following variables in `.env.local`:
+
+   ```env
+   # Database
+   DATABASE_URL="file:./dev.db"
+
+   # NextAuth.js
+   NEXTAUTH_URL="http://localhost:3000"
+   NEXTAUTH_SECRET="your-secret-key"
+
+   # Email (optional for development)
+   EMAIL_SERVER_HOST="smtp.ethereal.email"
+   EMAIL_SERVER_PORT=587
+   EMAIL_SERVER_USER="your-email"
+   EMAIL_SERVER_PASSWORD="your-password"
+   EMAIL_FROM="noreply@yourapp.com"
+   ```
+
+4. **Set up the database**
+
+   ```bash
+   npx prisma generate
+   npx prisma db push
+   npx prisma db seed
+   ```
+
+5. **Start the development server**
+
+   ```bash
+   npm run dev
+   ```
+
+6. **Open your browser**
+   Navigate to [http://localhost:3000](http://localhost:3000)
+
+## 📱 Application Structure
+
+```
+src/
+├── app/                    # Next.js App Router
+│   ├── api/               # API routes
+│   │   ├── auth/          # Authentication endpoints
+│   │   └── users/         # User management endpoints
+│   ├── components/        # Reusable React components
+│   ├── login/            # Login page
+│   ├── register/         # Registration page
+│   └── users/            # User discovery page
+├── hooks/                 # Custom React hooks
+├── lib/                  # Utility functions and configurations
+└── types/                # TypeScript type definitions
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## 🔧 Available Scripts
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+- `npm run dev` - Start development server
+- `npm run build` - Build for production
+- `npm run start` - Start production server
+- `npm run lint` - Run ESLint
+- `npm run cypress:open` - Open Cypress test runner
+- `npm run cypress:run` - Run Cypress tests headlessly
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## 🧪 Testing
 
-## Learn More
+The application includes Cypress for end-to-end testing:
 
-To learn more about Next.js, take a look at the following resources:
+```bash
+# Open Cypress test runner
+npm run cypress:open
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+# Run tests headlessly
+npm run cypress:run
+```
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+## 📊 Database Management
 
-## Deploy on Vercel
+### Reset Database
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+```bash
+npx prisma db push --force-reset
+npx prisma db seed
+```
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+### View Database
+
+```bash
+npx prisma studio
+```
+
+### Create Migration
+
+```bash
+npx prisma migrate dev --name your-migration-name
+```
+
+## 🎨 UI Components
+
+The app features a modern, mobile-first design with:
+
+- **Responsive Layout** - Optimized for mobile and desktop
+- **Bottom Navigation** - Easy mobile navigation
+- **Loading States** - Smooth UX with loading spinners
+- **Form Components** - Reusable form inputs with validation
+- **Card-based Design** - Clean, modern UI components
+
+## 🔐 Authentication Flow
+
+1. **Registration** - Email/password signup with email verification
+2. **Login** - Secure authentication with session management
+3. **Profile Setup** - Complete profile information and photo upload
+4. **Protected Routes** - Automatic redirects for unauthenticated users
+
+## 🚀 Deployment
+
+### Vercel (Recommended)
+
+1. Push your code to GitHub
+2. Connect your repository to Vercel
+3. Configure environment variables
+4. Deploy automatically on push
+
+### Manual Deployment
+
+1. Build the application:
+
+   ```bash
+   npm run build
+   ```
+
+2. Start the production server:
+   ```bash
+   npm start
+   ```
+
+## 🤝 Contributing
+
+1. Fork the repository
+2. Create a feature branch (`git checkout -b feature/amazing-feature`)
+3. Commit your changes (`git commit -m 'Add some amazing feature'`)
+4. Push to the branch (`git push origin feature/amazing-feature`)
+5. Open a Pull Request
+
+## 📝 License
+
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+
+## 🙏 Acknowledgments
+
+- [Next.js](https://nextjs.org/) - The React framework
+- [Prisma](https://prisma.io/) - Database toolkit
+- [NextAuth.js](https://next-auth.js.org/) - Authentication library
+- [Tailwind CSS](https://tailwindcss.com/) - CSS framework
+- [React Query](https://tanstack.com/query) - Data fetching library
+
+---
+
+**Built with ❤️ by [Blake Pfaff](https://github.com/Blake-Pfaff)**
