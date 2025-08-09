@@ -4,6 +4,7 @@ import { useState } from "react";
 import { useForm, SubmitHandler } from "react-hook-form";
 import { useRouter } from "next/navigation";
 import { FormInput } from "../components/FormInput";
+import { useApiMutation } from "@/hooks/useApi";
 
 type SignUpForm = {
   email: string;
@@ -12,40 +13,35 @@ type SignUpForm = {
   bio?: string;
 };
 
+type SignUpResponse = { preview?: string };
+
 export default function RegisterPage() {
   const {
     register,
     handleSubmit,
     formState: { errors, isSubmitting },
   } = useForm<SignUpForm>();
+
   const router = useRouter();
   const [serverError, setServerError] = useState<string | null>(null);
   const [previewUrl, setPreviewUrl] = useState<string | null>(null);
 
+  const signup = useApiMutation<SignUpResponse, SignUpForm>(
+    "/api/auth/signup",
+    "POST",
+    {
+      onSuccess: (data) => {
+        if (data?.preview) setPreviewUrl(data.preview);
+        setTimeout(() => router.push("/login"), 1000);
+      },
+      onError: (e: any) => setServerError(e?.message ?? "Registration failed"),
+    }
+  );
+
   const onSubmit: SubmitHandler<SignUpForm> = async (data) => {
     setServerError(null);
     setPreviewUrl(null);
-
-    const res = await fetch("/api/auth/signup", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(data),
-    });
-    const body = await res.json();
-    if (!res.ok) {
-      setServerError(body.error || "Registration failed");
-      return;
-    }
-
-    // You’ll get `body.preview` from the API if you’re using Ethereal
-    if (body.preview) {
-      setPreviewUrl(body.preview);
-    }
-
-    // Optionally wait a second then redirect to login
-    setTimeout(() => {
-      router.push("/login");
-    }, 1000);
+    await signup.mutateAsync(data);
   };
 
   return (
@@ -75,10 +71,10 @@ export default function RegisterPage() {
 
         <button
           type="submit"
-          disabled={isSubmitting}
+          disabled={isSubmitting || signup.isPending}
           className="mt-4 w-full py-2 bg-green-600 text-white rounded disabled:opacity-50"
         >
-          {isSubmitting ? "Signing up…" : "Sign Up"}
+          {isSubmitting || signup.isPending ? "Signing up…" : "Sign Up"}
         </button>
       </form>
 

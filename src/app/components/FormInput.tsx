@@ -1,4 +1,3 @@
-// src/components/FormInput.tsx
 import React, { InputHTMLAttributes, forwardRef } from "react";
 
 type Props = InputHTMLAttributes<HTMLInputElement> & {
