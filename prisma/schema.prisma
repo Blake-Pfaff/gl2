@@ -1,56 +1,115 @@
+
 generator client {
   provider = "prisma-client-js"
- 
+}
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
 }
 
-datasource db {
-  provider          = "postgresql"
-  url               = env("DATABASE_URL")
-  shadowDatabaseUrl = env("SHADOW_DATABASE_URL")
+enum InteractionType {
+  LIKE
+  DISLIKE
+  SUPERLIKE
+}
+
+enum Gender {
+  WOMAN
+  MAN
+  NON_BINARY
+  GENDERFLUID
+  AGENDER
+  TRANSGENDER_WOMAN
+  TRANSGENDER_MAN
+  QUESTIONING
+  PREFER_NOT_TO_SAY
+  OTHER
+}
+
+enum LookingFor {
+  WOMEN
+  MEN
+  NON_BINARY_PEOPLE
+  EVERYONE
 }
 
 model User {
-  id           String     @id @default(cuid())
-  email        String     @unique
-  name         String?
-  bio          String?
-  hashedPassword String? 
-  createdAt    DateTime   @default(now())
+  id              String     @id @default(cuid())
+  email           String     @unique
+  username        String?    @unique
+  name            String?
+  jobTitle        String?    // e.g., "Graphic Designer"
+  bio             String?    // gallery for profile
+  birthdate       DateTime?  // derive age in UI
+  phone           String?    @unique
+  gender          Gender?
+  lookingFor      LookingFor?
+  lastOnlineAt    DateTime?
+  locationLabel   String?    // nice address text for UI
+  hashedPassword  String? 
+  createdAt       DateTime   @default(now())
 
-  photos         String[]        
+  // User's photos
+  photos         Photo[]
 
   // One-to-one optional location
-  location     UserLocation?
+  location       UserLocation?
 
-  // Likes: from this user
-  likesFrom    Like[]     @relation("likes_from")
+  // Interactions: from this user (likes, dislikes, superlikes they've given)
+  interactionsFrom Interaction[] @relation("interactions_from")
 
-  // Likes: to this user
-  likesTo      Like[]     @relation("likes_to")
+  // Interactions: to this user (likes, dislikes, superlikes they've received)
+  interactionsTo   Interaction[] @relation("interactions_to")
 
-  // Matches where this user is the “A” side
-  matchesA     Match[]    @relation("A")
+  // Blocks: users this user has blocked
+  blocksGiven      Block[]       @relation("blocks_given")
 
-  // Matches where this user is the “B” side
-  matchesB     Match[]    @relation("B")
+  // Blocks: users who have blocked this user
+  blocksReceived   Block[]       @relation("blocks_received")
+
+  // Matches where this user is the "A" side
+  matchesA       Match[]    @relation("A")
+
+  // Matches where this user is the "B" side
+  matchesB       Match[]    @relation("B")
 }
 
 model UserLocation {
-  userId String   @id
-  geom   Unsupported("geography(Point,4326)")
-
-  user   User     @relation(fields: [userId], references: [id])
+  userId    String @id
+  latitude  Float
+  longitude Float
+  user      User   @relation(fields: [userId], references: [id])
 }
 
-model Like {
+model Interaction {
   fromId    String
   toId      String
+  type      InteractionType
   createdAt DateTime @default(now())
 
-  from      User     @relation("likes_from", fields: [fromId], references: [id])
-  to        User     @relation("likes_to",   fields: [toId],   references: [id])
+  from      User     @relation("interactions_from", fields: [fromId], references: [id])
+  to        User     @relation("interactions_to", fields: [toId], references: [id])
 
   @@id([fromId, toId])
+  @@index([fromId])
+  @@index([toId])
+  @@index([type])
+}
+
+model Block {
+  id        String   @id @default(cuid())
+  blockerId String   // User who is doing the blocking
+  blockedId String   // User who is being blocked
+  reason    String?  // Optional reason for blocking
+  createdAt DateTime @default(now())
+
+  // Relationships
+  blocker   User     @relation("blocks_given", fields: [blockerId], references: [id])
+  blocked   User     @relation("blocks_received", fields: [blockedId], references: [id])
+
+  @@unique([blockerId, blockedId])
+  @@index([blockerId])
+  @@index([blockedId])
 }
 
 model Match {
@@ -80,4 +139,21 @@ model Message {
 
   // Which match this belongs to
   match     Match      @relation("MatchMessages", fields: [matchId], references: [id])
+}
+
+model Photo {
+  id        String   @id @default(cuid())
+  userId    String
+  url       String   // URL or path to the photo file
+  caption   String?  // Optional caption for the photo
+  order     Int      @default(0) // For ordering photos in profile
+  isMain    Boolean  @default(false) // Is this the main profile photo
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  // Relationship to User
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+  @@index([userId, order])
 }

@@ -16,14 +16,79 @@ async function requireSession() {
   return null;
 }
 
-export async function GET() {
+export async function GET(request: Request) {
   // 1) session check
-  const unauthorized = await requireSession();
-  if (unauthorized) return unauthorized;
+  const session = await getServerSession(authOptions);
+  if (!session) {
+    return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+  }
 
-  // 2) safe to fetch
-  const users = await prisma.user.findMany();
-  return NextResponse.json(users);
+  // 2) Parse pagination parameters
+  const { searchParams } = new URL(request.url);
+  const page = parseInt(searchParams.get("page") || "1");
+  const limit = parseInt(searchParams.get("limit") || "12");
+  const offset = (page - 1) * limit;
+
+  try {
+    // Add debug logging to see what we get from the session
+    console.log("Session user:", session.user);
+
+    // 3) Fetch users excluding current user with pagination
+    const whereClause = session.user?.id
+      ? { id: { not: session.user.id } } // Exclude current user if ID exists
+      : {}; // Show all users if no ID (fallback)
+
+    const [users, totalCount] = await Promise.all([
+      prisma.user.findMany({
+        where: whereClause,
+        select: {
+          id: true,
+          name: true,
+          email: true,
+          bio: true,
+          jobTitle: true,
+          locationLabel: true,
+          photos: {
+            where: {
+              isMain: true,
+            },
+            select: {
+              url: true,
+            },
+            take: 1,
+          },
+        },
+        skip: offset,
+        take: limit,
+        orderBy: {
+          createdAt: "desc",
+        },
+      }),
+      prisma.user.count({
+        where: whereClause,
+      }),
+    ]);
+
+    const totalPages = Math.ceil(totalCount / limit);
+
+    return NextResponse.json({
+      users,
+      pagination: {
+        currentPage: page,
+        totalPages,
+        totalCount,
+        limit,
+        hasNextPage: page < totalPages,
+        hasPrevPage: page > 1,
+      },
+    });
+  } catch (error) {
+    console.error("Error fetching users:", error);
+    return NextResponse.json(
+      { error: "Failed to fetch users" },
+      { status: 500 }
+    );
+  }
 }
 
 export async function POST(request: Request) {

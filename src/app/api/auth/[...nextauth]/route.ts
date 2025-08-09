@@ -30,6 +30,22 @@ export const authOptions: NextAuthOptions = {
     }),
   ],
   session: { strategy: "jwt" },
+  callbacks: {
+    async jwt({ token, user }) {
+      // Persist the user ID in the token when the user signs in
+      if (user) {
+        token.id = user.id;
+      }
+      return token;
+    },
+    async session({ session, token }) {
+      // Send the user ID to the client
+      if (token.id) {
+        session.user.id = token.id as string;
+      }
+      return session;
+    },
+  },
   secret: process.env.NEXTAUTH_SECRET!,
   pages: { signIn: "/login" },
 };

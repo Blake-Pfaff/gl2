@@ -74,7 +74,7 @@ export default function LoginPage() {
           {isSubmitting ? "Logging in…" : "Log In"}
         </button>
         <p className="mt-4 text-center">
-          Don’t have an account?{" "}
+          Don’t have an account?
           <a href="/register" className="text-blue-600 underline">
             Sign up
           </a>
