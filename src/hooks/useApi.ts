@@ -9,7 +9,7 @@ import { fetchJson } from "@/lib/apiClient";
 export function useApiQuery<T>(
   key: readonly unknown[],
   path: string,
-  opts?: UseQueryOptions<T>
+  opts?: Omit<UseQueryOptions<T>, "queryKey" | "queryFn">
 ) {
   return useQuery<T>({
     queryKey: key,
