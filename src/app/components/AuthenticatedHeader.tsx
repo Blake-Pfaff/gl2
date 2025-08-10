@@ -29,7 +29,7 @@ export default function AuthenticatedHeader({
           <div className="flex items-center space-x-4">
             {/* User Avatar/Info */}
             <div className="flex items-center space-x-2">
-              <div className="w-8 h-8 bg-gradient-to-br from-pink-500 to-purple-600 rounded-full flex items-center justify-center">
+              <div className="w-8 h-8 bg-gradient-to-br from-primary-500 to-purple-600 rounded-full flex items-center justify-center">
                 <span className="text-white text-sm font-medium">
                   {user?.name?.charAt(0)?.toUpperCase() ||
                     user?.email?.charAt(0)?.toUpperCase() ||

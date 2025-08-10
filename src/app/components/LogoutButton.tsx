@@ -35,7 +35,7 @@ export default function LogoutButton({
       <>
         <button
           onClick={handleLogoutClick}
-          className={` text-sm text-gray-600 hover:text-gray-800 font-medium transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-pink-500 focus:ring-offset-2 rounded px-2 py-1 ${className}`}
+          className={` text-sm text-gray-600 hover:text-gray-800 font-medium transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2 rounded px-2 py-1 ${className}`}
         >
           Sign Out
         </button>

@@ -47,7 +47,7 @@ export function MobileHeader({
         {backUrl && (
           <button
             onClick={() => router.back()}
-            className="w-12 h-12 bg-pink-400 rounded-full flex items-center justify-center text-white hover:bg-pink-500 transition-colors cursor-pointer border-0 outline-none focus:ring-2 focus:ring-pink-300"
+            className="w-12 h-12 bg-primary-400 rounded-full flex items-center justify-center text-white hover:bg-primary-500 transition-colors cursor-pointer border-0 outline-none focus:ring-2 focus:ring-primary-300"
             type="button"
             style={{ zIndex: 1000 }}
           >

@@ -29,7 +29,7 @@ export const FormField = forwardRef<HTMLInputElement, FormFieldProps>(
           ref={ref}
           className={`w-full ${
             icon ? "pl-12" : "pl-5"
-          } pr-5 py-4 bg-white border-2 border-pink-300 rounded-2xl focus:border-pink-400 focus:outline-none transition-all duration-200 text-gray-700 ${className}`}
+          } pr-5 py-4 bg-white border-2 border-primary-300 rounded-2xl focus:border-primary-400 focus:outline-none transition-all duration-200 text-gray-700 ${className}`}
           placeholder=""
         />
       </div>

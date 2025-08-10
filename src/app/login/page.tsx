@@ -45,7 +45,7 @@ export default function LoginPage() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-pink-400 via-pink-300 to-pink-200">
+    <div className="min-h-screen bg-gradient-to-b from-primary-400 via-primary-300 to-primary-200">
       {/* Status bar mockup */}
       <div className="flex justify-between items-center px-6 pt-4 pb-2 text-white text-sm">
         <span>4:20 AM</span>
@@ -69,13 +69,13 @@ export default function LoginPage() {
       <div className="flex justify-center pt-12 pb-6">
         <div className="relative">
           <svg
-            className="w-16 h-16 text-pink-800"
+            className="w-16 h-16 text-primary-800"
             fill="currentColor"
             viewBox="0 0 24 24"
           >
             <path d="M12,21.35L10.55,20.03C5.4,15.36 2,12.27 2,8.5 2,5.41 4.42,3 7.5,3C9.24,3 10.91,3.81 12,5.08C13.09,3.81 14.76,3 16.5,3C19.58,3 22,5.41 22,8.5C22,12.27 18.6,15.36 13.45,20.03L12,21.35Z" />
           </svg>
-          <div className="absolute inset-0 bg-gradient-to-br from-pink-200 to-pink-400 opacity-30 rounded-full blur-sm"></div>
+          <div className="absolute inset-0 bg-gradient-to-br from-primary-200 to-primary-400 opacity-30 rounded-full blur-sm"></div>
         </div>
       </div>
 
@@ -87,7 +87,7 @@ export default function LoginPage() {
       {/* Gradient transition area */}
       <div className="relative">
         {/* Additional gradient overlay for smoother transition */}
-        <div className="h-16 bg-gradient-to-b from-transparent via-pink-100/30 to-white/80"></div>
+        <div className="h-16 bg-gradient-to-b from-transparent via-primary-100/30 to-white/80"></div>
 
         {/* Enhanced curved top border with multiple layers */}
         <svg
@@ -133,7 +133,7 @@ export default function LoginPage() {
                   id="email"
                   type="email"
                   {...register("email", { required: "Email is required" })}
-                  className="w-full pl-12 pr-5 py-4 bg-white border-2 border-pink-300/50 rounded-full focus:border-pink-400 focus:outline-none focus:ring-0 transition-all duration-200 placeholder-gray-400 text-gray-700 shadow-sm"
+                  className="w-full pl-12 pr-5 py-4 bg-white border-2 border-primary-300/50 rounded-full focus:border-primary-400 focus:outline-none focus:ring-0 transition-all duration-200 placeholder-gray-400 text-gray-700 shadow-sm"
                   placeholder=""
                 />
               </div>
@@ -168,7 +168,7 @@ export default function LoginPage() {
                   {...register("password", {
                     required: "Password is required",
                   })}
-                  className="w-full pl-12 pr-5 py-4 bg-white border-2 border-pink-300/50 rounded-full focus:border-pink-400 focus:outline-none focus:ring-0 transition-all duration-200 placeholder-gray-400 text-gray-700 shadow-sm"
+                  className="w-full pl-12 pr-5 py-4 bg-white border-2 border-primary-300/50 rounded-full focus:border-primary-400 focus:outline-none focus:ring-0 transition-all duration-200 placeholder-gray-400 text-gray-700 shadow-sm"
                   placeholder=""
                 />
               </div>
@@ -186,7 +186,7 @@ export default function LoginPage() {
                   id="rememberMe"
                   type="checkbox"
                   {...register("rememberMe")}
-                  className="h-4 w-4 text-pink-400 bg-pink-50 border-2 border-pink-300 rounded focus:ring-pink-400 focus:ring-2"
+                  className="h-4 w-4 text-primary-400 bg-primary-50 border-2 border-primary-300 rounded focus:ring-primary-400 focus:ring-2"
                 />
               </div>
               <label
@@ -201,7 +201,7 @@ export default function LoginPage() {
             <button
               type="submit"
               disabled={isSubmitting}
-              className="w-full bg-gradient-to-r from-pink-400 to-pink-500 hover:from-pink-500 hover:to-pink-600 text-white font-semibold py-4 px-6 rounded-full transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed shadow-lg"
+              className="w-full bg-gradient-to-r from-primary-400 to-primary-500 hover:from-primary-500 hover:to-primary-600 text-white font-semibold py-4 px-6 rounded-full transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed shadow-lg"
             >
               {isSubmitting ? "Logging in…" : "Login"}
             </button>
@@ -236,7 +236,7 @@ export default function LoginPage() {
             {/* Sign Up Link */}
             <Link
               href="/register"
-              className="w-full border-2 border-pink-400 text-pink-400 hover:bg-pink-50 font-semibold py-4 px-6 rounded-full transition-all duration-200 text-center block"
+              className="w-full border-2 border-primary-400 text-primary-400 hover:bg-primary-50 font-semibold py-4 px-6 rounded-full transition-all duration-200 text-center block"
             >
               Sign Up
             </Link>

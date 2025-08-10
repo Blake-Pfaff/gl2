@@ -2,7 +2,7 @@ interface LoadingSpinnerProps {
   /** Size of the spinner */
   size?: "sm" | "md" | "lg";
   /** Color theme for the spinner */
-  color?: "pink" | "purple" | "blue" | "gray";
+  color?: "primary" | "purple" | "blue" | "gray";
   /** Additional CSS classes to apply to the container */
   className?: string;
   /** Optional text to display below the spinner */
@@ -16,7 +16,7 @@ const sizeClasses = {
 };
 
 const colorClasses = {
-  pink: "border-pink-500",
+  primary: "border-primary-500",
   purple: "border-purple-500",
   blue: "border-blue-500",
   gray: "border-gray-500",
@@ -31,7 +31,7 @@ const colorClasses = {
  * <LoadingSpinner />
  *
  * // With custom size and color
- * <LoadingSpinner size="lg" color="purple" text="Loading data..." />
+ * <LoadingSpinner size="lg" color="primary" text="Loading data..." />
  *
  * // With custom styling
  * <LoadingSpinner className="my-8" text="Please wait..." />
@@ -39,7 +39,7 @@ const colorClasses = {
  */
 export default function LoadingSpinner({
   size = "md",
-  color = "pink",
+  color = "primary",
   className = "",
   text,
 }: LoadingSpinnerProps) {

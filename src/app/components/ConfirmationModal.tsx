@@ -27,8 +27,8 @@ export function ConfirmationModal({
 
   const confirmButtonClass =
     confirmVariant === "danger"
-      ? "bg-gradient-to-r from-pink-400 to-pink-500 hover:from-pink-500 hover:to-pink-600 text-white shadow-lg"
-      : "bg-gradient-to-r from-pink-400 to-pink-500 hover:from-pink-500 hover:to-pink-600 text-white shadow-lg";
+      ? "bg-gradient-to-r from-primary-400 to-primary-500 hover:from-primary-500 hover:to-primary-600 text-white shadow-lg"
+      : "bg-gradient-to-r from-primary-400 to-primary-500 hover:from-primary-500 hover:to-primary-600 text-white shadow-lg";
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center">
@@ -36,7 +36,7 @@ export function ConfirmationModal({
       <div className="absolute inset-0 backdrop-blur-sm" onClick={onClose} />
 
       {/* Modal */}
-      <div className="relative bg-white rounded-2xl shadow-xl p-6 mx-4 max-w-sm w-full border border-pink-100">
+      <div className="relative bg-white rounded-2xl shadow-xl p-6 mx-4 max-w-sm w-full border border-primary-100">
         <div className="text-center">
           <h3 className="text-lg font-semibold text-gray-800 mb-2">{title}</h3>
           <p className="text-gray-600 mb-6">{message}</p>
@@ -44,7 +44,7 @@ export function ConfirmationModal({
           <div className="flex gap-3 justify-center">
             <button
               onClick={onClose}
-              className="px-6 py-3 text-gray-600 border-2 border-pink-200 rounded-full hover:bg-pink-50 hover:border-pink-300 transition-all duration-200 font-medium"
+              className="px-6 py-3 text-gray-600 border-2 border-primary-200 rounded-full hover:bg-primary-50 hover:border-primary-300 transition-all duration-200 font-medium"
             >
               {cancelText}
             </button>

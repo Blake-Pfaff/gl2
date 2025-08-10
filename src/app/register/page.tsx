@@ -119,7 +119,7 @@ export default function RegisterPage() {
             <button
               type="submit"
               disabled={isSubmitting || signup.isPending}
-              className="w-full bg-gradient-to-r from-pink-400 to-pink-500 hover:from-pink-500 hover:to-pink-600 text-white font-semibold py-4 px-6 rounded-full transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed shadow-lg"
+              className="w-full bg-gradient-to-r from-primary-400 to-primary-500 hover:from-primary-500 hover:to-primary-600 text-white font-semibold py-4 px-6 rounded-full transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed shadow-lg"
             >
               {isSubmitting || signup.isPending ? "Creating account…" : "Next"}
             </button>
@@ -127,7 +127,7 @@ export default function RegisterPage() {
         </form>
 
         {previewUrl && (
-          <div className="mt-6 p-4 bg-white border border-pink-200 rounded-2xl">
+          <div className="mt-6 p-4 bg-white border border-primary-200 rounded-2xl">
             <p className="font-medium mb-2 text-gray-700">
               Preview your welcome email:
             </p>
@@ -135,7 +135,7 @@ export default function RegisterPage() {
               href={previewUrl}
               target="_blank"
               rel="noopener noreferrer"
-              className="text-pink-600 underline"
+              className="text-primary-600 underline"
             >
               {previewUrl}
             </a>

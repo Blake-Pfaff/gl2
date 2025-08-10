@@ -57,7 +57,7 @@ export default function UsersGrid() {
             className="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition-shadow duration-200"
           >
             {/* Profile Photo */}
-            <div className="h-48 bg-gradient-to-br from-pink-100 to-purple-100 flex items-center justify-center">
+            <div className="h-48 bg-gradient-to-br from-primary-100 to-purple-100 flex items-center justify-center">
               {user.photos.length > 0 ? (
                 <img
                   src={user.photos[0].url}
@@ -65,7 +65,7 @@ export default function UsersGrid() {
                   className="w-full h-full object-cover"
                 />
               ) : (
-                <div className="w-20 h-20 bg-gradient-to-br from-pink-500 to-purple-600 rounded-full flex items-center justify-center">
+                <div className="w-20 h-20 bg-gradient-to-br from-primary-500 to-purple-600 rounded-full flex items-center justify-center">
                   <span className="text-white text-2xl font-bold">
                     {user.name?.charAt(0)?.toUpperCase() ||
                       user.email.charAt(0).toUpperCase()}
@@ -97,7 +97,7 @@ export default function UsersGrid() {
 
             {/* Action Buttons */}
             <div className="px-4 pb-4 flex space-x-2">
-              <button className="flex-1 bg-pink-500 hover:bg-pink-600 text-white text-sm py-2 px-3 rounded-lg transition-colors duration-200">
+              <button className="flex-1 bg-primary-500 hover:bg-primary-600 text-white text-sm py-2 px-3 rounded-lg transition-colors duration-200">
                 💕 Like
               </button>
               <button className="flex-1 bg-gray-100 hover:bg-gray-200 text-gray-700 text-sm py-2 px-3 rounded-lg transition-colors duration-200">
@@ -151,7 +151,7 @@ export default function UsersGrid() {
                     onClick={() => handlePageChange(pageNum)}
                     className={`px-3 py-2 rounded-lg text-sm font-medium transition-colors duration-200 ${
                       isActive
-                        ? "bg-pink-500 text-white"
+                        ? "bg-primary-500 text-white"
                         : "bg-white text-gray-700 border border-gray-300 hover:bg-gray-50"
                     }`}
                   >

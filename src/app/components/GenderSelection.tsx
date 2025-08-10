@@ -18,7 +18,7 @@ export function GenderSelection({ register, error }: GenderSelectionProps) {
       <label className="block text-sm font-medium text-gray-600 mb-3">
         Gender
       </label>
-      <div className="bg-white border-2 border-pink-300 rounded-2xl p-4 space-y-3">
+      <div className="bg-white border-2 border-primary-300 rounded-2xl p-4 space-y-3">
         {genderOptions.map(({ value, label, emoji }) => (
           <div key={value} className="flex items-center">
             <input
@@ -28,7 +28,7 @@ export function GenderSelection({ register, error }: GenderSelectionProps) {
               {...register("gender", {
                 required: "Please select a gender",
               })}
-              className="h-4 w-4 text-pink-400 border-pink-300 focus:ring-pink-400"
+              className="h-4 w-4 text-primary-400 border-primary-300 focus:ring-primary-400"
             />
             <label
               htmlFor={value}

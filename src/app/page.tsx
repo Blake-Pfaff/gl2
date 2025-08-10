@@ -18,7 +18,7 @@ export default async function HomePage() {
           </h1>
           <p className="text-gray-600 mb-6">Ready to find your match?</p>
           <div className="space-y-3">
-            <div className="bg-gradient-to-r from-pink-500 to-purple-600 text-white p-4 rounded-lg">
+            <div className="bg-gradient-to-r from-primary-500 to-purple-600 text-white p-4 rounded-lg">
               <p className="font-medium">Start swiping to meet new people!</p>
             </div>
             <div className="text-sm text-gray-500">
