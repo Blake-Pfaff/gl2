@@ -6,6 +6,7 @@ import { useForm, SubmitHandler } from "react-hook-form";
 import { signIn } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
+import Image from "next/image";
 import { motion } from "framer-motion";
 import AnimatedButton from "../components/AnimatedButton";
 import PageTransition from "../components/PageTransition";
@@ -72,33 +73,25 @@ export default function LoginPage() {
             </div>
           </div>
 
-          {/* Heart Logo with animation */}
+          {/* Goldy Locks Logo */}
           <motion.div
-            className="flex justify-center pt-16 pb-8"
+            className="flex justify-center pt-page-y pb-component"
             {...animations.variants.login.heartContainer}
           >
             <motion.div
               className="relative"
               whileHover={animations.variants.login.heartHover}
             >
-              <svg
-                className="w-16 h-16 text-primary-800"
-                fill="currentColor"
-                viewBox="0 0 24 24"
-              >
-                <path d="M12,21.35L10.55,20.03C5.4,15.36 2,12.27 2,8.5 2,5.41 4.42,3 7.5,3C9.24,3 10.91,3.81 12,5.08C13.09,3.81 14.76,3 16.5,3C19.58,3 22,5.41 22,8.5C22,12.27 18.6,15.36 13.45,20.03L12,21.35Z" />
-              </svg>
-              <div className="absolute inset-0 bg-gradient-to-br from-primary-200 to-primary-400 opacity-30 rounded-full blur-sm"></div>
+              <Image
+                src="/glLogo.png"
+                alt="Goldy Locks"
+                width={200}
+                height={200}
+                priority
+                className="object-contain"
+              />
             </motion.div>
           </motion.div>
-
-          {/* Login Title */}
-          <motion.h1
-            className="text-center text-heading font-bold text-primary-900 mb-16"
-            {...animations.variants.login.title}
-          >
-            Login
-          </motion.h1>
         </div>
 
         {/* White form section */}
