@@ -12,7 +12,7 @@ export const FormField = forwardRef<HTMLInputElement, FormFieldProps>(
     <div>
       <label
         htmlFor={name}
-        className="block text-sm font-medium text-gray-600 mb-3"
+        className="block text-body font-medium text-muted mb-3"
       >
         {label}
       </label>
@@ -29,11 +29,11 @@ export const FormField = forwardRef<HTMLInputElement, FormFieldProps>(
           ref={ref}
           className={`w-full ${
             icon ? "pl-12" : "pl-5"
-          } pr-5 py-4 bg-white border-2 border-primary-300 rounded-2xl focus:border-primary-400 focus:outline-none transition-all duration-200 text-gray-700 ${className}`}
+          } pr-5 py-4 bg-white border-2 border-primary-300 rounded-input focus:border-primary-400 focus:outline-none transition-all duration-200 text-secondary ${className}`}
           placeholder=""
         />
       </div>
-      {error && <p className="text-red-500 text-sm mt-2">{error}</p>}
+      {error && <p className="text-error text-body mt-2">{error}</p>}
     </div>
   )
 );

@@ -30,7 +30,7 @@ export default function AuthenticatedLayout({
     return (
       <div className="min-h-screen bg-gray-50 flex items-center justify-center">
         <div className="text-center">
-          <p className="text-gray-600">Please log in to access this page.</p>
+          <p className="text-secondary">Please log in to access this page.</p>
         </div>
       </div>
     );

@@ -45,10 +45,8 @@ export default function BottomNavigation() {
               <Link
                 key={item.name}
                 href={item.href}
-                className={`flex flex-col items-center justify-center py-2 px-3 min-w-0 flex-1 text-xs transition-colors duration-200 ${
-                  isActive
-                    ? "text-primary-600"
-                    : "text-gray-500 hover:text-gray-700"
+                className={`flex flex-col items-center justify-center py-2 px-3 min-w-0 flex-1 text-caption transition-colors duration-200 ${
+                  isActive ? "text-link" : "text-muted hover:text-secondary"
                 }`}
               >
                 <span className="text-xl mb-1">{item.emoji}</span>

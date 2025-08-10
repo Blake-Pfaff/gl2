@@ -11,13 +11,13 @@ export default async function UserIndexPage() {
 
   return (
     <AuthenticatedLayout>
-      <div className="p-4">
+      <div className="p-component">
         <div className="max-w-7xl mx-auto">
-          <div className="mb-6">
-            <h1 className="text-3xl font-bold text-gray-900 mb-2">
+          <div className="mb-section">
+            <h1 className="text-hero font-bold text-primary mb-2">
               Discover Users
             </h1>
-            <p className="text-gray-600">
+            <p className="text-body text-secondary">
               Find and connect with other users in your area
             </p>
           </div>

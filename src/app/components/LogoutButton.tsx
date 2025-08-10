@@ -35,7 +35,7 @@ export default function LogoutButton({
       <>
         <button
           onClick={handleLogoutClick}
-          className={` text-sm text-gray-600 hover:text-gray-800 font-medium transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2 rounded px-2 py-1 ${className}`}
+          className={` text-body text-muted hover:text-primary font-medium transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2 rounded px-2 py-1 ${className}`}
         >
           Sign Out
         </button>
@@ -57,7 +57,7 @@ export default function LogoutButton({
     <>
       <button
         onClick={handleLogoutClick}
-        className={`bg-red-500 hover:bg-red-600 text-white font-medium py-2 px-4 rounded-lg transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2 ${className}`}
+        className={`bg-red-500 hover:bg-red-600 text-white font-medium py-2 px-4 rounded-small transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2 ${className}`}
       >
         Sign Out
       </button>

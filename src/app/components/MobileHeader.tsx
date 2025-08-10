@@ -20,7 +20,7 @@ export function MobileHeader({
   return (
     <>
       {showStatusBar && (
-        <div className="flex justify-between items-center px-6 pt-4 pb-2 text-gray-800 text-sm">
+        <div className="flex justify-between items-center px-page-x pt-4 pb-2 text-primary text-body">
           <span>4:20 AM</span>
           <div className="flex items-center gap-1">
             <div className="flex gap-1">
@@ -43,11 +43,11 @@ export function MobileHeader({
         </div>
       )}
 
-      <div className="flex items-center px-6 py-4">
+      <div className="flex items-center px-page-x py-4">
         {backUrl && (
           <button
             onClick={() => router.back()}
-            className="w-12 h-12 bg-primary-400 rounded-full flex items-center justify-center text-white hover:bg-primary-500 transition-colors cursor-pointer border-0 outline-none focus:ring-2 focus:ring-primary-300"
+            className="w-12 h-12 bg-primary-400 rounded-button flex items-center justify-center text-white hover:bg-primary-500 transition-colors cursor-pointer border-0 outline-none focus:ring-2 focus:ring-primary-300"
             type="button"
             style={{ zIndex: 1000 }}
           >
@@ -67,7 +67,7 @@ export function MobileHeader({
           </button>
         )}
         <h1
-          className={`flex-1 text-center text-2xl font-bold text-gray-800 ${
+          className={`flex-1 text-center text-heading font-bold text-primary ${
             backUrl ? "-ml-12" : ""
           }`}
         >

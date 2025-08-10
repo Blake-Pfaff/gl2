@@ -47,7 +47,7 @@ export default function LoginPage() {
   return (
     <div className="min-h-screen bg-gradient-to-b from-primary-400 via-primary-300 to-primary-200">
       {/* Status bar mockup */}
-      <div className="flex justify-between items-center px-6 pt-4 pb-2 text-white text-sm">
+      <div className="flex justify-between items-center px-page-x pt-4 pb-2 text-white text-body">
         <span>4:20 AM</span>
         <div className="flex items-center gap-1">
           <div className="flex gap-1">
@@ -80,7 +80,7 @@ export default function LoginPage() {
       </div>
 
       {/* Login Title */}
-      <h1 className="text-center text-2xl font-bold text-gray-800 mb-12">
+      <h1 className="text-center text-heading font-bold text-primary mb-12">
         Login
       </h1>
 
@@ -100,14 +100,14 @@ export default function LoginPage() {
         </svg>
 
         {/* Main form container */}
-        <div className="bg-white px-6 pb-8">
-          <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
+        <div className="bg-white px-page-x pb-8">
+          <form onSubmit={handleSubmit(onSubmit)} className="space-y-section">
             {authError && (
               <div
                 data-cy="auth-error"
-                className="bg-red-50 border border-red-200 rounded-lg p-3"
+                className="bg-red-50 border border-red-200 rounded-small p-compact"
               >
-                <p className="text-red-600 text-sm">{authError}</p>
+                <p className="text-error text-body">{authError}</p>
               </div>
             )}
 
@@ -115,14 +115,14 @@ export default function LoginPage() {
             <div>
               <label
                 htmlFor="email"
-                className="block text-sm font-medium text-gray-600 mb-3 pl-1"
+                className="block text-body font-medium text-muted mb-3 pl-1"
               >
                 Username
               </label>
               <div className="relative">
                 <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
                   <svg
-                    className="h-5 w-5 text-gray-500"
+                    className="h-5 w-5 text-muted"
                     fill="currentColor"
                     viewBox="0 0 24 24"
                   >
@@ -133,12 +133,12 @@ export default function LoginPage() {
                   id="email"
                   type="email"
                   {...register("email", { required: "Email is required" })}
-                  className="w-full pl-12 pr-5 py-4 bg-white border-2 border-primary-300/50 rounded-full focus:border-primary-400 focus:outline-none focus:ring-0 transition-all duration-200 placeholder-gray-400 text-gray-700 shadow-sm"
+                  className="w-full pl-12 pr-5 py-4 bg-white border-2 border-primary-300/50 rounded-button focus:border-primary-400 focus:outline-none focus:ring-0 transition-all duration-200 placeholder-gray-400 text-secondary shadow-sm"
                   placeholder=""
                 />
               </div>
               {errors.email && (
-                <p className="text-red-500 text-sm mt-2 pl-1">
+                <p className="text-error text-body mt-2 pl-1">
                   {errors.email.message}
                 </p>
               )}
@@ -148,14 +148,14 @@ export default function LoginPage() {
             <div>
               <label
                 htmlFor="password"
-                className="block text-sm font-medium text-gray-600 mb-3 pl-1"
+                className="block text-body font-medium text-muted mb-3 pl-1"
               >
                 Password
               </label>
               <div className="relative">
                 <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
                   <svg
-                    className="h-5 w-5 text-gray-500"
+                    className="h-5 w-5 text-muted"
                     fill="currentColor"
                     viewBox="0 0 24 24"
                   >
@@ -168,12 +168,12 @@ export default function LoginPage() {
                   {...register("password", {
                     required: "Password is required",
                   })}
-                  className="w-full pl-12 pr-5 py-4 bg-white border-2 border-primary-300/50 rounded-full focus:border-primary-400 focus:outline-none focus:ring-0 transition-all duration-200 placeholder-gray-400 text-gray-700 shadow-sm"
+                  className="w-full pl-12 pr-5 py-4 bg-white border-2 border-primary-300/50 rounded-button focus:border-primary-400 focus:outline-none focus:ring-0 transition-all duration-200 placeholder-gray-400 text-secondary shadow-sm"
                   placeholder=""
                 />
               </div>
               {errors.password && (
-                <p className="text-red-500 text-sm mt-2 pl-1">
+                <p className="text-error text-body mt-2 pl-1">
                   {errors.password.message}
                 </p>
               )}
@@ -191,7 +191,7 @@ export default function LoginPage() {
               </div>
               <label
                 htmlFor="rememberMe"
-                className="ml-3 text-sm text-gray-600 font-medium"
+                className="ml-3 text-body text-muted font-medium"
               >
                 Remember me ?
               </label>
@@ -201,7 +201,7 @@ export default function LoginPage() {
             <button
               type="submit"
               disabled={isSubmitting}
-              className="w-full bg-gradient-to-r from-primary-400 to-primary-500 hover:from-primary-500 hover:to-primary-600 text-white font-semibold py-4 px-6 rounded-full transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed shadow-lg"
+              className="w-full bg-gradient-to-r from-primary-400 to-primary-500 hover:from-primary-500 hover:to-primary-600 text-white font-semibold py-component px-6 rounded-button transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed shadow-lg"
             >
               {isSubmitting ? "Logging in…" : "Login"}
             </button>
@@ -210,7 +210,7 @@ export default function LoginPage() {
             <button
               type="button"
               onClick={handleGoogleSignIn}
-              className="w-full bg-white border-2 border-gray-300 hover:border-gray-400 text-gray-700 font-semibold py-4 px-6 rounded-full transition-all duration-200 flex items-center justify-center gap-3 shadow-sm"
+              className="w-full bg-white border-2 border-gray-300 hover:border-gray-400 text-secondary font-semibold py-component px-6 rounded-button transition-all duration-200 flex items-center justify-center gap-3 shadow-sm"
             >
               <svg className="w-5 h-5" viewBox="0 0 24 24">
                 <path
@@ -236,7 +236,7 @@ export default function LoginPage() {
             {/* Sign Up Link */}
             <Link
               href="/register"
-              className="w-full border-2 border-primary-400 text-primary-400 hover:bg-primary-50 font-semibold py-4 px-6 rounded-full transition-all duration-200 text-center block"
+              className="w-full border-2 border-primary-400 text-primary-400 hover:bg-primary-50 font-semibold py-component px-6 rounded-button transition-all duration-200 text-center flex items-center justify-center"
             >
               Sign Up
             </Link>

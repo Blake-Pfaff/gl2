@@ -36,21 +36,23 @@ export function ConfirmationModal({
       <div className="absolute inset-0 backdrop-blur-sm" onClick={onClose} />
 
       {/* Modal */}
-      <div className="relative bg-white rounded-2xl shadow-xl p-6 mx-4 max-w-sm w-full border border-primary-100">
+      <div className="relative bg-white rounded-card shadow-xl p-6 mx-4 max-w-sm w-full border border-primary-100">
         <div className="text-center">
-          <h3 className="text-lg font-semibold text-gray-800 mb-2">{title}</h3>
-          <p className="text-gray-600 mb-6">{message}</p>
+          <h3 className="text-subheading font-semibold text-primary mb-2">
+            {title}
+          </h3>
+          <p className="text-secondary mb-6">{message}</p>
 
           <div className="flex gap-3 justify-center">
             <button
               onClick={onClose}
-              className="px-6 py-3 text-gray-600 border-2 border-primary-200 rounded-full hover:bg-primary-50 hover:border-primary-300 transition-all duration-200 font-medium"
+              className="px-6 py-3 text-secondary border-2 border-primary-200 rounded-button hover:bg-primary-50 hover:border-primary-300 transition-all duration-200 font-medium"
             >
               {cancelText}
             </button>
             <button
               onClick={onConfirm}
-              className={`px-6 py-3 rounded-full transition-all duration-200 font-semibold ${confirmButtonClass}`}
+              className={`px-6 py-3 rounded-button transition-all duration-200 font-semibold ${confirmButtonClass}`}
             >
               {confirmText}
             </button>

@@ -1,3 +1,36 @@
 {
-  "cSpell.words": ["cuid", "NEXTAUTH"]
+  "tailwindCSS.experimental.classRegex": [
+    ["className\\s*=\\s*[\"'`]([^\"'`]*)[\"'`]", "([a-zA-Z0-9\\-:]+)"]
+  ],
+  "tailwindCSS.includeLanguages": {
+    "typescript": "html",
+    "typescriptreact": "html"
+  },
+  "emmet.includeLanguages": {
+    "typescript": "html",
+    "typescriptreact": "html"
+  },
+  // Custom CSS autocomplete for design tokens
+  "css.customData": [".vscode/css_custom_data.json"],
+
+  // Code action suggestions
+  "editor.codeActionsOnSave": {
+    "source.fixAll.eslint": true
+  },
+
+  // Highlight hardcoded values
+  "editor.tokenColorCustomizations": {
+    "textMateRules": [
+      {
+        "scope": "string.quoted.double.js",
+        "settings": {
+          "foreground": "#ff6b6b"
+        }
+      }
+    ]
+  },
+
+  // Suggest design tokens in autocomplete
+  "editor.suggest.showWords": false,
+  "editor.wordBasedSuggestions": false
 }

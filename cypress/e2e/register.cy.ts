@@ -68,7 +68,7 @@ describe("Register flow", () => {
     cy.get('input[name="password"]').type("123");
     cy.get('button[type="submit"]').click();
 
-    cy.get("p.text-red-500")
+    cy.get("p.text-error")
       .contains("Password must be at least 6 characters")
       .should("be.visible");
   });
@@ -86,7 +86,7 @@ describe("Register flow", () => {
     cy.get('input[name="confirmPassword"]').type("differentpassword");
     cy.get('button[type="submit"]').click();
 
-    cy.get("p.text-red-500")
+    cy.get("p.text-error")
       .contains("Passwords do not match")
       .should("be.visible");
   });
@@ -105,7 +105,7 @@ describe("Register flow", () => {
     cy.get('button[type="submit"]').click();
 
     // Wait for validation and check for the error message
-    cy.get("p.text-red-500")
+    cy.get("p.text-error")
       .contains("Invalid email address")
       .should("be.visible");
   });
@@ -239,7 +239,7 @@ describe("Register flow", () => {
     cy.get('input[type="radio"][value="female"]').check();
 
     // All validation errors should be cleared
-    cy.get(".text-red-500").should("not.exist");
+    cy.get(".text-error").should("not.exist");
 
     // Submit should work
     cy.get('button[type="submit"]').click();

@@ -22,7 +22,9 @@ export default function AuthenticatedHeader({
         <div className="flex justify-between items-center h-16">
           {/* Logo/App Name */}
           <div className="flex items-center">
-            <h1 className="text-xl font-bold text-gray-900">💕 Dating App</h1>
+            <h1 className="text-subheading font-bold text-primary">
+              💕 Dating App
+            </h1>
           </div>
 
           {/* User Info and Actions */}
@@ -30,17 +32,17 @@ export default function AuthenticatedHeader({
             {/* User Avatar/Info */}
             <div className="flex items-center space-x-2">
               <div className="w-8 h-8 bg-gradient-to-br from-primary-500 to-purple-600 rounded-full flex items-center justify-center">
-                <span className="text-white text-sm font-medium">
+                <span className="text-white text-body font-medium">
                   {user?.name?.charAt(0)?.toUpperCase() ||
                     user?.email?.charAt(0)?.toUpperCase() ||
                     "U"}
                 </span>
               </div>
               <div className="hidden sm:block">
-                <p className="text-sm font-medium text-gray-900">
+                <p className="text-body font-medium text-primary">
                   {user?.name || "User"}
                 </p>
-                <p className="text-xs text-gray-500">{user?.email}</p>
+                <p className="text-caption text-muted">{user?.email}</p>
               </div>
             </div>
 

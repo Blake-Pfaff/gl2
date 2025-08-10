@@ -56,11 +56,11 @@ export default function RegisterPage() {
       <MobileHeader title="Sign Up" backUrl="/login" />
 
       {/* Form Container */}
-      <div className="px-6 py-8">
-        <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
+      <div className="px-page-x py-page-y">
+        <form onSubmit={handleSubmit(onSubmit)} className="space-y-section">
           {serverError && (
-            <div className="bg-red-50 border border-red-200 rounded-lg p-3">
-              <p className="text-red-600 text-sm">{serverError}</p>
+            <div className="bg-red-50 border border-red-200 rounded-small p-compact">
+              <p className="text-error text-body">{serverError}</p>
             </div>
           )}
 
@@ -119,7 +119,7 @@ export default function RegisterPage() {
             <button
               type="submit"
               disabled={isSubmitting || signup.isPending}
-              className="w-full bg-gradient-to-r from-primary-400 to-primary-500 hover:from-primary-500 hover:to-primary-600 text-white font-semibold py-4 px-6 rounded-full transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed shadow-lg"
+              className="w-full bg-gradient-to-r from-primary-400 to-primary-500 hover:from-primary-500 hover:to-primary-600 text-white font-semibold py-component px-6 rounded-button transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed shadow-lg"
             >
               {isSubmitting || signup.isPending ? "Creating account…" : "Next"}
             </button>
@@ -127,15 +127,15 @@ export default function RegisterPage() {
         </form>
 
         {previewUrl && (
-          <div className="mt-6 p-4 bg-white border border-primary-200 rounded-2xl">
-            <p className="font-medium mb-2 text-gray-700">
+          <div className="mt-6 p-component bg-white border border-primary-200 rounded-card">
+            <p className="font-medium mb-2 text-secondary">
               Preview your welcome email:
             </p>
             <a
               href={previewUrl}
               target="_blank"
               rel="noopener noreferrer"
-              className="text-primary-600 underline"
+              className="text-link underline"
             >
               {previewUrl}
             </a>

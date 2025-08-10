@@ -15,10 +15,10 @@ const genderOptions = [
 export function GenderSelection({ register, error }: GenderSelectionProps) {
   return (
     <div>
-      <label className="block text-sm font-medium text-gray-600 mb-3">
+      <label className="block text-body font-medium text-muted mb-3">
         Gender
       </label>
-      <div className="bg-white border-2 border-primary-300 rounded-2xl p-4 space-y-3">
+      <div className="bg-white border-2 border-primary-300 rounded-input p-component space-y-3">
         {genderOptions.map(({ value, label, emoji }) => (
           <div key={value} className="flex items-center">
             <input
@@ -32,14 +32,14 @@ export function GenderSelection({ register, error }: GenderSelectionProps) {
             />
             <label
               htmlFor={value}
-              className="ml-3 text-sm text-gray-700 flex items-center"
+              className="ml-3 text-body text-secondary flex items-center"
             >
               {label} <span className="ml-2">{emoji}</span>
             </label>
           </div>
         ))}
       </div>
-      {error && <p className="text-red-500 text-sm mt-2">{error.message}</p>}
+      {error && <p className="text-error text-body mt-2">{error.message}</p>}
     </div>
   );
 }

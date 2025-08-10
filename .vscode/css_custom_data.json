@@ -1,0 +1,37 @@
+{
+  "version": 1.1,
+  "properties": [
+    {
+      "name": "--color-text-primary",
+      "description": "Primary text color (headings) - use text-primary class"
+    },
+    {
+      "name": "--color-text-secondary",
+      "description": "Secondary text color (body) - use text-secondary class"
+    },
+    {
+      "name": "--color-text-muted",
+      "description": "Muted text color (captions) - use text-muted class"
+    },
+    {
+      "name": "--spacing-page-x",
+      "description": "Page horizontal padding - use px-page-x class"
+    },
+    {
+      "name": "--spacing-page-y",
+      "description": "Page vertical padding - use py-page-y class"
+    },
+    {
+      "name": "--spacing-component",
+      "description": "Component padding - use p-component class"
+    },
+    {
+      "name": "--radius-button",
+      "description": "Button border radius - use rounded-button class"
+    },
+    {
+      "name": "--radius-card",
+      "description": "Card border radius - use rounded-card class"
+    }
+  ]
+}

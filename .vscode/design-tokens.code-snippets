@@ -1,0 +1,74 @@
+{
+  "Primary Text": {
+    "scope": "typescriptreact,typescript,javascript,javascriptreact",
+    "prefix": "text-primary",
+    "body": ["text-primary"],
+    "description": "Primary text color (headings)"
+  },
+  "Secondary Text": {
+    "scope": "typescriptreact,typescript,javascript,javascriptreact",
+    "prefix": "text-secondary",
+    "body": ["text-secondary"],
+    "description": "Secondary text color (body text)"
+  },
+  "Muted Text": {
+    "scope": "typescriptreact,typescript,javascript,javascriptreact",
+    "prefix": "text-muted",
+    "body": ["text-muted"],
+    "description": "Muted text color (captions, icons)"
+  },
+  "Error Text": {
+    "scope": "typescriptreact,typescript,javascript,javascriptreact",
+    "prefix": "text-error",
+    "body": ["text-error"],
+    "description": "Error text color"
+  },
+  "Page Padding X": {
+    "scope": "typescriptreact,typescript,javascript,javascriptreact",
+    "prefix": "px-page-x",
+    "body": ["px-page-x"],
+    "description": "Horizontal page padding"
+  },
+  "Page Padding Y": {
+    "scope": "typescriptreact,typescript,javascript,javascriptreact",
+    "prefix": "py-page-y",
+    "body": ["py-page-y"],
+    "description": "Vertical page padding"
+  },
+  "Component Padding": {
+    "scope": "typescriptreact,typescript,javascript,javascriptreact",
+    "prefix": "p-component",
+    "body": ["p-component"],
+    "description": "Standard component padding"
+  },
+  "Button Rounded": {
+    "scope": "typescriptreact,typescript,javascript,javascriptreact",
+    "prefix": "rounded-button",
+    "body": ["rounded-button"],
+    "description": "Button border radius (full rounded)"
+  },
+  "Card Rounded": {
+    "scope": "typescriptreact,typescript,javascript,javascriptreact",
+    "prefix": "rounded-card",
+    "body": ["rounded-card"],
+    "description": "Card/modal border radius"
+  },
+  "Hero Text": {
+    "scope": "typescriptreact,typescript,javascript,javascriptreact",
+    "prefix": "text-hero",
+    "body": ["text-hero"],
+    "description": "Hero heading text size"
+  },
+  "Heading Text": {
+    "scope": "typescriptreact,typescript,javascript,javascriptreact",
+    "prefix": "text-heading",
+    "body": ["text-heading"],
+    "description": "Page heading text size"
+  },
+  "Body Text": {
+    "scope": "typescriptreact,typescript,javascript,javascriptreact",
+    "prefix": "text-body",
+    "body": ["text-body"],
+    "description": "Body text size"
+  }
+}
