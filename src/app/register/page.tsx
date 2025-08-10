@@ -8,6 +8,7 @@ import { FormField } from "../components/FormField";
 import { GenderSelection } from "../components/GenderSelection";
 import { MobileHeader } from "../components/MobileHeader";
 import { UserIcon, LockIcon, EmailIcon } from "../components/Icons";
+import PageTransition from "../components/PageTransition";
 
 type SignUpForm = {
   email: string;
@@ -52,96 +53,100 @@ export default function RegisterPage() {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50">
-      <MobileHeader title="Sign Up" backUrl="/login" />
+    <PageTransition>
+      <div className="min-h-screen bg-gray-50">
+        <MobileHeader title="Sign Up" backUrl="/login" />
 
-      {/* Form Container */}
-      <div className="px-page-x py-page-y">
-        <form onSubmit={handleSubmit(onSubmit)} className="space-y-section">
-          {serverError && (
-            <div className="bg-red-50 border border-red-200 rounded-small p-compact">
-              <p className="text-error text-body">{serverError}</p>
+        {/* Form Container */}
+        <div className="px-page-x py-page-y">
+          <form onSubmit={handleSubmit(onSubmit)} className="space-y-section">
+            {serverError && (
+              <div className="bg-red-50 border border-red-200 rounded-small p-compact">
+                <p className="text-error text-body">{serverError}</p>
+              </div>
+            )}
+
+            <FormField
+              label="Username"
+              type="text"
+              icon={<UserIcon />}
+              error={errors.username?.message}
+              {...register("username", { required: "Username is required" })}
+            />
+
+            <FormField
+              label="Password"
+              type="password"
+              icon={<LockIcon />}
+              error={errors.password?.message}
+              {...register("password", {
+                required: "Password is required",
+                minLength: {
+                  value: 6,
+                  message: "Password must be at least 6 characters",
+                },
+              })}
+            />
+
+            <FormField
+              label="Confirm"
+              type="password"
+              icon={<LockIcon />}
+              error={errors.confirmPassword?.message}
+              {...register("confirmPassword", {
+                required: "Please confirm your password",
+                validate: (value) =>
+                  value === password || "Passwords do not match",
+              })}
+            />
+
+            <FormField
+              label="E-mail"
+              type="email"
+              icon={<EmailIcon />}
+              error={errors.email?.message}
+              {...register("email", {
+                required: "Email is required",
+                pattern: {
+                  value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
+                  message: "Invalid email address",
+                },
+              })}
+            />
+
+            <GenderSelection register={register} error={errors.gender} />
+
+            {/* Next Button */}
+            <div className="pt-8">
+              <button
+                type="submit"
+                disabled={isSubmitting || signup.isPending}
+                className="w-full bg-gradient-to-r from-primary-400 to-primary-500 hover:from-primary-500 hover:to-primary-600 text-white font-semibold py-component px-6 rounded-button transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed shadow-lg"
+              >
+                {isSubmitting || signup.isPending
+                  ? "Creating account…"
+                  : "Next"}
+              </button>
+            </div>
+          </form>
+
+          {previewUrl && (
+            <div className="mt-6 p-component bg-white border border-primary-200 rounded-card">
+              <p className="font-medium mb-2 text-secondary">
+                Preview your welcome email:
+              </p>
+              <a
+                href={previewUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-link underline"
+              >
+                {previewUrl}
+              </a>
             </div>
           )}
-
-          <FormField
-            label="Username"
-            type="text"
-            icon={<UserIcon />}
-            error={errors.username?.message}
-            {...register("username", { required: "Username is required" })}
-          />
-
-          <FormField
-            label="Password"
-            type="password"
-            icon={<LockIcon />}
-            error={errors.password?.message}
-            {...register("password", {
-              required: "Password is required",
-              minLength: {
-                value: 6,
-                message: "Password must be at least 6 characters",
-              },
-            })}
-          />
-
-          <FormField
-            label="Confirm"
-            type="password"
-            icon={<LockIcon />}
-            error={errors.confirmPassword?.message}
-            {...register("confirmPassword", {
-              required: "Please confirm your password",
-              validate: (value) =>
-                value === password || "Passwords do not match",
-            })}
-          />
-
-          <FormField
-            label="E-mail"
-            type="email"
-            icon={<EmailIcon />}
-            error={errors.email?.message}
-            {...register("email", {
-              required: "Email is required",
-              pattern: {
-                value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
-                message: "Invalid email address",
-              },
-            })}
-          />
-
-          <GenderSelection register={register} error={errors.gender} />
-
-          {/* Next Button */}
-          <div className="pt-8">
-            <button
-              type="submit"
-              disabled={isSubmitting || signup.isPending}
-              className="w-full bg-gradient-to-r from-primary-400 to-primary-500 hover:from-primary-500 hover:to-primary-600 text-white font-semibold py-component px-6 rounded-button transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed shadow-lg"
-            >
-              {isSubmitting || signup.isPending ? "Creating account…" : "Next"}
-            </button>
-          </div>
-        </form>
-
-        {previewUrl && (
-          <div className="mt-6 p-component bg-white border border-primary-200 rounded-card">
-            <p className="font-medium mb-2 text-secondary">
-              Preview your welcome email:
-            </p>
-            <a
-              href={previewUrl}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="text-link underline"
-            >
-              {previewUrl}
-            </a>
-          </div>
-        )}
+        </div>
       </div>
-    </div>
+    </PageTransition>
   );
 }

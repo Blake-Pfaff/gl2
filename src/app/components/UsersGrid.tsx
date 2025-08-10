@@ -4,6 +4,8 @@ import { useState } from "react";
 import { useSession } from "next-auth/react";
 import { useUsers, type User, type PaginationInfo } from "@/hooks/useUsers";
 import LoadingSpinner from "./LoadingSpinner";
+import AnimatedCard from "./AnimatedCard";
+import { motion } from "framer-motion";
 
 export default function UsersGrid() {
   const { data: session } = useSession();
@@ -50,11 +52,17 @@ export default function UsersGrid() {
   return (
     <div>
       {/* Users Grid */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-        {users.map((user) => (
-          <div
+      <motion.div
+        className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6"
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ duration: 0.5 }}
+      >
+        {users.map((user, index) => (
+          <AnimatedCard
             key={user.id}
-            className="bg-white rounded-small shadow-md overflow-hidden hover:shadow-lg transition-shadow duration-200"
+            delay={index * 0.1}
+            className="overflow-hidden"
           >
             {/* Profile Photo */}
             <div className="h-48 bg-gradient-to-br from-primary-100 to-purple-100 flex items-center justify-center">
@@ -106,9 +114,9 @@ export default function UsersGrid() {
                 💬 Message
               </button>
             </div>
-          </div>
+          </AnimatedCard>
         ))}
-      </div>
+      </motion.div>
 
       {/* Pagination */}
       {pagination && pagination.totalPages > 1 && (

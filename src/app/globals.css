@@ -2,16 +2,16 @@
 
 @theme {
   /* Primary Colors */
-  --color-primary-50: #f2fbfa;
-  --color-primary-100: #d8f3f0;
-  --color-primary-200: #baeae5;
-  --color-primary-300: #86dad1;
-  --color-primary-400: #42c6b8;
-  --color-primary-500: #14b8a6;
-  --color-primary-600: #00a08e;
-  --color-primary-700: #008777;
-  --color-primary-800: #007061;
-  --color-primary-900: #00594c;
+  --color-primary-50: #fcf9f1;
+  --color-primary-100: #f6edd3;
+  --color-primary-200: #efe0b2;
+  --color-primary-300: #e3ca7b;
+  --color-primary-400: #d4af37;
+  --color-primary-500: #d4af37;
+  --color-primary-600: #ba971b;
+  --color-primary-700: #9f8000;
+  --color-primary-800: #856a00;
+  --color-primary-900: #6c5400;
 
   /* Semantic Text Colors */
   --color-text-primary: #111827;    /* text-gray-900 - main headings */
@@ -21,7 +21,7 @@
   --color-text-inverse: #ffffff;    /* text-white - on dark backgrounds */
   --color-text-error: #dc2626;      /* text-red-600 - error messages */
   --color-text-success: #059669;    /* text-emerald-600 - success messages */
-  --color-text-link: #00a08e; /* text-primary-600 - links */
+  --color-text-link: #ba971b; /* text-primary-600 - links */
 
   /* Typography Scale */
   --font-size-hero: 1.875rem;       /* text-3xl - hero headings */

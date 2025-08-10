@@ -5,6 +5,8 @@ import { ReactNode } from "react";
 import AuthenticatedHeader from "./AuthenticatedHeader";
 import BottomNavigation from "./BottomNavigation";
 import LoadingSpinner from "./LoadingSpinner";
+import PageTransition from "./PageTransition";
+import TestTransition from "./TestTransition";
 
 interface AuthenticatedLayoutProps {
   children: ReactNode;
@@ -38,16 +40,16 @@ export default function AuthenticatedLayout({
 
   return (
     <div className="min-h-screen bg-gray-50 flex flex-col">
-      {/* Header */}
+      {/* Header - remains stable */}
       <AuthenticatedHeader user={session.user} />
 
-      {/* Main content area */}
+      {/* Main content area with transitions */}
       <main className="flex-1 pb-16">
         {/* pb-16 to account for bottom nav height */}
-        {children}
+        <TestTransition>{children}</TestTransition>
       </main>
 
-      {/* Bottom Navigation */}
+      {/* Bottom Navigation - remains stable */}
       <BottomNavigation />
     </div>
   );

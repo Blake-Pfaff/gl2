@@ -3,7 +3,7 @@ const fs = require("fs");
 const path = require("path");
 
 // Base color - change this single value to update your entire color scheme
-const BASE_COLOR = "#14b8a6"; // Current teal color
+const BASE_COLOR = "#d4af37"; // Medium gold color
 
 function generateColorScale(baseColor) {
   const color = chroma(baseColor);
