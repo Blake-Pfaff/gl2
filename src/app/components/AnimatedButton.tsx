@@ -2,30 +2,13 @@
 
 import { motion } from "framer-motion";
 import { ButtonHTMLAttributes, ReactNode } from "react";
+import { animations } from "@/lib/animations";
 
 interface AnimatedButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
   children: ReactNode;
   variant?: "primary" | "secondary" | "outline";
   size?: "sm" | "md" | "lg";
 }
-
-const buttonVariants = {
-  rest: { scale: 1 },
-  hover: {
-    scale: 1.02,
-    transition: {
-      duration: 0.2,
-      ease: "easeOut",
-    },
-  },
-  tap: {
-    scale: 0.98,
-    transition: {
-      duration: 0.1,
-      ease: "easeOut",
-    },
-  },
-};
 
 export default function AnimatedButton({
   children,
@@ -55,8 +38,7 @@ export default function AnimatedButton({
   return (
     <motion.button
       className={`${baseClasses} ${variantClasses[variant]} ${sizeClasses[size]} ${className}`}
-      variants={buttonVariants}
-      initial="rest"
+      {...animations.presets.button}
       whileHover={disabled ? "rest" : "hover"}
       whileTap={disabled ? "rest" : "tap"}
       disabled={disabled}

@@ -6,6 +6,7 @@ import { useUsers, type User, type PaginationInfo } from "@/hooks/useUsers";
 import LoadingSpinner from "./LoadingSpinner";
 import AnimatedCard from "./AnimatedCard";
 import { motion } from "framer-motion";
+import { animations } from "@/lib/animations";
 
 export default function UsersGrid() {
   const { data: session } = useSession();
@@ -54,14 +55,12 @@ export default function UsersGrid() {
       {/* Users Grid */}
       <motion.div
         className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6"
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ duration: 0.5 }}
+        {...animations.variants.grid.container}
       >
         {users.map((user, index) => (
           <AnimatedCard
             key={user.id}
-            delay={index * 0.1}
+            delay={index * animations.stagger.items}
             className="overflow-hidden"
           >
             {/* Profile Photo */}

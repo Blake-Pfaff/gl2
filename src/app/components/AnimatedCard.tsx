@@ -2,6 +2,7 @@
 
 import { motion } from "framer-motion";
 import { ReactNode } from "react";
+import { animations } from "@/lib/animations";
 
 interface AnimatedCardProps {
   children: ReactNode;
@@ -10,34 +11,6 @@ interface AnimatedCardProps {
   onClick?: () => void;
   hoverable?: boolean;
 }
-
-const cardVariants = {
-  hidden: {
-    opacity: 0,
-    y: 20,
-    scale: 0.95,
-  },
-  visible: {
-    opacity: 1,
-    y: 0,
-    scale: 1,
-  },
-  hover: {
-    y: -4,
-    scale: 1.02,
-    transition: {
-      duration: 0.2,
-      ease: "easeOut",
-    },
-  },
-  tap: {
-    scale: 0.98,
-    transition: {
-      duration: 0.1,
-      ease: "easeOut",
-    },
-  },
-};
 
 export default function AnimatedCard({
   children,
@@ -52,15 +25,12 @@ export default function AnimatedCard({
   return (
     <motion.div
       className={`${baseClasses} ${interactiveClasses} ${className}`}
-      variants={cardVariants}
-      initial="hidden"
-      animate="visible"
+      {...animations.presets.card}
       whileHover={hoverable ? "hover" : undefined}
       whileTap={onClick ? "tap" : undefined}
       transition={{
-        duration: 0.3,
+        ...animations.transitions.smooth,
         delay,
-        ease: [0.4, 0, 0.2, 1],
       }}
       onClick={onClick}
     >

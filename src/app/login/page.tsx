@@ -9,6 +9,7 @@ import Link from "next/link";
 import { motion } from "framer-motion";
 import AnimatedButton from "../components/AnimatedButton";
 import PageTransition from "../components/PageTransition";
+import { animations } from "@/lib/animations";
 
 type FormValues = { email: string; password: string; rememberMe: boolean };
 
@@ -74,14 +75,11 @@ export default function LoginPage() {
           {/* Heart Logo with animation */}
           <motion.div
             className="flex justify-center pt-16 pb-8"
-            initial={{ scale: 0.8 }}
-            animate={{ scale: 1 }}
-            transition={{ delay: 0.2, duration: 0.4, ease: "easeOut" }}
+            {...animations.variants.login.heartContainer}
           >
             <motion.div
               className="relative"
-              whileHover={{ scale: 1.1 }}
-              transition={{ duration: 0.2 }}
+              whileHover={animations.variants.login.heartHover}
             >
               <svg
                 className="w-16 h-16 text-primary-800"
@@ -97,9 +95,7 @@ export default function LoginPage() {
           {/* Login Title */}
           <motion.h1
             className="text-center text-heading font-bold text-primary-900 mb-16"
-            initial={{ y: 20 }}
-            animate={{ y: 0 }}
-            transition={{ delay: 0.4, duration: 0.4 }}
+            {...animations.variants.login.title}
           >
             Login
           </motion.h1>
@@ -110,9 +106,7 @@ export default function LoginPage() {
           {/* Main form container */}
           <motion.div
             className="px-page-x pt-8 pb-8"
-            initial={{ y: 30 }}
-            animate={{ y: 0 }}
-            transition={{ delay: 0.6, duration: 0.5 }}
+            {...animations.variants.login.form}
           >
             <form onSubmit={handleSubmit(onSubmit)} className="space-y-section">
               {authError && (

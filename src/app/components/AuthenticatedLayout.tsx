@@ -6,7 +6,6 @@ import AuthenticatedHeader from "./AuthenticatedHeader";
 import BottomNavigation from "./BottomNavigation";
 import LoadingSpinner from "./LoadingSpinner";
 import PageTransition from "./PageTransition";
-import TestTransition from "./TestTransition";
 
 interface AuthenticatedLayoutProps {
   children: ReactNode;
@@ -46,7 +45,7 @@ export default function AuthenticatedLayout({
       {/* Main content area with transitions */}
       <main className="flex-1 pb-16">
         {/* pb-16 to account for bottom nav height */}
-        <TestTransition>{children}</TestTransition>
+        <PageTransition>{children}</PageTransition>
       </main>
 
       {/* Bottom Navigation - remains stable */}

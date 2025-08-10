@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { motion } from "framer-motion";
+import { animations } from "@/lib/animations";
 
 const navigationItems = [
   {
@@ -48,12 +49,15 @@ export default function BottomNavigation() {
                   className={`flex flex-col items-center justify-center py-2 px-3 min-w-0 flex-1 text-caption transition-colors duration-200 ${
                     isActive ? "text-link" : "text-muted hover:text-secondary"
                   }`}
-                  whileTap={{ scale: 0.95 }}
+                  whileTap={animations.variants.nav.tap}
                 >
                   <motion.span
                     className="text-xl mb-1"
-                    animate={{ scale: isActive ? 1.2 : 1 }}
-                    transition={{ duration: 0.2 }}
+                    animate={
+                      isActive
+                        ? animations.variants.nav.activeIcon
+                        : { scale: 1 }
+                    }
                   >
                     {item.emoji}
                   </motion.span>
@@ -64,9 +68,7 @@ export default function BottomNavigation() {
                     <motion.div
                       className="absolute -top-1 left-1/2 w-1 h-1 bg-primary-500 rounded-full"
                       layoutId="activeTab"
-                      initial={{ scale: 0 }}
-                      animate={{ scale: 1 }}
-                      transition={{ duration: 0.2 }}
+                      {...animations.variants.nav.indicator}
                       style={{ transform: "translateX(-50%)" }}
                     />
                   )}
