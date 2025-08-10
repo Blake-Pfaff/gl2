@@ -26,9 +26,12 @@ export default function MyNumberPage() {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    // For now, just accept any number and navigate to next step
+    // Save phone number (for now just store locally, could save to user profile later)
     if (phoneNumber.trim()) {
-      // TODO: Navigate to next step or dashboard
+      // Store the phone number in localStorage for now
+      localStorage.setItem('userPhoneNumber', `${countryCode} ${phoneNumber}`);
+      
+      // Navigate to the main app (users page)
       router.push("/users");
     }
   };

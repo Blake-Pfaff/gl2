@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { useForm, SubmitHandler } from "react-hook-form";
 import { useRouter } from "next/navigation";
+import { signIn } from "next-auth/react";
 import { useApiMutation } from "@/hooks/useApi";
 import { FormField } from "../components/FormField";
 import { GenderSelection } from "../components/GenderSelection";
@@ -37,9 +38,30 @@ export default function RegisterPage() {
     "/api/auth/signup",
     "POST",
     {
-      onSuccess: (data) => {
+      onSuccess: async (data, variables) => {
         if (data?.preview) setPreviewUrl(data.preview);
-        setTimeout(() => router.push("/my-number"), 1000);
+        
+        // Auto-login the user after successful registration
+        try {
+          const result = await signIn("credentials", {
+            redirect: false,
+            email: variables.email,
+            password: variables.password,
+          });
+          
+          if (result?.error) {
+            console.error("Auto-login failed:", result.error);
+            // If auto-login fails, still redirect but they'll need to login manually
+            setTimeout(() => router.push("/login"), 1000);
+          } else {
+            // Success! Proceed to my-number page
+            setTimeout(() => router.push("/my-number"), 1000);
+          }
+        } catch (error) {
+          console.error("Auto-login error:", error);
+          // Fallback to login page if something goes wrong
+          setTimeout(() => router.push("/login"), 1000);
+        }
       },
       onError: (e: any) => setServerError(e?.message ?? "Registration failed"),
     }
