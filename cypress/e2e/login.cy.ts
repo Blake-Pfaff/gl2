@@ -7,7 +7,7 @@ describe("Login flow", () => {
   });
 
   it("renders the login form", () => {
-    cy.get("h1").contains("Log In");
+    cy.get("h1").contains("Login");
     cy.get('input[type="email"]').should("exist");
     cy.get('input[type="password"]').should("exist");
   });

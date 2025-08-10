@@ -17,15 +17,6 @@ export function MobileHeader({
 }: MobileHeaderProps) {
   const router = useRouter();
 
-  console.log("MobileHeader rendered with:", { title, backUrl, showStatusBar });
-
-  const handleBackClick = () => {
-    console.log("Back button clicked, navigating to:", backUrl);
-    if (backUrl) {
-      router.push(backUrl);
-    }
-  };
-
   return (
     <>
       {showStatusBar && (
@@ -55,10 +46,7 @@ export function MobileHeader({
       <div className="flex items-center px-6 py-4">
         {backUrl && (
           <button
-            onClick={() => {
-              console.log("Back button clicked - using router.back()");
-              router.back();
-            }}
+            onClick={() => router.back()}
             className="w-12 h-12 bg-pink-400 rounded-full flex items-center justify-center text-white hover:bg-pink-500 transition-colors cursor-pointer border-0 outline-none focus:ring-2 focus:ring-pink-300"
             type="button"
             style={{ zIndex: 1000 }}
