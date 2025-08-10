@@ -9,6 +9,7 @@ import { GenderSelection } from "../components/GenderSelection";
 import { MobileHeader } from "../components/MobileHeader";
 import { UserIcon, LockIcon, EmailIcon } from "../components/Icons";
 import PageTransition from "../components/PageTransition";
+import { MIN_PASSWORD_LENGTH } from "@/lib/constants";
 
 type SignUpForm = {
   email: string;
@@ -38,7 +39,7 @@ export default function RegisterPage() {
     {
       onSuccess: (data) => {
         if (data?.preview) setPreviewUrl(data.preview);
-        setTimeout(() => router.push("/login"), 1000);
+        setTimeout(() => router.push("/my-number"), 1000);
       },
       onError: (e: any) => setServerError(e?.message ?? "Registration failed"),
     }
@@ -82,8 +83,8 @@ export default function RegisterPage() {
               {...register("password", {
                 required: "Password is required",
                 minLength: {
-                  value: 6,
-                  message: "Password must be at least 6 characters",
+                  value: MIN_PASSWORD_LENGTH,
+                  message: `Password must be at least ${MIN_PASSWORD_LENGTH} characters`,
                 },
               })}
             />

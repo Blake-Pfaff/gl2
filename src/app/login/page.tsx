@@ -11,6 +11,7 @@ import { motion } from "framer-motion";
 import AnimatedButton from "../components/AnimatedButton";
 import PageTransition from "../components/PageTransition";
 import { animations } from "@/lib/animations";
+import { APP_NAME } from "@/lib/constants";
 
 type FormValues = { email: string; password: string; rememberMe: boolean };
 
@@ -73,7 +74,7 @@ export default function LoginPage() {
             </div>
           </div>
 
-          {/* Goldy Locks Logo */}
+          {/* App Logo */}
           <motion.div
             className="flex justify-center pt-page-y pb-component"
             {...animations.variants.login.heartContainer}
@@ -84,7 +85,7 @@ export default function LoginPage() {
             >
               <Image
                 src="/glLogo.png"
-                alt="Goldy Locks"
+                alt={APP_NAME}
                 width={200}
                 height={200}
                 priority

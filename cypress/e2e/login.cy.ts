@@ -1,5 +1,8 @@
 /// <reference types="cypress" />
 
+// Import app constants for consistent testing
+import { APP_NAME } from "../../src/lib/constants";
+
 describe("Login flow", () => {
   beforeEach(() => {
     // start each test on the login page
@@ -8,7 +11,7 @@ describe("Login flow", () => {
 
   it("renders the login form", () => {
     // Check for logo instead of h1 text
-    cy.get('img[alt="Goldy Locks"]').should("exist");
+    cy.get(`img[alt="${APP_NAME}"]`).should("exist");
     cy.get('input[type="email"]').should("exist");
     cy.get('input[type="password"]').should("exist");
   });

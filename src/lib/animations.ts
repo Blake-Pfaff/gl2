@@ -173,6 +173,82 @@ export const gridVariants = {
   },
 } as const;
 
+// Dropdown Animations
+export const dropdownVariants = {
+  // Dropdown menu container
+  menu: {
+    initial: {
+      opacity: 0,
+      y: -10,
+      scale: 0.95,
+    },
+    animate: {
+      opacity: 1,
+      y: 0,
+      scale: 1,
+    },
+    exit: {
+      opacity: 0,
+      y: -10,
+      scale: 0.95,
+    },
+  },
+
+  // Individual dropdown items
+  item: {
+    initial: {
+      opacity: 0,
+      x: -10,
+    },
+    animate: {
+      opacity: 1,
+      x: 0,
+    },
+    hover: {
+      x: 4,
+    },
+    tap: {
+      scale: 0.98,
+    },
+  },
+
+  // Dropdown button
+  button: {
+    rest: {
+      scale: 1,
+    },
+    hover: {
+      borderColor: "var(--color-primary-400)",
+    },
+    tap: {
+      scale: 0.98,
+    },
+  },
+
+  // Arrow icon rotation
+  arrow: {
+    closed: {
+      rotate: 0,
+    },
+    open: {
+      rotate: 180,
+    },
+  },
+
+  // Backdrop
+  backdrop: {
+    initial: {
+      opacity: 0,
+    },
+    animate: {
+      opacity: 1,
+    },
+    exit: {
+      opacity: 0,
+    },
+  },
+} as const;
+
 // =============================================================================
 // STAGGER CONFIGURATIONS - For sequential animations
 // =============================================================================
@@ -267,6 +343,7 @@ export const animations = {
     login: loginVariants,
     nav: navVariants,
     grid: gridVariants,
+    dropdown: dropdownVariants,
   },
   stagger,
   presets,
