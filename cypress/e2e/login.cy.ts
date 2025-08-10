@@ -7,7 +7,8 @@ describe("Login flow", () => {
   });
 
   it("renders the login form", () => {
-    cy.get("h1").contains("Login");
+    // Check for logo instead of h1 text
+    cy.get('img[alt="Goldy Locks"]').should("exist");
     cy.get('input[type="email"]').should("exist");
     cy.get('input[type="password"]').should("exist");
   });

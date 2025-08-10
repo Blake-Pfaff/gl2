@@ -20,7 +20,8 @@ A modern, full-stack dating application built with Next.js, featuring user authe
 
 - **Next.js 15** - React framework with App Router
 - **TypeScript** - Type-safe development
-- **Tailwind CSS** - Utility-first styling
+- **Tailwind CSS** - Utility-first styling with custom design tokens
+- **Framer Motion** - Smooth animations and page transitions
 - **React Query** - Server state management and caching
 - **React Hook Form** - Form handling and validation
 
@@ -137,6 +138,7 @@ src/
 - `npm run build` - Build for production
 - `npm run start` - Start production server
 - `npm run lint` - Run ESLint
+- `npm run generate-colors` - Generate color palette and design tokens
 - `npm run cypress:open` - Open Cypress test runner
 - `npm run cypress:run` - Run Cypress tests headlessly
 
@@ -173,15 +175,28 @@ npx prisma studio
 npx prisma migrate dev --name your-migration-name
 ```
 
-## 🎨 UI Components
+## 🎨 Design System
 
 The app features a modern, mobile-first design with:
 
+- **Design Tokens** - Centralized colors, spacing, typography, and border radius
+- **Animation Library** - Consistent motion design with Framer Motion
 - **Responsive Layout** - Optimized for mobile and desktop
-- **Bottom Navigation** - Easy mobile navigation
-- **Loading States** - Smooth UX with loading spinners
-- **Form Components** - Reusable form inputs with validation
-- **Card-based Design** - Clean, modern UI components
+- **Bottom Navigation** - Easy mobile navigation with smooth transitions
+- **Loading States** - Smooth UX with loading spinners and page transitions
+- **Form Components** - Reusable form inputs with validation and animations
+- **Card-based Design** - Clean, modern UI components with hover effects
+
+### Design Token System
+
+Change your entire app's design from one place:
+
+```bash
+# Generate new color palette
+npm run generate-colors
+
+# Customize in src/app/globals.css and src/lib/animations.ts
+```
 
 ## 🔐 Authentication Flow
 
@@ -230,6 +245,7 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 - [Prisma](https://prisma.io/) - Database toolkit
 - [NextAuth.js](https://next-auth.js.org/) - Authentication library
 - [Tailwind CSS](https://tailwindcss.com/) - CSS framework
+- [Framer Motion](https://www.framer.com/motion/) - Animation library
 - [React Query](https://tanstack.com/query) - Data fetching library
 
 ---
