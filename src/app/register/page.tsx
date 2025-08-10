@@ -40,7 +40,7 @@ export default function RegisterPage() {
     {
       onSuccess: async (data, variables) => {
         if (data?.preview) setPreviewUrl(data.preview);
-        
+
         // Auto-login the user after successful registration
         try {
           const result = await signIn("credentials", {
@@ -48,7 +48,7 @@ export default function RegisterPage() {
             email: variables.email,
             password: variables.password,
           });
-          
+
           if (result?.error) {
             console.error("Auto-login failed:", result.error);
             // If auto-login fails, still redirect but they'll need to login manually

@@ -29,8 +29,8 @@ export default function MyNumberPage() {
     // Save phone number (for now just store locally, could save to user profile later)
     if (phoneNumber.trim()) {
       // Store the phone number in localStorage for now
-      localStorage.setItem('userPhoneNumber', `${countryCode} ${phoneNumber}`);
-      
+      localStorage.setItem("userPhoneNumber", `${countryCode} ${phoneNumber}`);
+
       // Navigate to the main app (users page)
       router.push("/users");
     }
