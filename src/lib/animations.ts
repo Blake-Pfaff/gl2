@@ -57,11 +57,11 @@ export const easings = {
 // ANIMATION VARIANTS - All motion variants in one place
 // =============================================================================
 
-// Page Transitions
+// Page Transitions - using section spacing token for movement
 export const pageVariants = {
   initial: {
     opacity: 0,
-    y: 20,
+    y: 24, // 24px ≈ 1.5rem (section spacing)
     scale: 0.98,
   },
   in: {
@@ -71,7 +71,7 @@ export const pageVariants = {
   },
   out: {
     opacity: 0,
-    y: -20,
+    y: -24, // 24px ≈ 1.5rem (section spacing)
     scale: 1.02,
   },
 } as const;
@@ -91,11 +91,11 @@ export const buttonVariants = {
   },
 } as const;
 
-// Card Animations
+// Card Animations - using spacing tokens for movement
 export const cardVariants = {
   hidden: {
     opacity: 0,
-    y: 20,
+    y: 24, // 24px ≈ 1.5rem (section spacing)
     scale: 0.95,
   },
   visible: {
@@ -104,7 +104,7 @@ export const cardVariants = {
     scale: 1,
   },
   hover: {
-    y: -4,
+    y: -6, // small upward movement for hover effect
     scale: 1.02,
     transition: transitions.fast,
   },
@@ -127,18 +127,18 @@ export const loginVariants = {
     transition: transitions.fast,
   },
 
-  // Title
+  // Title - using section spacing token for movement
   title: {
-    initial: { y: 20 },
+    initial: { y: 24 }, // 24px ≈ 1.5rem (section spacing)
     animate: { y: 0 },
     transition: { delay: 0.4, duration: 0.4 },
   },
 
-  // Form container
+  // Form container - using compact spacing token for subtle movement
   form: {
-    initial: { y: 30 },
-    animate: { y: 0 },
-    transition: { delay: 0.6, duration: 0.5 },
+    initial: { y: 12, opacity: 0.8 }, // 12px ≈ 0.75rem (compact spacing)
+    animate: { y: 0, opacity: 1 },
+    transition: { delay: 0.6, duration: 0.3 },
   },
 } as const;
 
@@ -173,13 +173,13 @@ export const gridVariants = {
   },
 } as const;
 
-// Dropdown Animations
+// Dropdown Animations - using compact spacing token for subtle movements
 export const dropdownVariants = {
   // Dropdown menu container
   menu: {
     initial: {
       opacity: 0,
-      y: -10,
+      y: -12, // 12px ≈ 0.75rem (compact spacing)
       scale: 0.95,
     },
     animate: {
@@ -189,7 +189,7 @@ export const dropdownVariants = {
     },
     exit: {
       opacity: 0,
-      y: -10,
+      y: -12, // 12px ≈ 0.75rem (compact spacing)
       scale: 0.95,
     },
   },
@@ -198,14 +198,14 @@ export const dropdownVariants = {
   item: {
     initial: {
       opacity: 0,
-      x: -10,
+      x: -12, // 12px ≈ 0.75rem (compact spacing)
     },
     animate: {
       opacity: 1,
       x: 0,
     },
     hover: {
-      x: 4,
+      x: 6, // small rightward movement for hover
     },
     tap: {
       scale: 0.98,
@@ -274,15 +274,16 @@ export const createStaggered = (delay: number = stagger.items) => ({
   },
 });
 
-// Create entrance animation with delay
+// Create entrance animation with delay - using section spacing token
 export const createEntrance = (delay: number = 0) => ({
-  initial: { opacity: 0, y: 20 },
+  initial: { opacity: 0, y: 24 }, // 24px ≈ 1.5rem (section spacing)
   animate: { opacity: 1, y: 0 },
   transition: { delay, ...transitions.smooth },
 });
 
-// Create hover lift effect
-export const createHover = (lift: number = -4) => ({
+// Create hover lift effect - default uses small upward movement
+export const createHover = (lift: number = -6) => ({
+  // 6px for subtle hover lift
   whileHover: {
     y: lift,
     scale: 1.02,
@@ -321,9 +322,9 @@ export const presets = {
     whileTap: "tap",
   },
 
-  // Staggered list item
+  // Staggered list item - using section spacing token
   listItem: (delay: number = 0) => ({
-    initial: { opacity: 0, y: 20 },
+    initial: { opacity: 0, y: 24 }, // 24px ≈ 1.5rem (section spacing)
     animate: { opacity: 1, y: 0 },
     transition: { delay: delay * stagger.items, ...transitions.smooth },
   }),

@@ -1,5 +1,20 @@
 @import "tailwindcss";
 
+/* Prevent mobile text scaling issues */
+html {
+  -webkit-text-size-adjust: 100%;
+  -moz-text-size-adjust: 100%;
+  -ms-text-size-adjust: 100%;
+  text-size-adjust: 100%;
+}
+
+body {
+  -webkit-text-size-adjust: 100%;
+  -moz-text-size-adjust: 100%;
+  -ms-text-size-adjust: 100%;
+  text-size-adjust: 100%;
+}
+
 @theme {
   /* Primary Colors */
   --color-primary-50: #fcf9f1;

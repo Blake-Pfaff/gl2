@@ -126,7 +126,7 @@ describe("Register flow", () => {
     cy.get('input[type="radio"][value="female"]').should("not.be.checked");
   });
 
-  it("successfully registers a new user and redirects to login", () => {
+  it("successfully registers a new user and redirects to my-number", () => {
     // Mock successful registration API call
     cy.intercept("POST", "**/api/auth/signup", {
       statusCode: 200,
@@ -155,8 +155,8 @@ describe("Register flow", () => {
       "be.visible"
     );
 
-    // Should redirect to login page after 1 second
-    cy.url({ timeout: 2000 }).should("include", "/login");
+    // Should redirect to my-number page after 1 second
+    cy.url({ timeout: 2000 }).should("include", "/my-number");
   });
 
   it("handles server errors during registration", () => {
