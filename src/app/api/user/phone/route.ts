@@ -26,7 +26,7 @@ export async function PUT(request: Request) {
   try {
     // 2) Parse and validate request body
     const { phoneNumber, countryCode } = await request.json();
-    
+
     if (!phoneNumber || !countryCode) {
       return NextResponse.json(
         { error: "Phone number and country code are required" },
@@ -41,8 +41,8 @@ export async function PUT(request: Request) {
     const existingUser = await prisma.user.findFirst({
       where: {
         phone: fullPhoneNumber,
-        NOT: { id: userId } // Exclude current user
-      }
+        NOT: { id: userId }, // Exclude current user
+      },
     });
 
     if (existingUser) {
@@ -55,27 +55,26 @@ export async function PUT(request: Request) {
     // 5) Update the user's phone number
     const updatedUser = await prisma.user.update({
       where: { id: userId },
-      data: { 
+      data: {
         phone: fullPhoneNumber,
-        lastOnlineAt: new Date() // Update last online time too
+        lastOnlineAt: new Date(), // Update last online time too
       },
       select: {
         id: true,
         email: true,
         name: true,
         phone: true,
-        lastOnlineAt: true
-      }
+        lastOnlineAt: true,
+      },
     });
 
     return NextResponse.json(
-      { 
+      {
         message: "Phone number updated successfully",
-        user: updatedUser 
+        user: updatedUser,
       },
       { status: 200 }
     );
-
   } catch (error) {
     console.error("Error updating phone number:", error);
     return NextResponse.json(
@@ -99,21 +98,17 @@ export async function GET(request: Request) {
       where: { id: userId },
       select: {
         id: true,
-        phone: true
-      }
+        phone: true,
+      },
     });
 
     if (!user) {
-      return NextResponse.json(
-        { error: "User not found" },
-        { status: 404 }
-      );
+      return NextResponse.json({ error: "User not found" }, { status: 404 });
     }
 
     return NextResponse.json({
-      phone: user.phone
+      phone: user.phone,
     });
-
   } catch (error) {
     console.error("Error fetching phone number:", error);
     return NextResponse.json(

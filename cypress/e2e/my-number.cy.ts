@@ -144,9 +144,9 @@ describe("My Number Page", () => {
             email: "test@example.com",
             name: "Test User",
             phone: "IR +98 912 752 99 26",
-            lastOnlineAt: new Date().toISOString()
-          }
-        }
+            lastOnlineAt: new Date().toISOString(),
+          },
+        },
       }).as("updatePhone");
 
       // Enter a phone number
@@ -315,13 +315,13 @@ describe("My Number Page", () => {
           message: "Phone number updated successfully",
           user: {
             id: "test-user",
-            email: "test@example.com", 
+            email: "test@example.com",
             name: "Test User",
             phone: "IR +98 912 752 99 26",
-            lastOnlineAt: new Date().toISOString()
-          }
+            lastOnlineAt: new Date().toISOString(),
+          },
         },
-        delay: 1000 // 1 second delay to test loading state
+        delay: 1000, // 1 second delay to test loading state
       }).as("slowUpdatePhone");
 
       // Enter phone number

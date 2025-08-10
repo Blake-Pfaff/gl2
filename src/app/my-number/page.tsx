@@ -30,7 +30,7 @@ export default function MyNumberPage() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setSaveError(null); // Clear any previous errors
-    
+
     if (phoneNumber.trim()) {
       try {
         // Save phone number to database
@@ -43,11 +43,11 @@ export default function MyNumberPage() {
         router.push("/users");
       } catch (error: any) {
         console.error("Failed to save phone number:", error);
-        
+
         // Show error message but still allow navigation
         const errorMessage = error?.message || "Failed to save phone number";
         setSaveError(errorMessage);
-        
+
         // Auto-clear error after 5 seconds and navigate
         setTimeout(() => {
           setSaveError(null);
