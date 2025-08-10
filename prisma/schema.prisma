@@ -48,6 +48,8 @@ model User {
   locationLabel   String?    // nice address text for UI
   hashedPassword  String? 
   createdAt       DateTime   @default(now())
+  firstLoginAt    DateTime?  // When user first logged in (vs when they registered)
+  isOnboarded     Boolean    @default(false) // Whether user completed onboarding flow
 
   // User's photos
   photos         Photo[]

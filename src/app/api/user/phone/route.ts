@@ -52,11 +52,12 @@ export async function PUT(request: Request) {
       );
     }
 
-    // 5) Update the user's phone number
+    // 5) Update the user's phone number and mark as onboarded
     const updatedUser = await prisma.user.update({
       where: { id: userId },
       data: {
         phone: fullPhoneNumber,
+        isOnboarded: true, // Mark user as onboarded when they save phone number
         lastOnlineAt: new Date(), // Update last online time too
       },
       select: {
@@ -64,6 +65,7 @@ export async function PUT(request: Request) {
         email: true,
         name: true,
         phone: true,
+        isOnboarded: true,
         lastOnlineAt: true,
       },
     });

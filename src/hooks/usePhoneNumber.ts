@@ -13,6 +13,7 @@ export type PhoneNumberResponse = {
     email: string;
     name: string | null;
     phone: string | null;
+    isOnboarded: boolean;
     lastOnlineAt: Date | null;
   };
 };
