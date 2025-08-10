@@ -56,7 +56,7 @@ export default function BottomNavigation() {
                     animate={
                       isActive
                         ? animations.variants.nav.activeIcon
-                        : { scale: 1 }
+                        : animations.variants.button.rest
                     }
                   >
                     {item.emoji}
