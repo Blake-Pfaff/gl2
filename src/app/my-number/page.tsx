@@ -7,6 +7,7 @@ import PageTransition from "../components/PageTransition";
 import Dropdown, { DropdownOption } from "../components/Dropdown";
 import { animations } from "@/lib/animations";
 import { APP_NAME } from "@/lib/constants";
+import { useUpdatePhoneNumber } from "@/hooks/usePhoneNumber";
 
 const countryOptions: DropdownOption[] = [
   { value: "IR +98", label: "IR +98", icon: "🇮🇷" },
@@ -22,17 +23,37 @@ const countryOptions: DropdownOption[] = [
 export default function MyNumberPage() {
   const [countryCode, setCountryCode] = useState("IR +98");
   const [phoneNumber, setPhoneNumber] = useState("");
+  const [saveError, setSaveError] = useState<string | null>(null);
   const router = useRouter();
+  const updatePhoneNumber = useUpdatePhoneNumber();
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    // Save phone number (for now just store locally, could save to user profile later)
+    setSaveError(null); // Clear any previous errors
+    
     if (phoneNumber.trim()) {
-      // Store the phone number in localStorage for now
-      localStorage.setItem("userPhoneNumber", `${countryCode} ${phoneNumber}`);
+      try {
+        // Save phone number to database
+        await updatePhoneNumber.mutateAsync({
+          phoneNumber: phoneNumber.trim(),
+          countryCode: countryCode,
+        });
 
-      // Navigate to the main app (users page)
-      router.push("/users");
+        // Success! Navigate to users page
+        router.push("/users");
+      } catch (error: any) {
+        console.error("Failed to save phone number:", error);
+        
+        // Show error message but still allow navigation
+        const errorMessage = error?.message || "Failed to save phone number";
+        setSaveError(errorMessage);
+        
+        // Auto-clear error after 5 seconds and navigate
+        setTimeout(() => {
+          setSaveError(null);
+          router.push("/users");
+        }, 5000);
+      }
     }
   };
 
@@ -223,6 +244,16 @@ export default function MyNumberPage() {
             className="flex-1"
             {...animations.utils.createEntrance(0.4)}
           >
+            {/* Error Message */}
+            {saveError && (
+              <div className="bg-red-50 border border-red-200 rounded-small p-compact mb-4">
+                <p className="text-error text-body">{saveError}</p>
+                <p className="text-muted text-caption mt-1">
+                  Don't worry, you'll still be able to continue to the app.
+                </p>
+              </div>
+            )}
+
             {/* Input Fields */}
             <div className="space-y-4 mb-8">
               {/* Country and Phone Row */}
@@ -280,10 +311,10 @@ export default function MyNumberPage() {
           >
             <button
               onClick={handleSubmit}
-              disabled={!phoneNumber.trim()}
+              disabled={!phoneNumber.trim() || updatePhoneNumber.isPending}
               className="w-full bg-gradient-to-r from-primary-400 to-primary-500 hover:from-primary-500 hover:to-primary-600 text-white font-semibold py-component px-6 rounded-button transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed shadow-lg"
             >
-              Continue
+              {updatePhoneNumber.isPending ? "Saving..." : "Continue"}
             </button>
           </motion.div>
         </div>

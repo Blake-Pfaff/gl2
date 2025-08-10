@@ -134,11 +134,29 @@ describe("My Number Page", () => {
     });
 
     it("navigates on continue button click", () => {
+      // Mock the phone number API call
+      cy.intercept("PUT", "**/api/user/phone", {
+        statusCode: 200,
+        body: {
+          message: "Phone number updated successfully",
+          user: {
+            id: "test-user",
+            email: "test@example.com",
+            name: "Test User",
+            phone: "IR +98 912 752 99 26",
+            lastOnlineAt: new Date().toISOString()
+          }
+        }
+      }).as("updatePhone");
+
       // Enter a phone number
       cy.get('input[type="tel"]').type("9127529926");
 
       // Click continue button
       cy.get("button").contains("Continue").click();
+
+      // Wait for the API call
+      cy.wait("@updatePhone");
 
       // Should navigate to users page
       cy.url().should("include", "/users");
@@ -290,14 +308,37 @@ describe("My Number Page", () => {
     });
 
     it("shows loading state during form submission", () => {
+      // Mock a slow API response to test loading state
+      cy.intercept("PUT", "**/api/user/phone", {
+        statusCode: 200,
+        body: {
+          message: "Phone number updated successfully",
+          user: {
+            id: "test-user",
+            email: "test@example.com", 
+            name: "Test User",
+            phone: "IR +98 912 752 99 26",
+            lastOnlineAt: new Date().toISOString()
+          }
+        },
+        delay: 1000 // 1 second delay to test loading state
+      }).as("slowUpdatePhone");
+
       // Enter phone number
       cy.get('input[type="tel"]').type("9127529926");
 
       // Verify button is enabled
       cy.get("button").contains("Continue").should("not.be.disabled");
 
-      // Click continue - it should navigate (tested in other test)
+      // Click continue button
       cy.get("button").contains("Continue").click();
+
+      // Should show loading state
+      cy.get("button").contains("Saving...").should("be.visible");
+      cy.get("button").should("be.disabled");
+
+      // Wait for API call to complete
+      cy.wait("@slowUpdatePhone");
 
       // Should navigate to users page
       cy.url().should("include", "/users");
