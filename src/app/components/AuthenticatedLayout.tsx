@@ -25,13 +25,13 @@ export default function AuthenticatedLayout({
     );
   }
 
-  // If not authenticated, this should be handled by middleware/ProtectedPage
-  // But as a fallback, we'll show a simple message
+  // If not authenticated, this should be handled by page-level redirects
+  // This is now just a safety fallback
   if (!session) {
     return (
       <div className="min-h-screen bg-gray-50 flex items-center justify-center">
         <div className="text-center">
-          <p className="text-secondary">Please log in to access this page.</p>
+          <p className="text-secondary">Authentication required</p>
         </div>
       </div>
     );

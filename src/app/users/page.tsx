@@ -5,15 +5,21 @@ import AuthenticatedLayout from "../components/AuthenticatedLayout";
 import UsersGrid from "../components/UsersGrid";
 
 export default async function UserIndexPage() {
-  // Protect this page with authentication
   const session = await getServerSession(authOptions);
-  if (!session) redirect("/login");
 
-  // Redirect to onboarding for test account or when not onboarded
+  // If no session, redirect to login
+  if (!session) {
+    redirect("/login");
+  }
+
+  // Check onboarding status
   const needsOnboarding =
-    session.user.email?.toLowerCase() === "test@test.com" ||
+    session.user.email === "test@test.com" ||
     session.user.isOnboarded === false;
-  if (needsOnboarding) redirect("/onboarding-one");
+
+  if (needsOnboarding) {
+    redirect("/onboarding-one");
+  }
 
   return (
     <AuthenticatedLayout>

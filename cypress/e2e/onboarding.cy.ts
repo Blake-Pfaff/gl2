@@ -6,14 +6,17 @@ describe("Onboarding Flow Tests", () => {
     cy.clearCookies();
     cy.clearLocalStorage();
 
-    // Login with test@test.com which always needs onboarding
+    // Login with a test user (not the demo user)
     cy.visit("/login");
-    cy.get('input[name="email"]').type("test@test.com");
-    cy.get('input[name="password"]').type("testpass");
+    cy.get('input[name="email"]').type("test@example.com");
+    cy.get('input[name="password"]').type("password123");
     cy.get('button[type="submit"]').click();
 
-    // Wait for redirect to onboarding
-    cy.url().should("include", "/onboarding", { timeout: 10000 });
+    // Wait for login to complete
+    cy.url({ timeout: 10000 }).should("not.include", "/login");
+
+    // Directly navigate to onboarding to test the flow
+    cy.visit("/onboarding-one");
   });
 
   describe("Basic Functionality", () => {

@@ -100,6 +100,15 @@ export const authOptions: NextAuthOptions = {
       if (tokenEmail === "test@test.com") {
         token.isOnboarded = false;
       }
+
+      // Debug logging
+      console.log(`🔍 JWT TOKEN DEBUG for ${tokenEmail}:`, {
+        id: token.id,
+        email: tokenEmail,
+        isOnboarded: token.isOnboarded,
+        isFirstLogin: token.isFirstLogin,
+      });
+
       return token;
     },
     async session({ session, token }) {

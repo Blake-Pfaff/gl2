@@ -1,4 +1,3 @@
-// app/page.tsx
 import { getServerSession } from "next-auth/next";
 import { authOptions } from "@/app/api/auth/[...nextauth]/route";
 import { redirect } from "next/navigation";
@@ -6,15 +5,28 @@ import AuthenticatedLayout from "./components/AuthenticatedLayout";
 
 export default async function HomePage() {
   const session = await getServerSession(authOptions);
-  if (!session) redirect("/login");
 
-  // Force onboarding for the test account and anyone not onboarded
+  // If no session, redirect to login
+  if (!session) {
+    redirect("/login");
+  }
+
+  // Check onboarding status
   const needsOnboarding =
-    session.user.email?.toLowerCase() === "test@test.com" ||
+    session.user.email === "test@test.com" ||
     session.user.isOnboarded === false;
-  if (needsOnboarding) redirect("/onboarding-one");
 
-  // if you ever want a true "landing" behind login, you can show it here
+  console.log(`🏠 HOME PAGE CHECK for ${session.user.email}:`, {
+    isOnboarded: session.user.isOnboarded,
+    needsOnboarding,
+    action: needsOnboarding ? "REDIRECT TO ONBOARDING" : "SHOW HOME",
+  });
+
+  if (needsOnboarding) {
+    console.log(`🔄 REDIRECTING ${session.user.email} to onboarding`);
+    redirect("/onboarding-one");
+  }
+
   return (
     <AuthenticatedLayout>
       <div className="flex flex-col items-center justify-center p-component min-h-[calc(100vh-8rem)]">
@@ -29,7 +41,7 @@ export default async function HomePage() {
             </div>
             <div className="text-body text-muted">
               Logged in as:{" "}
-              <span className="font-medium">{session.user?.email}</span>
+              <span className="font-medium">{session.user.email}</span>
             </div>
           </div>
         </div>
