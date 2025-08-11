@@ -3,23 +3,48 @@ import { withAuth } from "next-auth/middleware";
 
 export default withAuth(
   function middleware(req) {
-    // Log which routes are being protected for debugging
-    console.log("Middleware protecting:", req.nextUrl.pathname);
+    // Redirect onboarding flows based on token flags and special user rule
+    const pathname = req.nextUrl.pathname;
+    // Always allow auth pages
+    if (pathname.startsWith("/login") || pathname.startsWith("/register")) {
+      return;
+    }
+    const isOnboardingRoute = pathname.startsWith("/onboarding");
+    const token = req.nextauth?.token as
+      | (import("next-auth/jwt").JWT & {
+          email?: string;
+          isOnboarded?: boolean;
+        })
+      | null;
+
+    // If no token, let withAuth handle redirect to /login
+    if (!token) {
+      return;
+    }
+
+    const forceOnboarding = token?.email === "test@test.com";
+    const needsOnboarding = forceOnboarding || token?.isOnboarded === false;
+
+    // If user needs onboarding, always keep them on onboarding pages
+    if (needsOnboarding && !isOnboardingRoute) {
+      const url = req.nextUrl.clone();
+      url.pathname = "/onboarding-one";
+      return Response.redirect(url);
+    }
+
+    // If user is already onboarded (and not the forced account), prevent visiting onboarding
+    if (!needsOnboarding && isOnboardingRoute) {
+      const url = req.nextUrl.clone();
+      url.pathname = "/users";
+      return Response.redirect(url);
+    }
   },
   {
     callbacks: {
-      authorized: ({ token, req }) => {
-        // Return true if user is authenticated
-        const isAuthorized = !!token;
-        console.log(
-          `Authorization check for ${req.nextUrl.pathname}:`,
-          isAuthorized ? "ALLOWED" : "DENIED"
-        );
-        return isAuthorized;
-      },
+      authorized: ({ token }) => !!token, // authenticated users only
     },
     pages: {
-      signIn: "/login", // NextAuth will send unauth'd users here
+      signIn: "/login",
     },
   }
 );

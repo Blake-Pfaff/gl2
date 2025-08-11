@@ -8,6 +8,12 @@ export default async function HomePage() {
   const session = await getServerSession(authOptions);
   if (!session) redirect("/login");
 
+  // Force onboarding for the test account and anyone not onboarded
+  const needsOnboarding =
+    session.user.email?.toLowerCase() === "test@test.com" ||
+    session.user.isOnboarded === false;
+  if (needsOnboarding) redirect("/onboarding-one");
+
   // if you ever want a true "landing" behind login, you can show it here
   return (
     <AuthenticatedLayout>

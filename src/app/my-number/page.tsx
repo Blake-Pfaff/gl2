@@ -196,7 +196,7 @@ export default function MyNumberPage() {
       <div className="min-h-screen bg-gray-50">
         {/* Status bar mockup */}
         <div className="flex justify-between items-center px-page-x pt-4 pb-2 text-secondary text-body">
-          <span>4:20 A.M</span>
+          <span>1:30 P.M</span>
           <div className="flex items-center gap-1">
             <div className="flex gap-1">
               <div className="w-1 h-3 bg-gray-900 rounded-full"></div>

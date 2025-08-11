@@ -21,7 +21,7 @@ export function MobileHeader({
     <>
       {showStatusBar && (
         <div className="flex justify-between items-center px-page-x pt-4 pb-2 text-primary text-body">
-          <span>4:20 AM</span>
+          <span>1:30 P.M</span>
           <div className="flex items-center gap-1">
             <div className="flex gap-1">
               <div className="w-1 h-3 bg-gray-800 rounded-full"></div>

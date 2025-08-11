@@ -9,6 +9,12 @@ export default async function UserIndexPage() {
   const session = await getServerSession(authOptions);
   if (!session) redirect("/login");
 
+  // Redirect to onboarding for test account or when not onboarded
+  const needsOnboarding =
+    session.user.email?.toLowerCase() === "test@test.com" ||
+    session.user.isOnboarded === false;
+  if (needsOnboarding) redirect("/onboarding-one");
+
   return (
     <AuthenticatedLayout>
       <div className="p-component">

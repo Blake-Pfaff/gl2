@@ -25,7 +25,7 @@ describe("My Number Page", () => {
       cy.contains("My number is").should("be.visible");
 
       // Check status bar mockup
-      cy.contains("4:20 A.M").should("be.visible");
+      cy.contains("1:30 P.M").should("be.visible");
 
       // Check back button exists
       cy.get("button").first().should("be.visible");

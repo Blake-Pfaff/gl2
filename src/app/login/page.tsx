@@ -57,7 +57,7 @@ export default function LoginPage() {
         <div className="bg-gradient-to-b from-primary-800 via-primary-600 to-primary-300 pb-20">
           {/* Status bar mockup */}
           <div className="flex justify-between items-center px-page-x pt-4 pb-2 text-white text-body">
-            <span>4:20 AM</span>
+            <span>1:30 P.M AM</span>
             <div className="flex items-center gap-1">
               <div className="flex gap-1">
                 <div className="w-1 h-3 bg-white rounded-full"></div>

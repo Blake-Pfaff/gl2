@@ -31,10 +31,13 @@ export const authOptions: NextAuthOptions = {
   ],
   session: { strategy: "jwt" },
   callbacks: {
-    async jwt({ token, user }) {
+    async jwt({ token, user, trigger }) {
       // Persist the user ID in the token when the user signs in
       if (user) {
         token.id = user.id;
+        // Ensure email is available on the token for middleware logic
+        // NextAuth typically includes it, but we set it defensively
+        (token as any).email = (user as any).email;
 
         // Track first login when user signs in
         try {
@@ -73,6 +76,29 @@ export const authOptions: NextAuthOptions = {
           token.isFirstLogin = false;
           token.isOnboarded = false;
         }
+      }
+
+      // If session is being updated (e.g., when user completes onboarding)
+      // refresh the user data from the database
+      if (trigger === "update" && token.id) {
+        try {
+          const dbUser = await prisma.user.findUnique({
+            where: { id: token.id as string },
+            select: { isOnboarded: true },
+          });
+
+          if (dbUser) {
+            token.isOnboarded = dbUser.isOnboarded;
+          }
+        } catch (error) {
+          console.error("Error refreshing user data:", error);
+        }
+      }
+
+      // Force special test account to always require onboarding
+      const tokenEmail: string | undefined = (token as any).email;
+      if (tokenEmail === "test@test.com") {
+        token.isOnboarded = false;
       }
       return token;
     },

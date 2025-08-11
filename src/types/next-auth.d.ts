@@ -22,5 +22,6 @@ declare module "next-auth/jwt" {
     id: string;
     isFirstLogin: boolean;
     isOnboarded: boolean;
+    email?: string;
   }
 }
