@@ -27,10 +27,10 @@ describe("Register flow", () => {
     cy.get("h1").contains("Sign Up");
 
     // Check all form fields exist
+    cy.get('input[name="email"]').should("exist");
     cy.get('input[name="username"]').should("exist");
     cy.get('input[name="password"]').should("exist");
     cy.get('input[name="confirmPassword"]').should("exist");
-    cy.get('input[name="email"]').should("exist");
 
     // Check gender selection exists
     cy.get('input[type="radio"][value="male"]').should("exist");
@@ -61,8 +61,8 @@ describe("Register flow", () => {
     cy.get("form").invoke("attr", "novalidate", "novalidate");
 
     // Fill other required fields first
-    cy.get('input[name="username"]').type("testuser");
     cy.get('input[name="email"]').type("test@example.com");
+    cy.get('input[name="username"]').type("testuser");
     cy.get('input[type="radio"][value="male"]').check();
 
     cy.get('input[name="password"]').type("123");
@@ -78,8 +78,8 @@ describe("Register flow", () => {
     cy.get("form").invoke("attr", "novalidate", "novalidate");
 
     // Fill required fields first
-    cy.get('input[name="username"]').type("testuser");
     cy.get('input[name="email"]').type("test@example.com");
+    cy.get('input[name="username"]').type("testuser");
     cy.get('input[type="radio"][value="male"]').check();
 
     cy.get('input[name="password"]').type("password123");
@@ -137,10 +137,10 @@ describe("Register flow", () => {
     }).as("signupRequest");
 
     // Fill out the form with valid data
+    cy.get('input[name="email"]').type("test@example.com");
     cy.get('input[name="username"]').type("testuser");
     cy.get('input[name="password"]').type("password123");
     cy.get('input[name="confirmPassword"]').type("password123");
-    cy.get('input[name="email"]').type("test@example.com");
     cy.get('input[type="radio"][value="male"]').check();
 
     // Submit the form
@@ -169,10 +169,10 @@ describe("Register flow", () => {
     }).as("signupError");
 
     // Fill out the form with valid data
+    cy.get('input[name="email"]').type("existing@example.com");
     cy.get('input[name="username"]').type("testuser");
     cy.get('input[name="password"]').type("password123");
     cy.get('input[name="confirmPassword"]').type("password123");
-    cy.get('input[name="email"]').type("existing@example.com");
     cy.get('input[type="radio"][value="female"]').check();
 
     // Submit the form
@@ -195,10 +195,10 @@ describe("Register flow", () => {
     }).as("slowSignup");
 
     // Fill out the form
+    cy.get('input[name="email"]').type("test@example.com");
     cy.get('input[name="username"]').type("testuser");
     cy.get('input[name="password"]').type("password123");
     cy.get('input[name="confirmPassword"]').type("password123");
-    cy.get('input[name="email"]').type("test@example.com");
     cy.get('input[type="radio"][value="none"]').check();
 
     // Submit the form
@@ -232,10 +232,10 @@ describe("Register flow", () => {
     }).as("completeSignup");
 
     // Fill all fields correctly
+    cy.get('input[name="email"]').type("valid.email@example.com");
     cy.get('input[name="username"]').type("validuser123");
     cy.get('input[name="password"]').type("securepassword123");
     cy.get('input[name="confirmPassword"]').type("securepassword123");
-    cy.get('input[name="email"]').type("valid.email@example.com");
     cy.get('input[type="radio"][value="female"]').check();
 
     // All validation errors should be cleared

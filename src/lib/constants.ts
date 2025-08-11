@@ -21,7 +21,6 @@ export const APP_CONFIG = {
   // Validation Rules
   validation: {
     passwordMinLength: 6,
-    usernameMinLength: 3,
     phoneMaxLength: 15,
   },
 
@@ -41,6 +40,5 @@ export const { features: FEATURES } = APP_CONFIG;
 // Export individual values for convenience
 export const {
   passwordMinLength: MIN_PASSWORD_LENGTH,
-  usernameMinLength: MIN_USERNAME_LENGTH,
   phoneMaxLength: MAX_PHONE_LENGTH,
 } = VALIDATION_RULES;

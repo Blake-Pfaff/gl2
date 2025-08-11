@@ -7,22 +7,40 @@ import nodemailer from "nodemailer";
 const prisma = new PrismaClient();
 
 export async function POST(request: Request) {
-  const { email, password, name, bio } = await request.json();
+  const { email, password, name, username, bio } = await request.json();
   if (!email || !password) {
     return NextResponse.json(
       { error: "Email & password required" },
       { status: 400 }
     );
   }
-  const exists = await prisma.user.findUnique({ where: { email } });
-  if (exists) {
-    return NextResponse.json({ error: "User already exists" }, { status: 409 });
+
+  // Check if email already exists
+  const emailExists = await prisma.user.findUnique({ where: { email } });
+  if (emailExists) {
+    return NextResponse.json(
+      { error: "Email already exists" },
+      { status: 409 }
+    );
+  }
+
+  // Check if username already exists (if provided)
+  if (username) {
+    const usernameExists = await prisma.user.findUnique({
+      where: { username },
+    });
+    if (usernameExists) {
+      return NextResponse.json(
+        { error: "Username already exists" },
+        { status: 409 }
+      );
+    }
   }
 
   // create the user
   const hashedPassword = await bcrypt.hash(password, 10);
   const user = await prisma.user.create({
-    data: { email, name, bio, hashedPassword },
+    data: { email, name, username, bio, hashedPassword },
   });
 
   // create an Ethereal test account and transporter

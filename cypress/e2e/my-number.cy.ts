@@ -41,10 +41,7 @@ describe("My Number Page", () => {
       cy.contains(APP_NAME).should("be.visible");
 
       // Check continue button exists but is disabled initially
-      cy.get("button")
-        .contains("Continue")
-        .should("be.visible")
-        .and("be.disabled");
+      cy.get("button[disabled]").contains("Continue").should("be.visible");
     });
 
     it("displays country dropdown correctly", () => {
@@ -118,19 +115,19 @@ describe("My Number Page", () => {
 
     it("enables continue button when phone number is entered", () => {
       // Initially button should be disabled
-      cy.get("button").contains("Continue").should("be.disabled");
+      cy.get("button[disabled]").contains("Continue").should("exist");
 
       // Enter a phone number
       cy.get('input[type="tel"]').type("9127529926");
 
       // Button should now be enabled
-      cy.get("button").contains("Continue").should("not.be.disabled");
+      cy.get("button:not([disabled])").contains("Continue").should("exist");
 
       // Clear the input
       cy.get('input[type="tel"]').clear();
 
       // Button should be disabled again
-      cy.get("button").contains("Continue").should("be.disabled");
+      cy.get("button[disabled]").contains("Continue").should("exist");
     });
 
     it("navigates on continue button click", () => {
@@ -159,8 +156,8 @@ describe("My Number Page", () => {
       // Wait for the API call
       cy.wait("@updatePhone");
 
-      // Should navigate to users page
-      cy.url().should("include", "/users");
+      // Should navigate to verification page
+      cy.url().should("include", "/verification");
     });
 
     it("back button navigation works", () => {
@@ -191,10 +188,10 @@ describe("My Number Page", () => {
       }).as("signupRequest");
 
       // Fill out the registration form
+      cy.get('input[name="email"]').type("test@example.com");
       cy.get('input[name="username"]').type("testuser");
       cy.get('input[name="password"]').type("password123");
       cy.get('input[name="confirmPassword"]').type("password123");
-      cy.get('input[name="email"]').type("test@example.com");
       cy.get('input[type="radio"][value="male"]').check();
 
       // Submit the form
@@ -224,7 +221,7 @@ describe("My Number Page", () => {
 
       // Should be limited to maxLength (15 characters including spaces)
       phoneInput.invoke("val").then((val) => {
-        expect(val.toString().length).to.be.at.most(15);
+        expect(val?.toString().length).to.be.at.most(15);
       });
     });
 
@@ -298,7 +295,7 @@ describe("My Number Page", () => {
       cy.get('input[type="tel"]').type("9127529926");
 
       // Now the continue button should be focusable
-      cy.get("button").contains("Continue").focus();
+      cy.get("button:not([disabled])").contains("Continue").focus();
       cy.focused().should("contain", "Continue");
     });
   });
@@ -342,8 +339,8 @@ describe("My Number Page", () => {
       // Wait for API call to complete
       cy.wait("@slowUpdatePhone");
 
-      // Should navigate to users page
-      cy.url().should("include", "/users");
+      // Should navigate to verification page
+      cy.url().should("include", "/verification");
     });
 
     it("dropdown opens and closes with animations", () => {

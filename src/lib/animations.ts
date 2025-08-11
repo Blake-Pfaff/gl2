@@ -292,6 +292,84 @@ export const createHover = (lift: number = -6) => ({
 });
 
 // =============================================================================
+// PHONE INPUT ANIMATIONS - For phone number entry flow
+// =============================================================================
+
+export const phoneInputVariants = {
+  // Back button with perfect spring feedback
+  backButton: {
+    rest: { scale: 1 },
+    hover: { scale: 1.05 },
+    tap: { scale: 0.95 },
+  },
+
+  // Form container entrance
+  formContainer: {
+    initial: { opacity: 0, y: 24 }, // section spacing
+    animate: { opacity: 1, y: 0 },
+    transition: transitions.smooth,
+  },
+
+  // Input field focus states
+  inputFocus: {
+    initial: { borderColor: "var(--color-primary-300)" },
+    focus: {
+      borderColor: "var(--color-primary-400)",
+      scale: 1.01,
+    },
+    blur: {
+      borderColor: "var(--color-primary-300)",
+      scale: 1,
+    },
+  },
+} as const;
+
+// =============================================================================
+// VERIFICATION ANIMATIONS - For code input and keypad
+// =============================================================================
+
+export const verificationVariants = {
+  // Code digit animation with spring bounce
+  codeDigit: {
+    empty: {
+      scale: 1,
+      borderColor: "rgb(var(--primary-300))",
+    },
+    filled: {
+      scale: 1.1,
+      borderColor: "rgb(var(--primary-400))",
+    },
+    transition: {
+      type: "spring",
+      stiffness: 300,
+      damping: 20,
+    },
+  },
+
+  // Digit text entrance
+  digitText: {
+    initial: { scale: 0, opacity: 0 },
+    animate: { scale: 1, opacity: 1 },
+    transition: { type: "spring", stiffness: 500, damping: 30 },
+  },
+
+  // Keypad button interactions
+  keypadButton: {
+    rest: { scale: 1 },
+    hover: { scale: 1.05 },
+    tap: { scale: 0.9 },
+    transition: { type: "spring", stiffness: 400, damping: 17 },
+  },
+
+  // Keypad container entrance
+  keypadContainer: {
+    initial: { opacity: 0, y: 24, scale: 0.95 },
+    animate: { opacity: 1, y: 0, scale: 1 },
+    transition: transitions.smooth,
+  },
+} as const;
+
+// =============================================================================
 // PRESET COMBINATIONS - Common animation patterns
 // =============================================================================
 
@@ -345,6 +423,8 @@ export const animations = {
     nav: navVariants,
     grid: gridVariants,
     dropdown: dropdownVariants,
+    phoneInput: phoneInputVariants,
+    verification: verificationVariants,
   },
   stagger,
   presets,

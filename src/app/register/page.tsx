@@ -14,9 +14,9 @@ import { MIN_PASSWORD_LENGTH } from "@/lib/constants";
 
 type SignUpForm = {
   email: string;
+  username: string;
   password: string;
   confirmPassword: string;
-  username: string;
   gender: "male" | "female" | "none";
 };
 
@@ -34,45 +34,51 @@ export default function RegisterPage() {
   const [serverError, setServerError] = useState<string | null>(null);
   const [previewUrl, setPreviewUrl] = useState<string | null>(null);
 
-  const signup = useApiMutation<SignUpResponse, SignUpForm>(
-    "/api/auth/signup",
-    "POST",
-    {
-      onSuccess: async (data, variables) => {
-        if (data?.preview) setPreviewUrl(data.preview);
+  const signup = useApiMutation<
+    SignUpResponse,
+    SignUpForm & { name: string; username: string }
+  >("/api/auth/signup", "POST", {
+    onSuccess: async (data, variables) => {
+      if (data?.preview) setPreviewUrl(data.preview);
 
-        // Auto-login the user after successful registration
-        try {
-          const result = await signIn("credentials", {
-            redirect: false,
-            email: variables.email,
-            password: variables.password,
-          });
+      // Auto-login the user after successful registration
+      try {
+        const result = await signIn("credentials", {
+          redirect: false,
+          email: variables.email,
+          password: variables.password,
+        });
 
-          if (result?.error) {
-            console.error("Auto-login failed:", result.error);
-            // If auto-login fails, still redirect but they'll need to login manually
-            setTimeout(() => router.push("/login"), 1000);
-          } else {
-            // Success! Proceed to my-number page
-            setTimeout(() => router.push("/my-number"), 1000);
-          }
-        } catch (error) {
-          console.error("Auto-login error:", error);
-          // Fallback to login page if something goes wrong
+        if (result?.error) {
+          console.error("Auto-login failed:", result.error);
+          // If auto-login fails, still redirect but they'll need to login manually
           setTimeout(() => router.push("/login"), 1000);
+        } else {
+          // Success! Proceed to my-number page
+          setTimeout(() => router.push("/my-number"), 1000);
         }
-      },
-      onError: (e: any) => setServerError(e?.message ?? "Registration failed"),
-    }
-  );
+      } catch (error) {
+        console.error("Auto-login error:", error);
+        // Fallback to login page if something goes wrong
+        setTimeout(() => router.push("/login"), 1000);
+      }
+    },
+    onError: (e: any) => setServerError(e?.message ?? "Registration failed"),
+  });
 
   const password = watch("password");
 
   const onSubmit: SubmitHandler<SignUpForm> = async (data) => {
     setServerError(null);
     setPreviewUrl(null);
-    await signup.mutateAsync(data);
+
+    // Use username as the display name
+    const signupData = {
+      ...data,
+      name: data.username, // Use username as display name
+    };
+
+    await signup.mutateAsync(signupData);
   };
 
   return (
@@ -90,11 +96,36 @@ export default function RegisterPage() {
             )}
 
             <FormField
+              label="E-mail"
+              type="email"
+              icon={<EmailIcon />}
+              error={errors.email?.message}
+              {...register("email", {
+                required: "Email is required",
+                pattern: {
+                  value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
+                  message: "Invalid email address",
+                },
+              })}
+            />
+
+            <FormField
               label="Username"
               type="text"
               icon={<UserIcon />}
               error={errors.username?.message}
-              {...register("username", { required: "Username is required" })}
+              {...register("username", {
+                required: "Username is required",
+                minLength: {
+                  value: 3,
+                  message: "Username must be at least 3 characters",
+                },
+                pattern: {
+                  value: /^[a-zA-Z0-9_]+$/,
+                  message:
+                    "Username can only contain letters, numbers, and underscores",
+                },
+              })}
             />
 
             <FormField
@@ -120,20 +151,6 @@ export default function RegisterPage() {
                 required: "Please confirm your password",
                 validate: (value) =>
                   value === password || "Passwords do not match",
-              })}
-            />
-
-            <FormField
-              label="E-mail"
-              type="email"
-              icon={<EmailIcon />}
-              error={errors.email?.message}
-              {...register("email", {
-                required: "Email is required",
-                pattern: {
-                  value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
-                  message: "Invalid email address",
-                },
               })}
             />
 

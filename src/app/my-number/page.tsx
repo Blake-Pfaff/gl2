@@ -32,26 +32,37 @@ export default function MyNumberPage() {
     setSaveError(null); // Clear any previous errors
 
     if (phoneNumber.trim()) {
+      const fullPhoneNumber = `${countryCode} ${phoneNumber.trim()}`;
+
       try {
-        // Save phone number to database
+        // Save phone number to database with optimistic navigation
         await updatePhoneNumber.mutateAsync({
           phoneNumber: phoneNumber.trim(),
           countryCode: countryCode,
         });
 
-        // Success! Navigate to users page
-        router.push("/users");
+        // Success! Store phone number securely and navigate to verification page
+        sessionStorage.setItem("verificationPhone", fullPhoneNumber);
+        router.push("/verification");
       } catch (error: any) {
         console.error("Failed to save phone number:", error);
 
-        // Show error message but still allow navigation
-        const errorMessage = error?.message || "Failed to save phone number";
+        // Enhanced error handling with specific messages
+        const errorMessage =
+          error?.status === 409
+            ? "This phone number is already registered to another account"
+            : error?.status === 400
+            ? "Please enter a valid phone number"
+            : error?.message || "Failed to save phone number";
+
         setSaveError(errorMessage);
 
-        // Auto-clear error after 5 seconds and navigate
+        // Auto-clear error after 5 seconds and navigate to verification
+        // (Allow user to continue even if save failed - offline-first approach)
         setTimeout(() => {
           setSaveError(null);
-          router.push("/users");
+          sessionStorage.setItem("verificationPhone", fullPhoneNumber);
+          router.push("/verification");
         }, 5000);
       }
     }
@@ -210,9 +221,12 @@ export default function MyNumberPage() {
         <div className="flex items-center px-page-x pt-4 pb-6">
           <motion.button
             onClick={() => router.back()}
-            className="w-12 h-12 bg-primary-400 rounded-full flex items-center justify-center shadow-lg mr-4"
-            whileHover={{ scale: 1.05 }}
-            whileTap={{ scale: 0.95 }}
+            className="w-12 h-12 bg-primary-400 rounded-button flex items-center justify-center shadow-lg mr-4"
+            variants={animations.variants.phoneInput.backButton}
+            initial="rest"
+            whileHover="hover"
+            whileTap="tap"
+            transition={animations.transitions.fast}
           >
             <svg
               className="w-6 h-6 text-white"
@@ -246,18 +260,23 @@ export default function MyNumberPage() {
           >
             {/* Error Message */}
             {saveError && (
-              <div className="bg-red-50 border border-red-200 rounded-small p-compact mb-4">
+              <motion.div
+                className="bg-red-50 border border-red-200 rounded-small p-compact mb-4"
+                initial={{ opacity: 0, scale: 0.95 }}
+                animate={{ opacity: 1, scale: 1 }}
+                transition={animations.transitions.fast}
+              >
                 <p className="text-error text-body">{saveError}</p>
                 <p className="text-muted text-caption mt-1">
                   Don't worry, you'll still be able to continue to the app.
                 </p>
-              </div>
+              </motion.div>
             )}
 
             {/* Input Fields */}
-            <div className="space-y-4 mb-8">
+            <div className="space-y-component mb-section">
               {/* Country and Phone Row */}
-              <div className="flex gap-4">
+              <div className="flex gap-component">
                 {/* Country Code */}
                 <div className="w-36">
                   <Dropdown
@@ -271,16 +290,18 @@ export default function MyNumberPage() {
 
                 {/* Phone Number */}
                 <div className="flex-1">
-                  <label className="block text-body font-medium text-muted mb-3">
+                  <label className="block text-body font-medium text-muted mb-compact">
                     Phone
                   </label>
-                  <input
+                  <motion.input
                     type="tel"
                     value={phoneNumber}
                     onChange={handlePhoneChange}
                     placeholder={getPlaceholderText(countryCode)}
-                    className="w-full px-4 py-4 bg-white border-2 border-primary-300 rounded-small focus:border-primary-400 focus:outline-none focus:ring-0 transition-all duration-200 placeholder-gray-400 text-secondary font-medium shadow-sm"
+                    className="w-full px-component py-component bg-white border-2 border-primary-300 rounded-small focus:border-primary-400 focus:outline-none focus:ring-0 transition-all duration-200 placeholder-gray-400 text-secondary font-medium shadow-sm"
                     maxLength={15}
+                    whileFocus={{ scale: 1.01 }}
+                    transition={animations.transitions.fast}
                   />
                 </div>
               </div>
@@ -309,13 +330,29 @@ export default function MyNumberPage() {
             className="pt-8"
             {...animations.utils.createEntrance(0.6)}
           >
-            <button
+            <motion.button
               onClick={handleSubmit}
               disabled={!phoneNumber.trim() || updatePhoneNumber.isPending}
-              className="w-full bg-gradient-to-r from-primary-400 to-primary-500 hover:from-primary-500 hover:to-primary-600 text-white font-semibold py-component px-6 rounded-button transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed shadow-lg"
+              className="w-full bg-gradient-to-r from-primary-400 to-primary-500 hover:from-primary-500 hover:to-primary-600 text-white font-semibold py-component px-component rounded-button transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed shadow-lg"
+              whileHover={!updatePhoneNumber.isPending ? { scale: 1.02 } : {}}
+              whileTap={!updatePhoneNumber.isPending ? { scale: 0.98 } : {}}
+              transition={animations.transitions.fast}
             >
-              {updatePhoneNumber.isPending ? "Saving..." : "Continue"}
-            </button>
+              <span className="flex items-center justify-center">
+                {updatePhoneNumber.isPending && (
+                  <motion.div
+                    className="w-4 h-4 border-2 border-white border-t-transparent rounded-full mr-2"
+                    animate={{ rotate: 360 }}
+                    transition={{
+                      duration: 1,
+                      repeat: Infinity,
+                      ease: "linear",
+                    }}
+                  />
+                )}
+                {updatePhoneNumber.isPending ? "Saving..." : "Continue"}
+              </span>
+            </motion.button>
           </motion.div>
         </div>
       </div>
