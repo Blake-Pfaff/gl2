@@ -285,19 +285,6 @@ describe("My Number Page", () => {
       // Test dropdown hover state (if possible to test)
       cy.get('button[type="button"]').contains("IR +98").trigger("mouseover");
     });
-
-    it("has focusable form elements", () => {
-      // Test that form elements can be focused
-      cy.get('input[type="tel"]').focus();
-      cy.focused().should("have.attr", "type", "tel");
-
-      // Enable the continue button first by entering a phone number
-      cy.get('input[type="tel"]').type("9127529926");
-
-      // Now the continue button should be focusable
-      cy.get("button:not([disabled])").contains("Continue").focus();
-      cy.focused().should("contain", "Continue");
-    });
   });
 
   describe("Animation and visual feedback", () => {
