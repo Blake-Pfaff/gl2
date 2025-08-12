@@ -441,9 +441,45 @@ async function main() {
       },
     });
 
+    // Create test@example.com user for testing (onboarded)
+    const testExampleUser = await prisma.user.upsert({
+      where: { email: "test@example.com" },
+      update: {
+        name: "Example User",
+        username: "exampleuser",
+        jobTitle: "Software Engineer",
+        bio: "I'm a test user for testing. Love hiking and coffee!",
+        birthdate: new Date("1990-01-15"),
+        phone: "+1-555-9999",
+        gender: "NON_BINARY",
+        lookingFor: "EVERYONE",
+        lastOnlineAt: faker.date.recent({ days: 1 }),
+        locationLabel: "San Francisco, CA",
+        hashedPassword,
+        isOnboarded: true,
+        firstLoginAt: new Date(),
+      },
+      create: {
+        email: "test@example.com",
+        name: "Example User",
+        username: "exampleuser",
+        jobTitle: "Software Engineer",
+        bio: "I'm a test user for testing. Love hiking and coffee!",
+        birthdate: new Date("1990-01-15"),
+        phone: "+1-555-9999",
+        gender: "NON_BINARY",
+        lookingFor: "EVERYONE",
+        lastOnlineAt: faker.date.recent({ days: 1 }),
+        locationLabel: "San Francisco, CA",
+        hashedPassword,
+        isOnboarded: true,
+        firstLoginAt: new Date(),
+      },
+    });
+
     // Create remaining users
-    const otherUsers = await createUsers(NUM_USERS - 1);
-    const users = [testUser, ...otherUsers];
+    const otherUsers = await createUsers(NUM_USERS - 2);
+    const users = [testUser, testExampleUser, ...otherUsers];
     await createUserLocations(users);
     await createPhotos(users);
     const interactions = await createInteractions(users);

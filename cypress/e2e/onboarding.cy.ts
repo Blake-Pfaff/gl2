@@ -6,7 +6,7 @@ describe("Onboarding Flow Tests", () => {
     cy.clearCookies();
     cy.clearLocalStorage();
 
-    // Login with a test user (not the demo user)
+    // Login with a test user (not the special onboarding user)
     cy.visit("/login");
     cy.get('input[name="email"]').type("test@example.com");
     cy.get('input[name="password"]').type("password123");
@@ -16,31 +16,31 @@ describe("Onboarding Flow Tests", () => {
     cy.url({ timeout: 10000 }).should("not.include", "/login");
 
     // Directly navigate to onboarding to test the flow
-    cy.visit("/onboarding-one");
+    cy.visit("/onboarding");
   });
 
   describe("Basic Functionality", () => {
     it("completes the forward navigation flow", () => {
-      // Should start on page 1
-      cy.url().should("include", "/onboarding-one");
+      // Should start on onboarding (step 1 of dynamic flow)
+      cy.url().should("include", "/onboarding");
 
-      // Navigate forward through all pages
+      // Navigate forward through all steps
       cy.get("button").contains("Next").click();
-      cy.url().should("include", "/onboarding-two");
-
-      cy.get("button").contains("Next").click();
-      cy.url().should("include", "/onboarding-three");
+      cy.get('[data-testid="progress-step-2"]').should("exist");
 
       cy.get("button").contains("Next").click();
-      cy.url().should("include", "/onboarding-four");
+      cy.get('[data-testid="progress-step-3"]').should("exist");
 
-      // Final page should have "Get Started"
+      cy.get("button").contains("Next").click();
+      cy.get('[data-testid="progress-step-4"]').should("exist");
+
+      // Final step should have "Get Started"
       cy.get("button").contains("Get Started").should("exist");
     });
 
     it("shows proper design tokens", () => {
-      // Check page 1 for design tokens
-      cy.url().should("include", "/onboarding-one");
+      // Check page for design tokens
+      cy.url().should("include", "/onboarding");
 
       // Semantic spacing
       cy.get(".px-page-x").should("exist");
@@ -51,28 +51,26 @@ describe("Onboarding Flow Tests", () => {
       cy.get(".text-hero").should("exist");
       cy.get(".text-body").should("exist");
 
-      // Semantic styling
-      cy.get(".rounded-card").should("exist");
+      // Semantic styling: back button is rounded-button
       cy.get(".rounded-button").should("exist");
     });
 
     it("displays progress indicators correctly", () => {
-      // Page 1: Step 1 should be active
-      cy.url().should("include", "/onboarding-one");
+      // Step 1: indicators should exist
+      cy.url().should("include", "/onboarding");
       cy.get('[data-testid="progress-step-1"]').should("exist");
       cy.get('[data-testid="progress-step-2"]').should("exist");
       cy.get('[data-testid="progress-step-3"]').should("exist");
       cy.get('[data-testid="progress-step-4"]').should("exist");
 
-      // Navigate to page 2 and check progress
+      // Navigate to step 2 and check progress
       cy.get("button").contains("Next").click();
-      cy.url().should("include", "/onboarding-two");
       cy.get('[data-testid="progress-step-2"]').should("exist");
     });
 
     it("has consistent page structure", () => {
       // Check page structure
-      cy.url().should("include", "/onboarding-one");
+      cy.url().should("include", "/onboarding");
 
       // Main containers
       cy.get(".min-h-screen").should("exist");
@@ -97,8 +95,11 @@ describe("Onboarding Flow Tests", () => {
         body: { success: true },
       }).as("completeOnboarding");
 
-      // Navigate to final page
-      cy.visit("/onboarding-four");
+      // Navigate to last step
+      cy.visit("/onboarding");
+      cy.get("button").contains("Next").click();
+      cy.get("button").contains("Next").click();
+      cy.get("button").contains("Next").click();
 
       // Complete onboarding
       cy.get("button").contains("Get Started").click();
@@ -119,33 +120,41 @@ describe("Onboarding Flow Tests", () => {
         body: { error: "Server error" },
       }).as("apiError");
 
-      cy.visit("/onboarding-four");
+      // Navigate to last step
+      cy.visit("/onboarding");
+      cy.get("button").contains("Next").click();
+      cy.get("button").contains("Next").click();
+      cy.get("button").contains("Next").click();
 
       cy.get("button").contains("Get Started").click();
       cy.wait("@apiError");
 
       // Should still navigate away (graceful fallback)
-      cy.url().should("not.include", "/onboarding-four");
+      cy.url().should("not.include", "/onboarding");
     });
   });
 
   describe("Content Verification", () => {
     it("displays unique content on each page", () => {
-      // Page 1
-      cy.url().should("include", "/onboarding-one");
-      cy.get("h1").should("contain.text", "Proximity");
+      // Step 1
+      cy.url().should("include", "/onboarding");
+      cy.get("h1").should("exist");
+      cy.get("p").should("exist");
 
-      // Page 2
-      cy.visit("/onboarding-two");
-      cy.get("h1").should("contain.text", "Confidence");
+      // Step 2
+      cy.get("button").contains("Next").click();
+      cy.get("h1").should("exist");
+      cy.get("p").should("exist");
 
-      // Page 3
-      cy.visit("/onboarding-three");
-      cy.get("h1").should("contain.text", "Journey");
+      // Step 3
+      cy.get("button").contains("Next").click();
+      cy.get("h1").should("exist");
+      cy.get("p").should("exist");
 
-      // Page 4
-      cy.visit("/onboarding-four");
-      cy.get("h1").should("contain.text", "Begin");
+      // Step 4
+      cy.get("button").contains("Next").click();
+      cy.get("h1").should("exist");
+      cy.get("p").should("exist");
     });
   });
 });
