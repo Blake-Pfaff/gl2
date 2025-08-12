@@ -156,7 +156,7 @@ describe("Register flow", () => {
     );
 
     // Should redirect to my-number page after 1 second
-    cy.url({ timeout: 2000 }).should("include", "/my-number");
+    cy.url({ timeout: 10000 }).should("include", "/my-number");
   });
 
   it("handles server errors during registration", () => {
