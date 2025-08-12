@@ -218,10 +218,10 @@ export default function MyNumberPage() {
         </div>
 
         {/* Custom Header with Back Button */}
-        <div className="flex items-center px-page-x pt-4 pb-6">
+        <div className="flex items-center px-page-x pt-4 pb-6 relative">
           <motion.button
             onClick={() => router.back()}
-            className="w-12 h-12 bg-primary-400 rounded-button flex items-center justify-center shadow-lg mr-4"
+            className="w-12 h-12 bg-primary-400 rounded-button flex items-center justify-center shadow-lg mr-4 absolute top-2"
             variants={animations.variants.phoneInput.backButton}
             initial="rest"
             whileHover="hover"
@@ -245,7 +245,7 @@ export default function MyNumberPage() {
 
           {/* Header Text */}
           <motion.h1
-            className="text-heading font-bold text-primary"
+            className="text-heading font-bold text-primary flex-1 text-center"
             {...animations.utils.createEntrance(0.3)}
           >
             My number is

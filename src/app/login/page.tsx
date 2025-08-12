@@ -84,7 +84,7 @@ export default function LoginPage() {
               whileHover={animations.variants.login.heartHover}
             >
               <Image
-                src="/glLogo.png"
+                src="/gLogo.png"
                 alt={APP_NAME}
                 width={200}
                 height={200}

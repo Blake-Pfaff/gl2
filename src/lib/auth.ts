@@ -95,13 +95,10 @@ export const authOptions: NextAuthOptions = {
         }
       }
 
-      // Force special test account to always require onboarding
-      const tokenEmail: string | undefined = (token as any).email;
-      if (tokenEmail === "test@test.com") {
-        token.isOnboarded = false;
-      }
+      // Allow all users to complete onboarding normally
 
       // Debug logging
+      const tokenEmail: string | undefined = (token as any).email;
       console.log(`🔍 JWT TOKEN DEBUG for ${tokenEmail}:`, {
         id: token.id,
         email: tokenEmail,

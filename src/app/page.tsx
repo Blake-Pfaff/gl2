@@ -12,9 +12,7 @@ export default async function HomePage() {
   }
 
   // Check onboarding status
-  const needsOnboarding =
-    session.user.email === "test@test.com" ||
-    session.user.isOnboarded === false;
+  const needsOnboarding = session.user.isOnboarded === false;
 
   console.log(`🏠 HOME PAGE CHECK for ${session.user.email}:`, {
     isOnboarded: session.user.isOnboarded,

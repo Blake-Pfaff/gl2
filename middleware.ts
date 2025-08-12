@@ -28,14 +28,12 @@ export default withAuth(
       return;
     }
 
-    const forceOnboarding = token?.email === "test@test.com";
-    const needsOnboarding = forceOnboarding || token?.isOnboarded === false;
+    const needsOnboarding = token?.isOnboarded === false;
 
     // Debug logging
     console.log(`🔍 MIDDLEWARE DEBUG for ${pathname}:`, {
       email: token?.email,
       isOnboarded: token?.isOnboarded,
-      forceOnboarding,
       needsOnboarding,
       isOnboardingRoute,
       action:
