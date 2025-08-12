@@ -6,7 +6,8 @@ const { PrismaClient } = require("@prisma/client");
 const prisma = new PrismaClient();
 
 // Constants for seeding
-const NUM_USERS = 50;
+const NUM_USERS = 50; // total desired users INCLUDING the preserved test user
+const PRESERVE_EMAIL = "test@test.com";
 const NUM_PHOTOS_PER_USER = faker.number.int({ min: 1, max: 6 });
 const INTERACTION_PROBABILITY = 0.15; // 15% chance any two users interact
 const BLOCK_PROBABILITY = 0.02; // 2% chance of blocking
@@ -70,7 +71,7 @@ const PHOTO_URLS = [
   "https://images.unsplash.com/photo-1488426862026-3ee34a7d66df?w=400",
 ];
 
-async function createUsers() {
+async function createUsers(count = NUM_USERS) {
   console.log("🧑‍🤝‍🧑 Creating users...");
 
   const defaultPassword = "password123";
@@ -78,24 +79,8 @@ async function createUsers() {
 
   const users = [];
 
-  // Add a test user first
-  users.push({
-    email: "test@example.com",
-    username: "testuser",
-    name: "Test User",
-    jobTitle: "Software Engineer",
-    bio: "I'm a test user for development purposes. Love hiking, coding, and good coffee!",
-    birthdate: new Date("1990-01-15"),
-    phone: "+1-555-0123",
-    gender: "NON_BINARY",
-    lookingFor: "EVERYONE",
-    lastOnlineAt: faker.date.recent({ days: 1 }),
-    locationLabel: "San Francisco, CA",
-    hashedPassword: hashedPassword,
-  });
-
-  // Generate random users
-  for (let i = 0; i < NUM_USERS - 1; i++) {
+  // Generate random users (we'll handle the preserved test user separately)
+  for (let i = 0; i < count; i++) {
     const firstName = faker.person.firstName();
     const lastName = faker.person.lastName();
     const birthdate = faker.date.birthdate({ min: 18, max: 65, mode: "age" });
@@ -414,11 +399,51 @@ async function main() {
     await prisma.interaction.deleteMany({});
     await prisma.photo.deleteMany({});
     await prisma.userLocation.deleteMany({});
-    await prisma.user.deleteMany({});
+    // Delete all users EXCEPT the preserved account
+    await prisma.user.deleteMany({ where: { email: { not: PRESERVE_EMAIL } } });
     console.log("✅ Cleared existing data\n");
 
-    // Create all the data
-    const users = await createUsers();
+    // Ensure preserved test account exists (or recreate it) with known password/state
+    const defaultPassword = "password123";
+    const hashedPassword = await bcrypt.hash(defaultPassword, 10);
+    const testHashedPassword = await bcrypt.hash("testpass", 10);
+    const testUser = await prisma.user.upsert({
+      where: { email: PRESERVE_EMAIL },
+      update: {
+        name: "Test User",
+        username: "testuser",
+        jobTitle: "Software Engineer",
+        bio: "I'm a test user for development purposes. Love hiking, coding, and good coffee!",
+        birthdate: new Date("1990-01-15"),
+        phone: "+1-555-0123",
+        gender: "NON_BINARY",
+        lookingFor: "EVERYONE",
+        lastOnlineAt: faker.date.recent({ days: 1 }),
+        locationLabel: "San Francisco, CA",
+        hashedPassword: testHashedPassword,
+        isOnboarded: false,
+        firstLoginAt: null,
+      },
+      create: {
+        email: PRESERVE_EMAIL,
+        name: "Test User",
+        username: "testuser",
+        jobTitle: "Software Engineer",
+        bio: "I'm a test user for development purposes. Love hiking, coding, and good coffee!",
+        birthdate: new Date("1990-01-15"),
+        phone: "+1-555-0123",
+        gender: "NON_BINARY",
+        lookingFor: "EVERYONE",
+        lastOnlineAt: faker.date.recent({ days: 1 }),
+        locationLabel: "San Francisco, CA",
+        hashedPassword: testHashedPassword,
+        isOnboarded: false,
+      },
+    });
+
+    // Create remaining users
+    const otherUsers = await createUsers(NUM_USERS - 1);
+    const users = [testUser, ...otherUsers];
     await createUserLocations(users);
     await createPhotos(users);
     const interactions = await createInteractions(users);
@@ -429,7 +454,7 @@ async function main() {
     console.log("\n🎉 Database seeded successfully!");
     console.log(`
 📊 Summary:
-- ${users.length} users created
+- ${users.length} users created (including preserved ${PRESERVE_EMAIL})
 - ${users.length} locations created
 - Photos created for all users
 - ${interactions.length} interactions created
@@ -440,7 +465,7 @@ async function main() {
     )} matches
 
 🔐 Default password for all users: "password123"
-📧 Test user email: test@example.com
+📧 Preserved test user email: ${PRESERVE_EMAIL}
     `);
   } catch (error) {
     console.error("❌ Error seeding database:", error);

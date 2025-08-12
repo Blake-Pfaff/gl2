@@ -6,6 +6,7 @@ import OnboardingLayout from "../components/OnboardingLayout";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { useSession } from "next-auth/react";
+import Image from "next/image";
 
 export default function OnboardingFourPage() {
   const router = useRouter();
@@ -56,22 +57,25 @@ export default function OnboardingFourPage() {
     >
       {/* Hero area */}
       <motion.div
-        className="bg-white rounded-card shadow-sm p-component flex items-center justify-center mb-section min-h-[220px]"
+        className="p-component flex items-center justify-center mb-section min-h-[220px]"
         {...animations.utils.createEntrance(0.1)}
       >
-        <div className="text-body text-secondary">hero image</div>
+        <Image
+          src="/glv2Confident.png"
+          alt={"Goldy looking confident"}
+          width={200}
+          height={200}
+          priority
+          className="object-contain"
+        />
       </motion.div>
 
       {/* Title and description */}
       <motion.div {...animations.utils.createEntrance(0.2)}>
-        <h1 className="text-hero font-bold text-primary mb-2">
-          Ready to Begin!
-        </h1>
+        <h1 className="text-hero font-bold text-primary mb-2">You got this!</h1>
         <p className="text-body text-secondary">
-          Excepteur sint occaecat cupidatat non proident, sunt in culpa qui
-          officia deserunt mollit anim id est laborum. Sed ut perspiciatis unde
-          omnis iste natus error sit voluptatem accusantium doloremque
-          laudantium.
+          Now you can feel confident about expressing your feelings because
+          Goldy always has your back.
         </p>
       </motion.div>
     </OnboardingLayout>

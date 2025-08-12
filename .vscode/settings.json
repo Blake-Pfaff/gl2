@@ -32,5 +32,6 @@
 
   // Suggest design tokens in autocomplete
   "editor.suggest.showWords": false,
-  "editor.wordBasedSuggestions": "off"
+  "editor.wordBasedSuggestions": "off",
+  "cSpell.words": ["goldy"]
 }

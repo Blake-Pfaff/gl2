@@ -3,6 +3,7 @@
 import { motion } from "framer-motion";
 import { animations } from "@/lib/animations";
 import OnboardingLayout from "../components/OnboardingLayout";
+import Image from "next/image";
 
 export default function OnboardingThreePage() {
   return (
@@ -13,22 +14,28 @@ export default function OnboardingThreePage() {
     >
       {/* Hero area */}
       <motion.div
-        className="bg-white rounded-card shadow-sm p-component flex items-center justify-center mb-section min-h-[220px]"
+        className=" p-component flex items-center justify-center mb-section min-h-[220px]"
         {...animations.utils.createEntrance(0.1)}
       >
-        <div className="text-body text-secondary">hero image</div>
+        <Image
+          src="/gLIdea.png"
+          alt={"Goldy looking nervous"}
+          width={200}
+          height={200}
+          priority
+          className="object-contain"
+        />
       </motion.div>
 
       {/* Title and description */}
       <motion.div {...animations.utils.createEntrance(0.2)}>
         <h1 className="text-hero font-bold text-primary mb-2">
-          Share Your Journey!
+          Don’t worry, Goldy—your personal AI assistant—is here to help!!
         </h1>
         <p className="text-body text-secondary">
-          Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris
-          nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in
-          reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla
-          pariatur.
+          Let Goldy scan the match’s profile and yours to string together your
+          feelings in a way you may struggle to. Tell Goldy if you want to be
+          flirty, friendly, or just inquisitive, and let it find your words.
         </p>
       </motion.div>
     </OnboardingLayout>
