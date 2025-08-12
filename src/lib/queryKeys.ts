@@ -4,3 +4,7 @@ export const qk = {
   users: (page: number, limit: number) => ["users", { page, limit }] as const,
   phone: ["phone"] as const,
 };
+
+export const ONBOARDING_QUERY_KEYS = {
+  steps: () => ["onboarding", "steps"] as const,
+} as const;

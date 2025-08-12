@@ -18,7 +18,7 @@ export default async function UserIndexPage() {
     session.user.isOnboarded === false;
 
   if (needsOnboarding) {
-    redirect("/onboarding-one");
+    redirect("/onboarding");
   }
 
   return (

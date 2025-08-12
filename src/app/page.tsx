@@ -24,7 +24,7 @@ export default async function HomePage() {
 
   if (needsOnboarding) {
     console.log(`🔄 REDIRECTING ${session.user.email} to onboarding`);
-    redirect("/onboarding-one");
+    redirect("/onboarding");
   }
 
   return (

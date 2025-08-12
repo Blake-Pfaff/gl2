@@ -44,11 +44,6 @@ export default function VerificationPage() {
     );
   }
 
-  // Don't render anything if not authenticated (redirect will happen)
-  if (!session) {
-    return null;
-  }
-
   // Design token-based class combinations
   const keypadButtonClasses =
     "w-16 h-16 bg-gray-50 hover:bg-gray-100 rounded-small text-heading font-medium text-secondary transition-all duration-200 active:scale-95";

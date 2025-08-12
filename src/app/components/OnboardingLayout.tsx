@@ -13,6 +13,8 @@ interface OnboardingLayoutProps {
   nextRoute: string;
   nextButtonText?: string;
   onNextClick?: () => void;
+  onBackClick?: () => void;
+  disableBack?: boolean;
 }
 
 export default function OnboardingLayout({
@@ -22,6 +24,8 @@ export default function OnboardingLayout({
   nextRoute,
   nextButtonText = "Next",
   onNextClick,
+  onBackClick,
+  disableBack = false,
 }: OnboardingLayoutProps) {
   const router = useRouter();
 
@@ -39,9 +43,19 @@ export default function OnboardingLayout({
         {/* Header row with back and next */}
         <div className="flex items-center justify-between mb-section">
           <motion.button
-            className="w-12 h-12 bg-primary-400 text-white rounded-button flex items-center justify-center"
-            {...animations.presets.button}
-            onClick={() => router.back()}
+            className={`w-12 h-12 ${
+              disableBack ? "bg-gray-300 cursor-not-allowed" : "bg-primary-400"
+            } text-white rounded-button flex items-center justify-center`}
+            {...(disableBack ? {} : animations.presets.button)}
+            disabled={disableBack}
+            onClick={() => {
+              if (disableBack) return;
+              if (onBackClick) {
+                onBackClick();
+              } else {
+                router.back();
+              }
+            }}
           >
             ←
           </motion.button>

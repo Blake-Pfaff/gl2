@@ -159,3 +159,17 @@ model Photo {
   @@index([userId])
   @@index([userId, order])
 }
+
+model OnboardingStep {
+  id          Int     @id @default(autoincrement())
+  stepNumber  Int     @unique
+  title       String
+  description String
+  imageUrl    String
+  imageAlt    String
+  isActive    Boolean @default(true)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@index([stepNumber])
+}

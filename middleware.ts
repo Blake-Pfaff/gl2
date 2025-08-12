@@ -46,9 +46,9 @@ export default withAuth(
 
     // If user needs onboarding, always keep them on onboarding pages
     if (needsOnboarding && !isOnboardingRoute) {
-      console.log(`🔄 REDIRECTING ${token?.email} to /onboarding-one`);
+      console.log(`🔄 REDIRECTING ${token?.email} to /onboarding`);
       const url = req.nextUrl.clone();
-      url.pathname = "/onboarding-one";
+      url.pathname = "/onboarding";
       return Response.redirect(url);
     }
 
