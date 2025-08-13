@@ -149,14 +149,17 @@ describe("Register flow", () => {
     // Wait for the API call
     cy.wait("@signupRequest");
 
-    // Check that the preview URL is displayed
-    cy.contains("Preview your welcome email:").should("be.visible");
+    // Check that the success toast is displayed
+    cy.contains("Account created successfully! 🎉").should("be.visible");
+    cy.contains("Preview your welcome email").should("be.visible");
+
+    // The toast should contain a clickable link
     cy.get('a[href="http://localhost:3000/api/preview/welcome-email"]').should(
       "be.visible"
     );
 
-    // Should redirect to my-number page after 1 second
-    cy.url({ timeout: 10000 }).should("include", "/my-number");
+    // Should redirect to my-number page after toast is dismissed or timeout (10 seconds)
+    cy.url({ timeout: 12000 }).should("include", "/my-number");
   });
 
   it("handles server errors during registration", () => {

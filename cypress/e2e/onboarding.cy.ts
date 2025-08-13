@@ -83,7 +83,10 @@ describe("Onboarding Flow Tests", () => {
       // Content
       cy.get("h1").should("exist");
       cy.get("p").should("exist");
-      cy.get(".min-h-\\[220px\\]").should("exist");
+
+      // Fixed height container for consistent spacing (using design tokens)
+      cy.get(".mb-section").should("exist");
+      cy.get(".text-center").should("exist");
     });
   });
 

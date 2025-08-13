@@ -1,9 +1,10 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useRef } from "react";
 import { useForm, SubmitHandler } from "react-hook-form";
 import { useRouter } from "next/navigation";
 import { signIn } from "next-auth/react";
+import { toast } from "sonner";
 import { useApiMutation } from "@/hooks/useApi";
 import { FormField } from "../components/FormField";
 import { GenderSelection } from "../components/GenderSelection";
@@ -32,45 +33,97 @@ export default function RegisterPage() {
 
   const router = useRouter();
   const [serverError, setServerError] = useState<string | null>(null);
-  const [previewUrl, setPreviewUrl] = useState<string | null>(null);
+  const [isNavigating, setIsNavigating] = useState(false);
+  const navigationTimeoutRef = useRef<NodeJS.Timeout | null>(null);
 
   const signup = useApiMutation<
     SignUpResponse,
     SignUpForm & { name: string; username: string }
   >("/api/auth/signup", "POST", {
     onSuccess: async (data, variables) => {
-      if (data?.preview) setPreviewUrl(data.preview);
-
-      // Auto-login the user after successful registration
-      try {
-        const result = await signIn("credentials", {
-          redirect: false,
-          email: variables.email,
-          password: variables.password,
+      // Show success toast with preview URL if available
+      if (data?.preview) {
+        const toastId = toast.success(
+          <div className="flex items-start justify-between gap-3 w-full">
+            <div className="flex flex-col gap-2 flex-1">
+              <span className="font-medium">
+                Account created successfully! 🎉
+              </span>
+              <a
+                href={data.preview}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-sm underline opacity-80 hover:opacity-100"
+                onClick={(e) => e.stopPropagation()}
+              >
+                Preview your welcome email
+              </a>
+            </div>
+            <button
+              onClick={() => toast.dismiss(toastId)}
+              className="text-green-700 hover:text-green-800 p-1 rounded hover:bg-green-200/50 transition-colors"
+              aria-label="Close notification"
+            >
+              ✕
+            </button>
+          </div>,
+          {
+            duration: 10000, // 10 seconds
+            style: {
+              background: "#dcfce7", // green-100
+              border: "1px solid #16a34a", // green-600
+              color: "#15803d", // green-700
+            },
+            onDismiss: () => handleNavigation(variables),
+            onAutoClose: () => handleNavigation(variables),
+          }
+        );
+      } else {
+        // No preview URL, just show success and navigate
+        toast.success("Account created successfully! 🎉", {
+          style: {
+            background: "#dcfce7",
+            border: "1px solid #16a34a",
+            color: "#15803d",
+          },
         });
-
-        if (result?.error) {
-          console.error("Auto-login failed:", result.error);
-          // If auto-login fails, still redirect but they'll need to login manually
-          setTimeout(() => router.push("/login"), 1000);
-        } else {
-          // Success! Proceed to my-number page
-          setTimeout(() => router.push("/my-number"), 1000);
-        }
-      } catch (error) {
-        console.error("Auto-login error:", error);
-        // Fallback to login page if something goes wrong
-        setTimeout(() => router.push("/login"), 1000);
+        await handleNavigation(variables);
       }
     },
     onError: (e: any) => setServerError(e?.message ?? "Registration failed"),
   });
 
+  const handleNavigation = async (
+    variables: SignUpForm & { name: string; username: string }
+  ) => {
+    if (isNavigating) return; // Prevent multiple navigation attempts
+    setIsNavigating(true);
+
+    // Auto-login the user after successful registration
+    try {
+      const result = await signIn("credentials", {
+        redirect: false,
+        email: variables.email,
+        password: variables.password,
+      });
+
+      if (result?.error) {
+        console.error("Auto-login failed:", result.error);
+        router.push("/login");
+      } else {
+        router.push("/my-number");
+      }
+    } catch (error) {
+      console.error("Auto-login error:", error);
+      router.push("/login");
+    }
+  };
+
   const password = watch("password");
 
   const onSubmit: SubmitHandler<SignUpForm> = async (data) => {
     setServerError(null);
-    setPreviewUrl(null);
+    setIsNavigating(false);
 
     // Use username as the display name
     const signupData = {
@@ -160,31 +213,17 @@ export default function RegisterPage() {
             <div className="pt-8">
               <button
                 type="submit"
-                disabled={isSubmitting || signup.isPending}
+                disabled={isSubmitting || signup.isPending || isNavigating}
                 className="w-full bg-gradient-to-r from-primary-400 to-primary-500 hover:from-primary-500 hover:to-primary-600 text-white font-semibold py-component px-6 rounded-button transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed shadow-lg"
               >
-                {isSubmitting || signup.isPending
+                {isNavigating
+                  ? "Redirecting..."
+                  : isSubmitting || signup.isPending
                   ? "Creating account…"
                   : "Next"}
               </button>
             </div>
           </form>
-
-          {previewUrl && (
-            <div className="mt-6 p-component bg-white border border-primary-200 rounded-card">
-              <p className="font-medium mb-2 text-secondary">
-                Preview your welcome email:
-              </p>
-              <a
-                href={previewUrl}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="text-link underline"
-              >
-                {previewUrl}
-              </a>
-            </div>
-          )}
         </div>
       </div>
     </PageTransition>

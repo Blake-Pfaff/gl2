@@ -201,7 +201,7 @@ describe("My Number Page", () => {
       cy.wait("@signupRequest");
 
       // Should redirect to my-number page after 1 second
-      cy.url({ timeout: 2000 }).should("include", "/my-number");
+      cy.url({ timeout: 11000 }).should("include", "/my-number");
 
       // Verify we're on the correct page
       cy.contains("My number is").should("be.visible");
