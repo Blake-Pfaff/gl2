@@ -15,11 +15,30 @@ import LoadingSpinner from "../components/LoadingSpinner";
 
 export default function OnboardingPage() {
   const router = useRouter();
-  const { update } = useSession();
+  const { data: session, status, update } = useSession();
   const [currentStepIndex, setCurrentStepIndex] = useState(0);
 
+  // Always call hooks in the same order
   const { data: steps, isLoading, error } = useOnboardingSteps();
   const completeOnboarding = useCompleteOnboarding();
+
+  // Redirect to login if not authenticated (after all hooks are called)
+  if (status === "loading") {
+    return (
+      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
+        <LoadingSpinner color="blue" text="Checking authentication..." />
+      </div>
+    );
+  }
+
+  if (status === "unauthenticated" || !session) {
+    router.push("/login");
+    return (
+      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
+        <LoadingSpinner color="blue" text="Redirecting to login..." />
+      </div>
+    );
+  }
 
   if (isLoading) {
     return (

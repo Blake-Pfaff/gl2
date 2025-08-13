@@ -13,9 +13,7 @@ export default async function UserIndexPage() {
   }
 
   // Check onboarding status
-  const needsOnboarding =
-    session.user.email === "test@test.com" ||
-    session.user.isOnboarded === false;
+  const needsOnboarding = session.user.isOnboarded === false;
 
   if (needsOnboarding) {
     redirect("/onboarding");

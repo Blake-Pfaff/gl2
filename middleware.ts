@@ -22,10 +22,15 @@ export default withAuth(
         })
       | null;
 
-    // If no token, let withAuth handle redirect to /login
+    console.log(`🔍 Token exists: ${!!token}, pathname: ${pathname}`);
+
+    // If no token, this should not happen because withAuth should handle it
+    // But let's add explicit handling just in case
     if (!token) {
-      console.log(`❌ No token for ${pathname}, withAuth will handle`);
-      return;
+      console.log(`❌ No token for ${pathname}, redirecting to login`);
+      const url = req.nextUrl.clone();
+      url.pathname = "/login";
+      return Response.redirect(url);
     }
 
     const needsOnboarding = token?.isOnboarded === false;
@@ -63,11 +68,29 @@ export default withAuth(
   {
     callbacks: {
       authorized: ({ token, req }) => {
-        console.log(
-          `🔐 AUTHORIZED CHECK for ${req.nextUrl.pathname}:`,
-          !!token
-        );
-        return !!token; // authenticated users only
+        const pathname = req.nextUrl.pathname;
+        console.log(`🔐 AUTHORIZED CHECK for ${pathname}:`, {
+          hasToken: !!token,
+          willAllow: !!token,
+        });
+
+        // Allow auth pages even without token
+        if (pathname.startsWith("/login") || pathname.startsWith("/register")) {
+          console.log(
+            `✅ Allowing auth page in authorized callback: ${pathname}`
+          );
+          return true;
+        }
+
+        // For all other pages, require authentication
+        if (!token) {
+          console.log(
+            `❌ No token in authorized callback for ${pathname}, will redirect to login`
+          );
+          return false;
+        }
+
+        return true;
       },
     },
     pages: {
