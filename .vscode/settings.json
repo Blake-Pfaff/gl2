@@ -33,5 +33,5 @@
   // Suggest design tokens in autocomplete
   "editor.suggest.showWords": false,
   "editor.wordBasedSuggestions": "off",
-  "cSpell.words": ["goldy"]
+  "cSpell.words": ["goldy", "nextauth", "sonner"]
 }
