@@ -72,12 +72,98 @@ export default function ProfileModal({
   const [selectedLookingFor, setSelectedLookingFor] = useState(
     user.lookingFor || ""
   );
+  const [hasUnsavedChanges, setHasUnsavedChanges] = useState(false);
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+    reset,
+    getValues,
+    watch,
+  } = useForm<ProfileFormData>({
+    defaultValues: {
+      bio: user.bio || "",
+      jobTitle: user.jobTitle || "",
+      gender: user.gender || "",
+      lookingFor: user.lookingFor || "",
+      locationLabel: user.locationLabel || "",
+    },
+  });
 
   // Update dropdown states when user data changes
   useEffect(() => {
     setSelectedGender(user.gender || "");
     setSelectedLookingFor(user.lookingFor || "");
+    setHasUnsavedChanges(false); // Reset when user data changes
   }, [user.gender, user.lookingFor]);
+
+  // Check for unsaved changes
+  const checkForChanges = () => {
+    const formData = getValues();
+    const hasFormChanges =
+      formData.bio !== (user.bio || "") ||
+      formData.jobTitle !== (user.jobTitle || "") ||
+      formData.locationLabel !== (user.locationLabel || "") ||
+      selectedGender !== (user.gender || "") ||
+      selectedLookingFor !== (user.lookingFor || "");
+
+    setHasUnsavedChanges(hasFormChanges);
+    return hasFormChanges;
+  };
+
+  // Watch form changes to update unsaved changes state
+  useEffect(() => {
+    const subscription = watch(() => {
+      checkForChanges();
+    });
+    return () => subscription.unsubscribe();
+  }, [watch, selectedGender, selectedLookingFor, user]);
+
+  // Guarded close function
+  const handleGuardedClose = () => {
+    if (checkForChanges()) {
+      toast.error(
+        <div className="flex flex-col gap-2">
+          <span className="font-medium">Unsaved Changes</span>
+          <span className="text-sm">
+            You have unsaved changes. Do you want to discard them?
+          </span>
+          <div className="flex gap-2 mt-2">
+            <button
+              onClick={() => {
+                toast.dismiss();
+                reset();
+                setSelectedGender(user.gender || "");
+                setSelectedLookingFor(user.lookingFor || "");
+                setHasUnsavedChanges(false);
+                onClose();
+              }}
+              className="px-3 py-1 text-xs bg-red-500 text-white rounded hover:bg-red-600 transition-colors"
+            >
+              Discard
+            </button>
+            <button
+              onClick={() => toast.dismiss()}
+              className="px-3 py-1 text-xs bg-gray-500 text-white rounded hover:bg-gray-600 transition-colors"
+              aria-label="Close notification"
+            >
+              Keep Editing
+            </button>
+          </div>
+        </div>,
+        {
+          duration: 10000,
+          style: {
+            background: "#fef2f2",
+            border: "1px solid #dc2626",
+            color: "#dc2626",
+          },
+        }
+      );
+    } else {
+      onClose();
+    }
+  };
 
   // Prevent body scroll when modal is open
   useEffect(() => {
@@ -99,21 +185,6 @@ export default function ProfileModal({
       };
     }
   }, [isOpen]);
-
-  const {
-    register,
-    handleSubmit,
-    formState: { errors },
-    reset,
-  } = useForm<ProfileFormData>({
-    defaultValues: {
-      bio: user.bio || "",
-      jobTitle: user.jobTitle || "",
-      gender: user.gender || "",
-      lookingFor: user.lookingFor || "",
-      locationLabel: user.locationLabel || "",
-    },
-  });
 
   const onSubmit: SubmitHandler<ProfileFormData> = async (data) => {
     setIsSubmitting(true);
@@ -154,6 +225,9 @@ export default function ProfileModal({
 
   const handleClose = () => {
     reset(); // Reset form to default values
+    setSelectedGender(user.gender || "");
+    setSelectedLookingFor(user.lookingFor || "");
+    setHasUnsavedChanges(false);
     onClose();
   };
 
@@ -175,7 +249,7 @@ export default function ProfileModal({
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            onClick={handleClose}
+            onClick={handleGuardedClose}
           >
             <motion.div
               data-testid="profile-modal"
@@ -192,7 +266,7 @@ export default function ProfileModal({
                   Edit Profile
                 </h2>
                 <button
-                  onClick={handleClose}
+                  onClick={handleGuardedClose}
                   className="text-gray-500 hover:text-gray-700 transition-colors p-2"
                   aria-label="Close modal"
                 >
@@ -247,7 +321,10 @@ export default function ProfileModal({
                   <Dropdown
                     label="Gender"
                     value={selectedGender}
-                    onChange={setSelectedGender}
+                    onChange={(value) => {
+                      setSelectedGender(value);
+                      checkForChanges();
+                    }}
                     options={GENDER_OPTIONS}
                     placeholder="Select your gender"
                     error={errors.gender?.message}
@@ -256,7 +333,10 @@ export default function ProfileModal({
                   <Dropdown
                     label="Looking For"
                     value={selectedLookingFor}
-                    onChange={setSelectedLookingFor}
+                    onChange={(value) => {
+                      setSelectedLookingFor(value);
+                      checkForChanges();
+                    }}
                     options={LOOKING_FOR_OPTIONS}
                     placeholder="Select preference"
                     error={errors.lookingFor?.message}
@@ -305,7 +385,7 @@ export default function ProfileModal({
                 <div className="flex justify-end space-x-4 pt-4 border-t border-gray-200">
                   <button
                     type="button"
-                    onClick={handleClose}
+                    onClick={handleGuardedClose}
                     className="px-6 py-3 text-body font-medium text-gray-600 hover:text-gray-800 transition-colors"
                     disabled={isSubmitting}
                   >
