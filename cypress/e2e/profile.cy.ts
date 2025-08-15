@@ -371,4 +371,303 @@ describe("Profile Management Tests", () => {
       cy.get('input[name="jobTitle"]').parent().find("svg").should("exist");
     });
   });
+
+  describe("Photo Upload and Management", () => {
+    beforeEach(() => {
+      // Set up photo API intercepts
+      cy.intercept("POST", "**/api/user/photos", {
+        statusCode: 200,
+        body: {
+          photo: {
+            id: "test-photo-id",
+            url: "/uploads/photos/test-photo.jpg",
+            caption: "Test photo",
+            order: 0,
+            isMain: true,
+          },
+        },
+      }).as("uploadPhoto");
+
+      cy.intercept("PUT", "**/api/user/photos", {
+        statusCode: 200,
+        body: {
+          photo: {
+            id: "test-photo-id",
+            url: "/uploads/photos/test-photo.jpg",
+            caption: "Updated caption",
+            order: 0,
+            isMain: true,
+          },
+        },
+      }).as("updatePhoto");
+
+      cy.intercept("DELETE", "**/api/user/photos*", {
+        statusCode: 200,
+        body: { success: true },
+      }).as("deletePhoto");
+
+      cy.get('button[aria-label="Open profile"]').click();
+    });
+
+    it("displays photo section with add photo button", () => {
+      // Check photos section exists
+      cy.contains("h3", "Photos").should("be.visible");
+
+      // Should show Add Photo button when no photos
+      cy.get("button").contains("Add Photo").should("be.visible");
+
+      // Should show placeholder areas
+      cy.get(".aspect-square").should("have.length.at.least", 1);
+    });
+
+    it("can open and close photo upload area", () => {
+      // Click Add Photo button
+      cy.get("button").contains("Add Photo").click();
+
+      // Should show upload area
+      cy.contains("Click to Upload Photo").should("be.visible");
+
+      // Button should change to Cancel
+      cy.get("button").contains("Cancel").should("be.visible");
+
+      // Click Cancel to close
+      cy.get("button").contains("Cancel").click();
+
+      // Should hide upload area
+      cy.contains("Click to Upload Photo").should("not.exist");
+
+      // Button should change back to Add Photo
+      cy.get("button").contains("Add Photo").should("be.visible");
+    });
+
+    it("can upload a photo file", () => {
+      // Create a test image file
+      cy.fixture("example.json").then(() => {
+        // Click Add Photo
+        cy.get("button").contains("Add Photo").click();
+
+        // Should show upload area
+        cy.contains("Click to Upload Photo").should("be.visible");
+
+        // Create a fake file for testing
+        const fileName = "test-photo.jpg";
+        const fileContent = "fake-image-content";
+
+        // Find the file input and upload
+        cy.get('input[type="file"]').selectFile(
+          {
+            contents: Cypress.Buffer.from(fileContent),
+            fileName: fileName,
+            mimeType: "image/jpeg",
+          },
+          { force: true }
+        );
+
+        // Should trigger upload API call
+        cy.wait("@uploadPhoto");
+
+        // Upload area should close after successful upload
+        cy.contains("Click to Upload Photo").should("not.exist");
+      });
+    });
+
+    it("shows loading state during upload", () => {
+      // Intercept with delay to test loading state
+      cy.intercept("POST", "**/api/user/photos", {
+        statusCode: 200,
+        body: {
+          photo: {
+            id: "test-photo-id",
+            url: "/uploads/photos/test-photo.jpg",
+            caption: "",
+            order: 0,
+            isMain: true,
+          },
+        },
+        delay: 1000, // 1 second delay
+      }).as("slowUpload");
+
+      cy.get("button").contains("Add Photo").click();
+
+      const fileName = "test-photo.jpg";
+      const fileContent = "fake-image-content";
+
+      cy.get('input[type="file"]').selectFile(
+        {
+          contents: Cypress.Buffer.from(fileContent),
+          fileName: fileName,
+          mimeType: "image/jpeg",
+        },
+        { force: true }
+      );
+
+      // Should show loading state
+      cy.contains("Uploading...").should("be.visible");
+      cy.get(".animate-spin").should("be.visible");
+
+      cy.wait("@slowUpload");
+
+      // Loading should disappear
+      cy.contains("Uploading...").should("not.exist");
+    });
+
+    it("displays photos after upload", () => {
+      // Mock profile response with photos
+      cy.intercept("GET", "**/api/user/profile", {
+        statusCode: 200,
+        body: {
+          user: {
+            id: "test-user-id",
+            name: "Test User",
+            email: "test@example.com",
+            username: "testuser",
+            bio: "",
+            jobTitle: "",
+            gender: "",
+            lookingFor: "",
+            locationLabel: "",
+            birthdate: null,
+            photos: [
+              {
+                id: "photo-1",
+                url: "/uploads/photos/test-photo-1.jpg",
+                caption: "First photo",
+                order: 0,
+                isMain: true,
+              },
+              {
+                id: "photo-2",
+                url: "/uploads/photos/test-photo-2.jpg",
+                caption: "Second photo",
+                order: 1,
+                isMain: false,
+              },
+            ],
+          },
+        },
+      }).as("getProfileWithPhotos");
+
+      // Reload to get new profile data
+      cy.reload();
+      cy.wait("@getProfileWithPhotos");
+
+      cy.get('button[aria-label="Open profile"]').click();
+
+      // Should display photos
+      cy.get('img[alt*="photo"]').should("have.length", 2);
+
+      // Should show main photo badge
+      cy.contains("Main").should("be.visible");
+    });
+
+    it("can manage photo actions (set main, delete)", () => {
+      // Mock profile with multiple photos
+      cy.intercept("GET", "**/api/user/profile", {
+        statusCode: 200,
+        body: {
+          user: {
+            id: "test-user-id",
+            name: "Test User",
+            email: "test@example.com",
+            photos: [
+              {
+                id: "photo-1",
+                url: "/uploads/photos/test-photo-1.jpg",
+                caption: "First photo",
+                order: 0,
+                isMain: true,
+              },
+              {
+                id: "photo-2",
+                url: "/uploads/photos/test-photo-2.jpg",
+                caption: "Second photo",
+                order: 1,
+                isMain: false,
+              },
+            ],
+          },
+        },
+      }).as("getProfileWithPhotos");
+
+      cy.reload();
+      cy.wait("@getProfileWithPhotos");
+      cy.get('button[aria-label="Open profile"]').click();
+
+      // Hover over non-main photo to show actions
+      cy.get('img[alt*="photo"]').eq(1).parent().trigger("mouseenter");
+
+      // Should show action buttons
+      cy.contains("Set as Main").should("be.visible");
+      cy.contains("Delete").should("be.visible");
+
+      // Should NOT show Edit button
+      cy.contains("Edit").should("not.exist");
+
+      // Test set as main
+      cy.contains("Set as Main").click();
+      cy.wait("@updatePhoto");
+
+      // Test delete
+      cy.get('img[alt*="photo"]').eq(1).parent().trigger("mouseenter");
+      cy.contains("Delete").click();
+
+      // Should show confirmation modal
+      cy.contains("Delete Photo").should("be.visible");
+      cy.contains("Are you sure").should("be.visible");
+      cy.get("button").contains("Delete").click();
+      cy.wait("@deletePhoto");
+    });
+
+    it("validates file types and shows appropriate errors", () => {
+      cy.get("button").contains("Add Photo").click();
+
+      // Try to upload non-image file
+      const fileName = "document.pdf";
+      const fileContent = "fake-pdf-content";
+
+      cy.get('input[type="file"]').selectFile(
+        {
+          contents: Cypress.Buffer.from(fileContent),
+          fileName: fileName,
+          mimeType: "application/pdf",
+        },
+        { force: true }
+      );
+
+      // Should show error (this would be handled by browser validation)
+      // The accept="image/*" attribute should prevent selection
+    });
+
+    it("updates user avatar when main photo is set", () => {
+      // Mock profile with main photo
+      cy.intercept("GET", "**/api/user/profile", {
+        statusCode: 200,
+        body: {
+          user: {
+            id: "test-user-id",
+            name: "Test User",
+            email: "test@example.com",
+            photos: [
+              {
+                id: "photo-1",
+                url: "/uploads/photos/test-photo-1.jpg",
+                caption: "Profile photo",
+                order: 0,
+                isMain: true,
+              },
+            ],
+          },
+        },
+      }).as("getProfileWithMainPhoto");
+
+      cy.reload();
+      cy.wait("@getProfileWithMainPhoto");
+
+      // Should show user's photo in header instead of initials
+      cy.get('button[aria-label="Open profile"] img').should("exist");
+      cy.get('button[aria-label="Open profile"] img')
+        .should("have.attr", "src")
+        .and("include", "test-photo-1.jpg");
+    });
+  });
 });

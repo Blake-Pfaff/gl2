@@ -89,12 +89,14 @@ export function ConfirmationModal({
 
                 <div className="flex gap-3 justify-center">
                   <button
+                    type="button"
                     onClick={onClose}
                     className="px-6 py-3 text-secondary border-2 border-primary-200 rounded-button hover:bg-primary-50 hover:border-primary-300 transition-all duration-200 font-medium"
                   >
                     {cancelText}
                   </button>
                   <motion.button
+                    type="button"
                     onClick={onConfirm}
                     className={`px-6 py-3 rounded-button transition-all duration-200 font-semibold ${confirmButtonClass}`}
                     {...animations.presets.button}

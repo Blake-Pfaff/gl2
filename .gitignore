@@ -42,3 +42,6 @@ next-env.d.ts
 .env.local
 
 *.db
+
+# user uploads
+/public/uploads/

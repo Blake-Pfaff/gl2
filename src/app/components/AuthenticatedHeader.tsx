@@ -1,10 +1,10 @@
 "use client";
 
 import { useState } from "react";
-import { User } from "next-auth";
 import LogoutButton from "./LogoutButton";
-import ProfileModal from "./ProfileModal";
+import ProfileModal from "@/app/modals/ProfileModal";
 import { useProfile } from "@/hooks/useProfile";
+import Image from "next/image";
 
 interface AuthenticatedHeaderProps {
   user:
@@ -37,10 +37,15 @@ export default function AuthenticatedHeader({
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between items-center h-16">
             {/* Logo/App Name */}
-            <div className="flex items-center">
-              <h1 className="text-subheading font-bold text-primary">
-                💕 Dating App
-              </h1>
+            <div className="flex items-center mt-3">
+              <Image
+                src={"/glMobileLogo.png"}
+                alt={"Goldy Locks Logo"}
+                width={130}
+                height={130}
+                priority
+                className="object-contain"
+              />
             </div>
 
             {/* User Info and Actions */}
@@ -51,13 +56,24 @@ export default function AuthenticatedHeader({
                 className="flex items-center space-x-2 hover:opacity-80 transition-opacity focus:outline-none rounded-lg p-1"
                 aria-label="Open profile"
               >
-                <div className="w-8 h-8 bg-gradient-to-br from-primary-500 to-purple-600 rounded-full flex items-center justify-center">
-                  <span className="text-white text-body font-medium">
-                    {user?.name?.charAt(0)?.toUpperCase() ||
-                      user?.email?.charAt(0)?.toUpperCase() ||
-                      "U"}
-                  </span>
-                </div>
+                {/* Profile Photo or Fallback */}
+                {profileData?.user?.photos?.find((p) => p.isMain)?.url ? (
+                  <div className="w-8 h-8 rounded-full overflow-hidden border-2 border-primary-200">
+                    <img
+                      src={profileData.user.photos.find((p) => p.isMain)?.url}
+                      alt={`${user?.name || "User"}'s profile`}
+                      className="w-full h-full object-cover"
+                    />
+                  </div>
+                ) : (
+                  <div className="w-8 h-8 bg-gradient-to-br from-primary-500 to-purple-600 rounded-full flex items-center justify-center">
+                    <span className="text-white text-body font-medium">
+                      {user?.name?.charAt(0)?.toUpperCase() ||
+                        user?.email?.charAt(0)?.toUpperCase() ||
+                        "U"}
+                    </span>
+                  </div>
+                )}
                 <div className="hidden sm:block text-left">
                   <p className="text-body font-medium text-primary">
                     {user?.name || "User"}

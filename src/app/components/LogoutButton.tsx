@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { signOut } from "next-auth/react";
-import { ConfirmationModal } from "./ConfirmationModal";
+import { ConfirmationModal } from "@/app/modals/ConfirmationModal";
 
 interface LogoutButtonProps {
   variant?: "default" | "header";

@@ -4,9 +4,11 @@ import { useState, useEffect } from "react";
 import { useForm, SubmitHandler } from "react-hook-form";
 import { motion, AnimatePresence } from "framer-motion";
 import { toast } from "sonner";
-import { FormField } from "./FormField";
-import { UserIcon, BriefcaseIcon } from "./Icons";
-import Dropdown, { DropdownOption } from "./Dropdown";
+import ProfileBasicInfoSection, {
+  ProfileFormData,
+} from "@/app/components/ProfileBasicInfoSection";
+import ProfilePreferencesSection from "@/app/components/ProfilePreferencesSection";
+import ProfilePhotosSection from "@/app/components/ProfilePhotosSection";
 import { animations } from "@/lib/animations";
 
 interface ProfileModalProps {
@@ -32,34 +34,6 @@ interface ProfileModalProps {
   };
   onUpdate: (updatedUser: any) => void;
 }
-
-type ProfileFormData = {
-  bio: string;
-  jobTitle: string;
-  gender: string;
-  lookingFor: string;
-  locationLabel: string;
-};
-
-const GENDER_OPTIONS: DropdownOption[] = [
-  { value: "MAN", label: "Man", icon: "👨" },
-  { value: "WOMAN", label: "Woman", icon: "👩" },
-  { value: "NON_BINARY", label: "Non-binary", icon: "🏳️‍⚧️" },
-  { value: "GENDERFLUID", label: "Genderfluid", icon: "🌊" },
-  { value: "AGENDER", label: "Agender", icon: "⚪" },
-  { value: "TRANSGENDER_WOMAN", label: "Transgender Woman", icon: "🏳️‍⚧️" },
-  { value: "TRANSGENDER_MAN", label: "Transgender Man", icon: "🏳️‍⚧️" },
-  { value: "QUESTIONING", label: "Questioning", icon: "❓" },
-  { value: "PREFER_NOT_TO_SAY", label: "Prefer not to say", icon: "🤐" },
-  { value: "OTHER", label: "Other", icon: "✨" },
-];
-
-const LOOKING_FOR_OPTIONS: DropdownOption[] = [
-  { value: "MEN", label: "Men", icon: "👨" },
-  { value: "WOMEN", label: "Women", icon: "👩" },
-  { value: "NON_BINARY_PEOPLE", label: "Non-binary people", icon: "🏳️‍⚧️" },
-  { value: "EVERYONE", label: "Everyone", icon: "🌈" },
-];
 
 export default function ProfileModal({
   isOpen,
@@ -187,6 +161,7 @@ export default function ProfileModal({
   }, [isOpen]);
 
   const onSubmit: SubmitHandler<ProfileFormData> = async (data) => {
+    console.log("ProfileModal - Form submitted!", data);
     setIsSubmitting(true);
     try {
       const response = await fetch("/api/user/profile", {
@@ -266,6 +241,7 @@ export default function ProfileModal({
                   Edit Profile
                 </h2>
                 <button
+                  type="button"
                   onClick={handleGuardedClose}
                   className="text-gray-500 hover:text-gray-700 transition-colors p-2"
                   aria-label="Close modal"
@@ -277,109 +253,31 @@ export default function ProfileModal({
               {/* Form */}
               <form onSubmit={handleSubmit(onSubmit)} className="p-6 space-y-6">
                 {/* Basic Info */}
-                <div className="space-y-4">
-                  <h3 className="text-body font-medium text-primary">
-                    Basic Information
-                  </h3>
-
-                  <FormField
-                    label="Bio"
-                    as="textarea"
-                    rows={4}
-                    maxLength={255}
-                    error={errors.bio?.message}
-                    {...register("bio", {
-                      maxLength: {
-                        value: 255,
-                        message: "Bio must be 255 characters or less",
-                      },
-                    })}
-                  />
-
-                  <FormField
-                    label="Job Title"
-                    type="text"
-                    icon={<BriefcaseIcon />}
-                    error={errors.jobTitle?.message}
-                    {...register("jobTitle")}
-                  />
-
-                  <FormField
-                    label="Location"
-                    type="text"
-                    error={errors.locationLabel?.message}
-                    {...register("locationLabel")}
-                  />
-                </div>
+                <ProfileBasicInfoSection register={register} errors={errors} />
 
                 {/* Preferences */}
-                <div className="space-y-4">
-                  <h3 className="text-body font-medium text-primary">
-                    Preferences
-                  </h3>
+                <ProfilePreferencesSection
+                  selectedGender={selectedGender}
+                  selectedLookingFor={selectedLookingFor}
+                  onGenderChange={(value) => {
+                    setSelectedGender(value);
+                    checkForChanges();
+                  }}
+                  onLookingForChange={(value) => {
+                    setSelectedLookingFor(value);
+                    checkForChanges();
+                  }}
+                  errors={errors}
+                />
 
-                  <Dropdown
-                    label="Gender"
-                    value={selectedGender}
-                    onChange={(value) => {
-                      setSelectedGender(value);
-                      checkForChanges();
-                    }}
-                    options={GENDER_OPTIONS}
-                    placeholder="Select your gender"
-                    error={errors.gender?.message}
-                  />
-
-                  <Dropdown
-                    label="Looking For"
-                    value={selectedLookingFor}
-                    onChange={(value) => {
-                      setSelectedLookingFor(value);
-                      checkForChanges();
-                    }}
-                    options={LOOKING_FOR_OPTIONS}
-                    placeholder="Select preference"
-                    error={errors.lookingFor?.message}
-                  />
-                </div>
-
-                {/* Photos Section - Placeholder */}
-                <div className="space-y-4">
-                  <h3 className="text-body font-medium text-primary">Photos</h3>
-                  <div className="grid grid-cols-3 gap-4">
-                    {/* Existing photos */}
-                    {user.photos?.map((photo, index) => (
-                      <div
-                        key={photo.id}
-                        className="aspect-square bg-gray-100 rounded-small border border-gray-200 flex items-center justify-center"
-                      >
-                        <img
-                          src={photo.url}
-                          alt={photo.caption || `Photo ${index + 1}`}
-                          className="w-full h-full object-cover rounded-small"
-                        />
-                      </div>
-                    ))}
-
-                    {/* Photo upload placeholders */}
-                    {Array.from({ length: 6 - (user.photos?.length || 0) }).map(
-                      (_, index) => (
-                        <div
-                          key={`placeholder-${index}`}
-                          className="aspect-square bg-gray-50 border-2 border-dashed border-gray-300 rounded-small flex items-center justify-center text-gray-400"
-                        >
-                          <div className="text-center">
-                            <div className="text-2xl mb-1">📷</div>
-                            <div className="text-caption">Add Photo</div>
-                          </div>
-                        </div>
-                      )
-                    )}
-                  </div>
-                  <p className="text-caption text-muted">
-                    Photo upload functionality coming soon!
-                  </p>
-                </div>
+                {/* Photos */}
+                <ProfilePhotosSection
+                  photos={user.photos}
+                  onUpdate={() => {
+                    // The photo hooks will automatically refetch profile data
+                    // which will update the user prop through the parent component
+                  }}
+                />
 
                 {/* Actions */}
                 <div className="flex justify-end space-x-4 pt-4 border-t border-gray-200">
