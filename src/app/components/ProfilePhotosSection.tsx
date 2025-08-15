@@ -60,8 +60,6 @@ export default function ProfilePhotosSection({
             onClick={(e) => {
               e.preventDefault();
               e.stopPropagation();
-              console.log("Add Photo button clicked, showUpload:", showUpload);
-              alert("Button clicked!"); // Visual confirmation
               setShowUpload(!showUpload);
             }}
             className="px-3 py-1 text-caption font-medium text-primary-600 border border-primary-300 rounded-small hover:bg-primary-50 transition-colors"

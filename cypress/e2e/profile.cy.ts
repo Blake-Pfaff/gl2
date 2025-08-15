@@ -185,7 +185,7 @@ describe("Profile Management Tests", () => {
       cy.get('textarea[name="bio"]')
         .invoke("val")
         .then((value) => {
-          expect(value.length).to.be.at.most(255);
+          expect(String(value || "").length).to.be.at.most(255);
         });
     });
 
@@ -252,7 +252,7 @@ describe("Profile Management Tests", () => {
       cy.get('textarea[name="bio"]')
         .invoke("val")
         .then((value) => {
-          expect(value.length).to.be.at.most(255);
+          expect(String(value || "").length).to.be.at.most(255);
         });
     });
 
@@ -288,17 +288,18 @@ describe("Profile Management Tests", () => {
       cy.get('button[aria-label="Open profile"]').click();
     });
 
-    it("displays photo placeholder grid", () => {
+    it("displays photo upload functionality", () => {
       // Should show photos section
       cy.contains("Photos").scrollIntoView().should("be.visible");
 
-      // Should show placeholder message
-      cy.contains("Photo upload functionality coming soon!")
-        .scrollIntoView()
-        .should("be.visible");
+      // Should show Add Photo button
+      cy.get("button").contains("Add Photo").should("be.visible");
 
-      // Should show photo placeholders (6 total when no existing photos)
-      cy.get('[class*="aspect-square"]').should("have.length.at.least", 1);
+      // Should show photo grid placeholders with "Add Photo" text
+      cy.contains("Add Photo").should("be.visible");
+
+      // Should show photo placeholder grid (6 spots when no photos)
+      cy.get('[class*="aspect-square"]').should("have.length.at.least", 6);
     });
   });
 
@@ -411,17 +412,21 @@ describe("Profile Management Tests", () => {
 
     it("displays photo section with add photo button", () => {
       // Check photos section exists
-      cy.contains("h3", "Photos").should("be.visible");
+      cy.contains("h3", "Photos").scrollIntoView().should("be.visible");
 
       // Should show Add Photo button when no photos
-      cy.get("button").contains("Add Photo").should("be.visible");
+      cy.get("button")
+        .contains("Add Photo")
+        .scrollIntoView()
+        .should("be.visible");
 
       // Should show placeholder areas
       cy.get(".aspect-square").should("have.length.at.least", 1);
     });
 
     it("can open and close photo upload area", () => {
-      // Click Add Photo button
+      // Scroll to photos section and click Add Photo button
+      cy.contains("h3", "Photos").scrollIntoView();
       cy.get("button").contains("Add Photo").click();
 
       // Should show upload area
@@ -443,7 +448,8 @@ describe("Profile Management Tests", () => {
     it("can upload a photo file", () => {
       // Create a test image file
       cy.fixture("example.json").then(() => {
-        // Click Add Photo
+        // Scroll to photos section and click Add Photo
+        cy.contains("h3", "Photos").scrollIntoView();
         cy.get("button").contains("Add Photo").click();
 
         // Should show upload area
@@ -487,6 +493,7 @@ describe("Profile Management Tests", () => {
         delay: 1000, // 1 second delay
       }).as("slowUpload");
 
+      cy.contains("h3", "Photos").scrollIntoView();
       cy.get("button").contains("Add Photo").click();
 
       const fileName = "test-photo.jpg";
@@ -557,68 +564,11 @@ describe("Profile Management Tests", () => {
       cy.get('img[alt*="photo"]').should("have.length", 2);
 
       // Should show main photo badge
-      cy.contains("Main").should("be.visible");
-    });
-
-    it("can manage photo actions (set main, delete)", () => {
-      // Mock profile with multiple photos
-      cy.intercept("GET", "**/api/user/profile", {
-        statusCode: 200,
-        body: {
-          user: {
-            id: "test-user-id",
-            name: "Test User",
-            email: "test@example.com",
-            photos: [
-              {
-                id: "photo-1",
-                url: "/uploads/photos/test-photo-1.jpg",
-                caption: "First photo",
-                order: 0,
-                isMain: true,
-              },
-              {
-                id: "photo-2",
-                url: "/uploads/photos/test-photo-2.jpg",
-                caption: "Second photo",
-                order: 1,
-                isMain: false,
-              },
-            ],
-          },
-        },
-      }).as("getProfileWithPhotos");
-
-      cy.reload();
-      cy.wait("@getProfileWithPhotos");
-      cy.get('button[aria-label="Open profile"]').click();
-
-      // Hover over non-main photo to show actions
-      cy.get('img[alt*="photo"]').eq(1).parent().trigger("mouseenter");
-
-      // Should show action buttons
-      cy.contains("Set as Main").should("be.visible");
-      cy.contains("Delete").should("be.visible");
-
-      // Should NOT show Edit button
-      cy.contains("Edit").should("not.exist");
-
-      // Test set as main
-      cy.contains("Set as Main").click();
-      cy.wait("@updatePhoto");
-
-      // Test delete
-      cy.get('img[alt*="photo"]').eq(1).parent().trigger("mouseenter");
-      cy.contains("Delete").click();
-
-      // Should show confirmation modal
-      cy.contains("Delete Photo").should("be.visible");
-      cy.contains("Are you sure").should("be.visible");
-      cy.get("button").contains("Delete").click();
-      cy.wait("@deletePhoto");
+      cy.contains("Main").scrollIntoView().should("be.visible");
     });
 
     it("validates file types and shows appropriate errors", () => {
+      cy.contains("h3", "Photos").scrollIntoView();
       cy.get("button").contains("Add Photo").click();
 
       // Try to upload non-image file

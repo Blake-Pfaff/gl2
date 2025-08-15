@@ -99,12 +99,6 @@ export const authOptions: NextAuthOptions = {
 
       // Debug logging
       const tokenEmail: string | undefined = (token as any).email;
-      console.log(`🔍 JWT TOKEN DEBUG for ${tokenEmail}:`, {
-        id: token.id,
-        email: tokenEmail,
-        isOnboarded: token.isOnboarded,
-        isFirstLogin: token.isFirstLogin,
-      });
 
       return token;
     },

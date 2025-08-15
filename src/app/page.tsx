@@ -14,12 +14,6 @@ export default async function HomePage() {
   // Check onboarding status
   const needsOnboarding = session.user.isOnboarded === false;
 
-  console.log(`🏠 HOME PAGE CHECK for ${session.user.email}:`, {
-    isOnboarded: session.user.isOnboarded,
-    needsOnboarding,
-    action: needsOnboarding ? "REDIRECT TO ONBOARDING" : "SHOW HOME",
-  });
-
   if (needsOnboarding) {
     console.log(`🔄 REDIRECTING ${session.user.email} to onboarding`);
     redirect("/onboarding");
